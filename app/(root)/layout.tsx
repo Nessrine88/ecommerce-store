@@ -15,8 +15,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="bg-bg min-h-screen p-4 " >
-         <Header />
+    <div className="bg-bg relative" >
+      <div className="sticky top-0 z-30">
+        <Header />
+      </div>
+         
       <main className="flex h-3/4 justify-center items-center">
        
         {children}
