@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <defs>
+    <style>
+      .dark { fill: #D6C08A; }
+      .light { fill: #66BB6A; }
+      .text {
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        fill: accent;
+      }
+    </style>
+  </defs>
+
+  <!-- Shopping Cart -->
+  <g transform="translate(120,90)">
+    <path class="dark"
+      d="M40 60
+         L70 60
+         L95 160
+         L250 160
+         L280 90
+         L110 90
+         L105 70
+         L290 70
+         L250 180
+         L85 180
+         L55 60Z"/>
+
+    <!-- Wheels -->
+    <circle class="dark" cx="115" cy="210" r="15"/>
+    <circle class="dark" cx="235" cy="210" r="15"/>
+  </g>
+
+  <!-- Pot -->
+  <g transform="translate(0,-20)">
+    <path class="light"
+      d="M205 220
+         L295 220
+         L280 270
+         L220 270Z"/>
+
+    <!-- Stem -->
+    <rect x="247" y="120" width="6" height="100" class="dark"/>
+
+    <!-- Leaves -->
+    <ellipse cx="220" cy="160" rx="28" ry="55"
+             transform="rotate(-40 220 160)"
+             class="light"/>
+
+    <ellipse cx="280" cy="160" rx="28" ry="55"
+             transform="rotate(40 280 160)"
+             class="dark"/>
+
+    <ellipse cx="250" cy="110" rx="24" ry="45"
+             class="light"/>
+  </g>
+
+  
+</svg>
