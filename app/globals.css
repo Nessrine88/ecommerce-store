@@ -4,20 +4,19 @@
 
 @custom-variant dark (&:is(.dark *));
 
-
 @theme inline {
-  --color-bg:#0F2D1D;
-  --color-surface:#143422;
-  --color-card:#1D3C27;
-  --color-card-hover:#244A31;
+  --color-bg: #0f2d1d;
+  --color-surface: #143422;
+  --color-card: #1d3c27;
+  --color-card-hover: #244a31;
 
-  --color-primary:#416B49;
-  --color-secondary:#709768;
+  --color-primary: #416b49;
+  --color-secondary: #709768;
 
-  --color-accent:#D6C08A;
-  --color-text:#F5F1E6;
-  --color-muted:#B8C3B4;
+  --color-accent: #d6c08a;
+  --color-text: #f5f1e6;
+  --color-muted: #b8c3b4;
 
-  --color-button:#33593B;
-  --color-button-hover:#5FA86B;
+  --color-button: #33593b;
+  --color-button-hover: #5fa86b;
 }

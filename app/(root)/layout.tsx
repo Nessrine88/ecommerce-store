@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import "../globals.css"
+import "../globals.css";
 import { APP_DESCRIPTION, APP_NAME, SERVER_URL } from "../lib/constants";
 import Header from "@/components/shared/header";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: APP_NAME || 'Prostore',
+  title: APP_NAME || "Prostore",
   description: APP_DESCRIPTION,
-  metadataBase: new URL(SERVER_URL)
+  metadataBase: new URL(SERVER_URL),
 };
 
 export default function RootLayout({
@@ -15,15 +16,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="bg-bg relative" >
+    <div className="dark:bg-inherit bg-bg relative">
       <div className="sticky top-0 z-30">
         <Header />
       </div>
-         
-      <main className="flex h-3/4 justify-center items-center">
-       
-        {children}
-        </main>
+
+      <main className="flex h-3/4 justify-center items-center">{children}</main>
+      <Footer />
     </div>
   );
 }
