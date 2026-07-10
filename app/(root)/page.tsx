@@ -1,11 +1,12 @@
 import Hero from "@/components/Hero";
 import ProductList from "@/components/shared/header/product/product-list";
-import sampleData from '@/db/sample-data'
-const page = () => {
+import { getLatestProducts } from "@/lib/actions/product.actions";
+const page = async() => {
+  const latestProducts = await getLatestProducts()
   return (
     <div className="text-accent">
       <Hero />
-      <ProductList title = "Newest Product" data={sampleData} limit={4} />
+      <ProductList title = "Newest Product" data={latestProducts} />
     </div>
   );
 };
