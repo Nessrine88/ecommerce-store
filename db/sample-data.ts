@@ -7,6 +7,7 @@ const sampleData = {
       description: "A popular tropical houseplant with large split leaves.",
       images: [
         "https://images.unsplash.com/photo-1466692476868-aef1dfb1e735",
+        "https://images.unsplash.com/photo-1750341005643-e79d6ec30979",
       ],
       price: "29.99",
       brand: "Green Garden",
@@ -23,6 +24,7 @@ const sampleData = {
       description: "Low-maintenance air-purifying plant.",
       images: [
         "https://images.unsplash.com/photo-1501004318641-b39e6451bec6",
+        "https://images.unsplash.com/photo-1482868357067-cd81f209dc34",
       ],
       price: "19.99",
       brand: "Nature Plants",
@@ -39,6 +41,7 @@ const sampleData = {
       description: "Elegant indoor plant with beautiful white blooms.",
       images: [
         "https://images.unsplash.com/photo-1512428813834-c702c7702b78",
+        "https://images.unsplash.com/photo-1556403741-5c8e51ab86df",
       ],
       price: "24.99",
       brand: "Bloom House",
@@ -55,6 +58,7 @@ const sampleData = {
       description: "Medicinal succulent known for its soothing gel.",
       images: [
         "https://images.unsplash.com/photo-1459156212016-c812468e2115",
+        "https://images.unsplash.com/photo-1763661665960-f4aaf7c81519",
       ],
       price: "14.99",
       brand: "Desert Green",
@@ -71,6 +75,7 @@ const sampleData = {
       description: "A stylish indoor tree with large glossy leaves.",
       images: [
         "https://images.unsplash.com/photo-1463936575829-25148e1db1b8",
+        "https://images.unsplash.com/photo-1757377739988-9384ed99991e",
       ],
       price: "49.99",
       brand: "Urban Jungle",
