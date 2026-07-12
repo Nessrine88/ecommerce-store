@@ -1,4 +1,4 @@
-import { PrismaClient } from '@/lib/generated/prisma/client'
+import { PrismaClient, Prisma } from '@/lib/generated/prisma/client'
 import { PrismaPg } from '@prisma/adapter-pg'
 import sampleData from './sample-data'
 import 'dotenv/config'
@@ -15,7 +15,10 @@ async function main() {
   await prisma.product.deleteMany()
 
   await prisma.product.createMany({
-    data: sampleData.products,
+    data: sampleData.products.map((product) => ({
+      ...product,
+      price: new Prisma.Decimal(product.price),
+    })),
   })
 
   console.log('Database seeded successfully!')
