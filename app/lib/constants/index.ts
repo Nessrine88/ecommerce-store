@@ -10,3 +10,27 @@ export const SERVER_URL =
     email: '',
     password:'',
   }
+ export const signUpDefaultValues = {
+  name: '',
+    email: '',
+    password:'',
+    confirmPassword: ''
+  }
+
+export async function formatError(error: any) {
+  if (error.name === "ZodError") {
+    // Zod exposes issues as an array: [{ path, message, ... }, ...]
+    const fieldErrors = error.issues.map((issue: any) => issue.message)
+    return fieldErrors.join(". ")
+  } else if (
+    error.name === "PrismaClientKnownRequestError" &&
+    error.code === "P2002"
+  ) {
+    const field = error.meta?.target?.[0] ?? "Field"
+    return `${field} already exists`
+  } else {
+    return typeof error.message === "string"
+      ? error.message
+      : "An unexpected error occurred"
+  }
+}
