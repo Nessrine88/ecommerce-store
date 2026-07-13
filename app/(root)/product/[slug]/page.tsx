@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { Star } from "lucide-react";
-import ProdductImages from "@/components/shared/header/product/product-images";
-import ProductPrice from "@/components/shared/header/product/product-price";
+import ProdductImages from "@/components/shared/product/product-images";
+import ProductPrice from "@/components/shared/product/product-price";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
