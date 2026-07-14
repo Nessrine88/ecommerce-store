@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { APP_NAME } from "./lib/constants";
 import { ThemeProvider } from "next-themes";
+import { Toaster } from "sonner";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -31,6 +33,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col  ">
         <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
           {children}
+                <Toaster richColors />
         </ThemeProvider>
       </body>
     </html>

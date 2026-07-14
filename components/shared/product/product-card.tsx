@@ -2,9 +2,9 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import Image from 'next/image'
 import Link from 'next/link'
 import ProductPrice from './product-price';
-import { Product } from '@/app/(root)/types';
+import { Product } from '@/types';
 const ProductCard = ({product}: {product:Product}) => {
-    console.log("PRODUCTS",product)
+   
   return (
     <div>
       <Card>

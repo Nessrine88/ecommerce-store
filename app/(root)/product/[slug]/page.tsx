@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 
 import { getProductBySlug } from "@/lib/actions/product.actions";
 import { Button } from "@base-ui/react";
+import AddToCart from "@/components/shared/product/add-to-cart";
 
 const ProductDetailsPage = async ({
   params,
@@ -105,10 +106,24 @@ const ProductDetailsPage = async ({
                     <Badge variant="destructive">Out of Stock</Badge>
                   )}
                 </div>
-
-                <Button className="w-full" disabled={!inStock}>
-                  {inStock ? "Add to Cart" : "Out of Stock"}
-                </Button>
+                  <div className="pt-2">
+                    {inStock ? (
+                      <AddToCart
+                        item={{
+                          productId: product.id,
+                          name: product.name,
+                          slug: product.slug,
+                          price: product.price,
+                          qty: 1,
+                          image: product.images[0],
+                        }}
+                      />
+                    ) : (
+                      <Button className="w-full" disabled>
+                        Out of Stock
+                      </Button>
+                    )}
+                  </div>
               </CardContent>
             </Card>
           </div>
