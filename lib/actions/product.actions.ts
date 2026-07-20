@@ -1,36 +1,37 @@
 'use server'
 
-import { prisma } from '@/lib/prisma'
+import { db } from '@/app/db'
+import { products } from '@/app/db/schema'
+import { desc, eq } from 'drizzle-orm'
 
+// Get latest products
 export async function getLatestProducts() {
-  const products = await prisma.product.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
-    take: 10,
-  });
+  const latestProducts = await db
+    .select()
+    .from(products)
+    .orderBy(desc(products.createdAt))
+    .limit(10)
 
-  return products.map((product) => ({
+  return latestProducts.map((product) => ({
     ...product,
     price: product.price.toString(),
     rating: Number(product.rating),
-  }));
+  }))
 }
 
-
-// Get single product by its slug
+// Get single product by slug
 export async function getProductBySlug(slug: string) {
-  const product = await prisma.product.findFirst({
-    where: {
-      slug,
-    },
-  });
+  const [product] = await db
+    .select()
+    .from(products)
+    .where(eq(products.slug, slug))
+    .limit(1)
 
-  if (!product) return null;
+  if (!product) return null
 
   return {
     ...product,
     price: product.price.toString(),
-    rating: product.rating.toString(),
-  };
+    rating: Number(product.rating),
+  }
 }

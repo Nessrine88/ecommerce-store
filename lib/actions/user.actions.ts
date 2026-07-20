@@ -4,7 +4,7 @@ import { signIn, signOut } from "@/auth";
 import { signInFormSchema, signUpFormSchema } from "@/app/lib/validators";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { hashSync } from "bcrypt-ts-edge";
-import {prisma} from '@/db/prisma'
+import {prisma} from '@/app/db/prisma'
 import { AuthError } from "next-auth";
 import { formatError } from "@/app/lib/constants";
 export async function signInWithCredentials(prevState: unknown, formData: FormData) {
