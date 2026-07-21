@@ -29,9 +29,9 @@ const AddToCart = ({ item }: { item: CartItem }) => {
       variant="outline"
       type="button"
       onClick={handleAddToCart}
-      className="w-full"
+      className="w-full flex justify-center text-accent hover:bg-bg"
     >
-      <Plus className="mr-2 h-4 w-4 rounded-2xl border mx-auto" />
+      <Plus className=" h-4 w-4 rounded-2xl border  " />
       Add To Cart
     </Button>
   );

@@ -4,68 +4,135 @@ import { signIn, signOut } from "@/auth";
 import { signInFormSchema, signUpFormSchema } from "@/app/lib/validators";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { hashSync } from "bcrypt-ts-edge";
-import {prisma} from '@/app/db/prisma'
 import { AuthError } from "next-auth";
+import { eq } from "drizzle-orm";
+
+import { db } from "@/app/db";
+import { users } from "@/app/db/schema";
+
 import { formatError } from "@/app/lib/constants";
-export async function signInWithCredentials(prevState: unknown, formData: FormData) {
+
+export async function signInWithCredentials(
+  prevState: unknown,
+  formData: FormData
+) {
   try {
-    await signIn("credentials", {
+    const validatedFields = signInFormSchema.parse({
       email: formData.get("email"),
       password: formData.get("password"),
+    });
+
+    const result = await signIn("credentials", {
+      email: validatedFields.email,
+      password: validatedFields.password,
       redirect: false,
     });
 
-    return { success: true, message: "Signed in successfully" };
+    if (!result) {
+      return {
+        success: false,
+        message: "Invalid email or password",
+      };
+    }
+
+    return {
+      success: true,
+      message: "Signed in successfully",
+    };
+
   } catch (error) {
     if (isRedirectError(error)) {
-      throw error; // let Next's redirect through, don't swallow it
+      throw error;
     }
 
     if (error instanceof AuthError) {
-      switch (error.type) {
-        case "CredentialsSignin":
-          return { success: false, message: "Invalid email or password" };
-        default:
-          return { success: false, message: "Something went wrong" };
+      if (error.type === "CredentialsSignin") {
+        return {
+          success: false,
+          message: "Invalid email or password",
+        };
       }
+
+      return {
+        success: false,
+        message: "Authentication error",
+      };
     }
 
-    // Unknown error — don't swallow silently in dev, but still return state
-    return { success: false, message: "Something went wrong" };
+    return {
+      success: false,
+      message: formatError(error),
+    };
   }
 }
+
 
 export async function signOutUser() {
   await signOut();
 }
 
-export async function signUpUser(prevState: unknown, formData: FormData) {
-    try {
-        const user = signUpFormSchema.parse({
-            name: formData.get('name'),
-            email: formData.get('email'),
-            password: formData.get('password'),
-            confirmPassword: formData.get('confirmPassword'),
-        });
-        const plainPassword = user.password
-        user.password = hashSync(user.password, 10);
-        await prisma.user.create({
-            data: {
-                name: user.name,
-                email: user.email,
-                password: user.password,
 
-            }
-        })
-        await signIn('credentials', {
-            email: user.email,
-            password: plainPassword
-        });
-        return {success: true, message:'User registred successfully'}
-    } catch (error) {
-        if(isRedirectError(error)){
-            throw error;
-        }
-         return {success: false, message:formatError(error)}
+export async function signUpUser(
+  prevState: unknown,
+  formData: FormData
+) {
+  try {
+    const user = signUpFormSchema.parse({
+      name: formData.get("name"),
+      email: formData.get("email"),
+      password: formData.get("password"),
+      confirmPassword: formData.get("confirmPassword"),
+    });
+
+
+    // Check existing user
+    const existingUser = await db.query.users.findFirst({
+      where: eq(users.email, user.email),
+    });
+
+
+    if (existingUser) {
+      return {
+        success: false,
+        message: "Email already exists",
+      };
     }
+
+
+    const hashedPassword = hashSync(user.password, 10);
+
+
+    await db.insert(users).values({
+      name: user.name,
+      email: user.email,
+      password: hashedPassword,
+    });
+
+
+    // Automatically login after registration
+    await signIn("credentials", {
+      email: user.email,
+      password: user.password,
+      redirect: false,
+    });
+
+
+    return {
+      success: true,
+      message: "User registered successfully",
+    };
+
+
+  } catch (error) {
+
+    if (isRedirectError(error)) {
+      throw error;
+    }
+
+
+    return {
+      success: false,
+      message: formatError(error),
+    };
+  }
 }
