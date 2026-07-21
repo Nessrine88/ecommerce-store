@@ -10,7 +10,9 @@ import { eq } from "drizzle-orm";
 import { db } from "@/app/db";
 import { users } from "@/app/db/schema";
 
-import { formatError } from "@/app/lib/constants";
+function formatError(error: unknown) {
+  return error instanceof Error ? error.message : "An unexpected error occurred";
+}
 
 export async function signInWithCredentials(
   prevState: unknown,
