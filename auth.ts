@@ -3,7 +3,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { compareSync } from "bcrypt-ts-edge";
 import { eq } from "drizzle-orm";
-
+import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 import { db } from "./app/db";
 import { users } from "./app/db/schema";
 
@@ -121,6 +122,19 @@ export const config: NextAuthConfig = {
 
       return token;
     },
+    authorized({request, auth}:any) {
+      if(!request.cookies.get('sessionCartId')){
+        const sessionCartId = crypto.randomUUID();
+        const newRequestHeaders = new Headers(request.headers);
+        const response = NextResponse.next({
+          request: {
+            headers: newRequestHeaders
+          }
+        });
+        response.cookies.set('sessionCartId', sessionCartId);
+        return response
+      } else {return true}
+    }
   },
 
 };

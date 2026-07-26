@@ -18,7 +18,12 @@ const AddToCart = ({ item }: { item: CartItem }) => {
       return;
     }
 
-    toast.success(res.message ?? "Product added to cart!");
+    toast.success(`${item.name} added to cart!`, {
+      action: {
+        label: "Go to Cart",
+        onClick: () => router.push("/cart"),
+      },
+    });
 
     // Refresh server components (cart badge, etc.)
     router.refresh();
@@ -31,7 +36,7 @@ const AddToCart = ({ item }: { item: CartItem }) => {
       onClick={handleAddToCart}
       className="w-full flex justify-center text-accent hover:bg-bg"
     >
-      <Plus className=" h-4 w-4 rounded-2xl border  " />
+      <Plus className="h-4 w-4 rounded-2xl border" />
       Add To Cart
     </Button>
   );
