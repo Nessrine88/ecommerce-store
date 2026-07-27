@@ -9,7 +9,8 @@ import { Separator } from "@/components/ui/separator";
 import { getProductBySlug } from "@/lib/actions/product.actions";
 import { Button } from "@base-ui/react";
 import AddToCart from "@/components/shared/product/add-to-cart";
-
+import { getMyCart } from "@/lib/actions/cart.actions";
+import { carts } from "@/app/db/schema";
 const ProductDetailsPage = async ({
   params,
 }: {
@@ -22,7 +23,7 @@ const ProductDetailsPage = async ({
   if (!product) notFound();
 
   const inStock = product.stock > 0;
-
+const cart = await getMyCart()
   return (
     <section className="min-h-screen py-10 text-accent">
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 md:grid-cols-12">
@@ -109,6 +110,7 @@ const ProductDetailsPage = async ({
                   <div className="pt-2">
                     {inStock ? (
                       <AddToCart
+                      cart={cart}
                         item={{
                           productId: product.id,
                           name: product.name,

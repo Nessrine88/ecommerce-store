@@ -108,3 +108,51 @@ export async function addItemToCart(data: CartItem) {
     }
   }
 }
+
+export async function removeItemFromCart(productId: string) {
+  try {
+    const sessionCartId = (await cookies()).get('sessionCartId')?.value
+    if (!sessionCartId) throw new Error('Cart session not found')
+
+    const cart = await getMyCart()
+    if (!cart) throw new Error('Cart not found')
+
+    const existingItems = (cart.items as CartItem[]) ?? []
+    const existingItem = existingItems.find((i) => i.productId === productId)
+
+    if (!existingItem) throw new Error('Item not found in cart')
+
+    // decrement qty, or remove entirely if qty is 1
+    const updatedItems =
+      existingItem.qty === 1
+        ? existingItems.filter((i) => i.productId !== productId)
+        : existingItems.map((i) =>
+            i.productId === productId ? { ...i, qty: i.qty - 1 } : i
+          )
+
+    const { itemsPrice, shippingPrice, taxPrice, totalPrice } =
+      calcPrice(updatedItems)
+
+    await db.update(carts)
+      .set({
+        items: updatedItems,
+        itemsPrice,
+        shippingPrice,
+        taxPrice,
+        totalPrice,
+      })
+      .where(eq(carts.id, cart.id))
+
+    revalidatePath(`/product/${existingItem.slug}`)
+
+    return {
+      success: true,
+      message: 'Item removed from cart',
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: formatError(error),
+    }
+  }
+}
