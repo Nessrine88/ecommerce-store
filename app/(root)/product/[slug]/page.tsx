@@ -23,7 +23,20 @@ const ProductDetailsPage = async ({
   if (!product) notFound();
 
   const inStock = product.stock > 0;
-const cart = await getMyCart()
+  const cart = await getMyCart();
+  const normalizedCart = cart
+    ? {
+        ...cart,
+        items: (cart.items ?? []) as {
+          productId: string;
+          name: string;
+          slug: string;
+          qty: number;
+          image: string;
+          price: string;
+        }[],
+      }
+    : undefined;
   return (
     <section className="min-h-screen py-10 text-accent">
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 md:grid-cols-12">
@@ -110,7 +123,7 @@ const cart = await getMyCart()
                   <div className="pt-2">
                     {inStock ? (
                       <AddToCart
-                      cart={cart}
+                        cart={normalizedCart}
                         item={{
                           productId: product.id,
                           name: product.name,

@@ -35,7 +35,7 @@ const AddToCart = ({cart, item }: {cart?: Cart, item: CartItem }) => {
       return;
     }
 
-    toast.success(`${item.name} deleted from cart!`, {
+    toast.success(`${item.name} removed from cart!`, {
       action: {
         label: "Go to Cart",
         onClick: () => router.push("/cart"),
