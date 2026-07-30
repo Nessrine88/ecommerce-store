@@ -9,8 +9,8 @@ import Image from "next/image";
 import { Cart } from "@/types";
 import { Table, TableBody, TableHead, TableHeader, TableRow, TableCell } from "@/components/ui/table";
 import { Button } from "@base-ui/react";
-import { SQLiteTransaction } from "drizzle-orm/sqlite-core";
-
+import { formatCurrency } from "@/app/lib/utils";
+import { Card, CardContent } from "@/components/ui/card";
 
 const CartTable = async({cart}: {cart?: Cart}) => {
   const router = useRouter();
@@ -20,11 +20,12 @@ const CartTable = async({cart}: {cart?: Cart}) => {
       {!cart || cart.items.length ===0 ?(
         <div className="text-accent">Cart is empty . <Link className="underline " href={'/'}>Go Shopping</Link></div>
       ):(
-        <div className="grid  md:grid-cols-4 md:gap-5">
+        <div className="grid mt-10 md:grid-cols-4 md:gap-5">
             <div className="overflow-x-auto md:col-span-3 text-accent">
                 <Table>
                   <TableHeader>
                     <TableRow>
+                      <TableHead className="text-center">Name</TableHead>
                       <TableHead className="text-center">Quantity</TableHead>
                       <TableHead className="text-right">Price</TableHead>
                     </TableRow>
@@ -51,7 +52,7 @@ const CartTable = async({cart}: {cart?: Cart}) => {
                           </Button>
                           <span>{item.qty} </span>
                            <Button disabled={isPending} type="button" onClick={()=> startTransition(async() => {
-                            const res = await addItemToCart(item)
+                            const res =   await addItemToCart({ ...item, qty: 1 });
                             if(!res.success) {
                             toast.error(res.message);
                              return;
@@ -62,13 +63,32 @@ const CartTable = async({cart}: {cart?: Cart}) => {
                           </Button>
                         </TableCell>
                         <TableCell className="text-right">
-                          ${item.price}
+                           $ {item.price}
                         </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
             </div>
+            <Card>
+              <CardContent >
+                <div className="space-x-4">
+                  Subtotal({cart.items.reduce((a,c) => a+ c.qty,0 )})
+                </div>
+                
+                <span >
+                  {formatCurrency(cart.itemsPrice)}
+                </span>
+                <Button  disabled= {isPending} onClick={()=> startTransition(() => router.push('/shipping-address'))}>
+                      { isPending ? (
+                        <Loader className="h-4 w-4 animate-spin"/>
+                      ) : (
+                        <ArrowRight className="w-4 h-4" />
+                      )}
+                      PROCEED TO CHECKOUT 
+                </Button>
+              </CardContent>
+            </Card>
         </div>
       )}
     </div>
