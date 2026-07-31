@@ -138,3 +138,12 @@ export async function signUpUser(
     };
   }
 }
+
+
+export async function getUserById(userId: string){
+  const user = await db.query.users.findFirst({
+    where: eq(users.id, userId),
+  })
+  if(!user) throw new Error('User not found');
+  return user;
+}

@@ -47,6 +47,8 @@ export const cartItemSchema = z.object({
 
 })
 
+
+
 export const insertCartSchema = z.object({
     items: z.array(cartItemSchema),
     itemsPrice: currency,
@@ -55,4 +57,16 @@ export const insertCartSchema = z.object({
     taxPrice: currency,
     sessionCartId: z.string().min(1,'Session cart id is required'),
     userId: z.string().optional().nullable()
+})
+
+//Shcema for the shipping addresss
+
+export const shippingAddressSchema = z.object({
+    fullName: z.string().min(3, 'Name must be at least three character '),
+    streetAddress: z.string().min(3, 'Address must be at least three character '),
+    city: z.string().min(3, 'City must be at least three character '),
+    postalCode: z.string().min(3, 'Postal code must be at least three character '),
+    country: z.string().min(3, 'Country must be at least three character '),
+    lat: z.number().optional,
+    lng: z.number().optional,
 })

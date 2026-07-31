@@ -72,20 +72,26 @@ const CartTable = async({cart}: {cart?: Cart}) => {
             </div>
             <Card>
               <CardContent >
-                <div className="space-x-4">
+                <div className="space-x-4 ">
                   Subtotal({cart.items.reduce((a,c) => a+ c.qty,0 )})
                 </div>
-                
+                <br />
                 <span >
                   {formatCurrency(cart.itemsPrice)}
                 </span>
+                <br />
                 <Button  disabled= {isPending} onClick={()=> startTransition(() => router.push('/shipping-address'))}>
                       { isPending ? (
                         <Loader className="h-4 w-4 animate-spin"/>
                       ) : (
-                        <ArrowRight className="w-4 h-4" />
+                        <div className="flex items-center border  px-2 cursor-pointer mt-5">
+                        <ArrowRight className="w-4 h-4 font-bold" />
+                        
+                         PROCEED TO CHECKOUT 
+                      </div>
+                      
                       )}
-                      PROCEED TO CHECKOUT 
+                      
                 </Button>
               </CardContent>
             </Card>
