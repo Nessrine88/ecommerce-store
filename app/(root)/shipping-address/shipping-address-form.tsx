@@ -21,7 +21,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Loader } from "lucide-react";
-
+import { updateUserAddress } from "@/lib/actions/user.actions";
 
 const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
   const router = useRouter();
@@ -35,12 +35,19 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
 
   const onSubmit = (values: z.infer<typeof shippingAddressSchema>) => {
     startTransition(async () => {
-   return
+      const res = await updateUserAddress(values);
+
+      if (!res.success) {
+        toast.error(res.message);
+        return;
+      }
+
+      router.push("/payment-method");
     });
   };
 
   return (
-    <div className="my-10 max-w-md mx-auto space-y-4 text-accent">
+    <div className="max-w-md mx-auto space-y-4 text-accent my-5">
       <h1 className="h2-bold mt-4">Shipping Address</h1>
       <p className="text-sm text-muted-foreground">
         Please enter an address to ship to

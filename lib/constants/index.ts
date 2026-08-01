@@ -6,9 +6,9 @@ confirmPassword: ''
 }
 
 export const shippingAddressDefaultValues = {
-    fullName: 'Jhon Doe',
-    streetAddress: '123 Main st',
-    city: 'Anytown',
-    postalCode: '12345',
-    country: 'USA',
+    fullName: '',
+    streetAddress: '',
+    city: '',
+    postalCode: '',
+    country: '',
 }

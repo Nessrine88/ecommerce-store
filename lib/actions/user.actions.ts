@@ -1,7 +1,7 @@
 "use server";
 
-import { signIn, signOut } from "@/auth";
-import { signInFormSchema, signUpFormSchema } from "@/app/lib/validators";
+import { auth, signIn, signOut } from "@/auth";
+import { shippingAddressSchema, signInFormSchema, signUpFormSchema } from "@/app/lib/validators";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { hashSync } from "bcrypt-ts-edge";
 import { AuthError } from "next-auth";
@@ -9,6 +9,9 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@/app/db";
 import { users } from "@/app/db/schema";
+import { ShippingAddress } from "@/types";
+import { id } from "zod/v4/locales";
+import { success } from "zod";
 
 function formatError(error: unknown) {
   return error instanceof Error ? error.message : "An unexpected error occurred";
@@ -146,4 +149,30 @@ export async function getUserById(userId: string){
   })
   if(!user) throw new Error('User not found');
   return user;
+}
+
+//Update the user's address 
+export async function updateUserAddress(data: ShippingAddress) {
+  try {
+    const session = await auth();
+    const currentUser = await db.query.users.findFirst({
+      where: eq(users.id, session?.user?.id as string),
+    });
+
+    if (!currentUser) throw new Error('User not found');
+
+    const address = shippingAddressSchema.parse(data);
+
+    await db
+      .update(users)
+      .set({ address })
+      .where(eq(users.id, currentUser.id));
+
+    return {
+      success: true,
+      message: 'User updated successfully',
+    };
+  } catch (error) {
+    return { success: false, message: formatError(error) };
+  }
 }
