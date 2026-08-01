@@ -5,7 +5,7 @@ password: '',
 confirmPassword: ''
 }
 
-export const shippinAddressDefaultValues = {
+export const shippingAddressDefaultValues = {
     fullName: 'Jhon Doe',
     streetAddress: '123 Main st',
     city: 'Anytown',
