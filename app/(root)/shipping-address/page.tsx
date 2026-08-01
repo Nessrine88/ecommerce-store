@@ -18,7 +18,7 @@ async function  ShppingAddressPage () {
     const user = await getUserById(userId)
   return (
     <div className="flex flex-col ">
-      <CheckkoutSteps current = {1} />
+      <CheckkoutSteps current = {3} />
       <ShippingAddressForm address= {user.address as ShippingAddress} />
     </div>
   )

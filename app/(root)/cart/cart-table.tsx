@@ -12,7 +12,7 @@ import { Button } from "@base-ui/react";
 import { formatCurrency } from "@/app/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 
-const CartTable = async({cart}: {cart?: Cart}) => {
+const CartTable = ({cart}: {cart?: Cart}) => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition()
   return (
