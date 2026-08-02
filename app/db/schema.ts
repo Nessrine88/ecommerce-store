@@ -266,3 +266,115 @@ export const carts = pgTable(
       .notNull(),
   }
 );
+
+// =====================
+// Order
+// =====================
+// =====================
+// Order
+// =====================
+
+export const orders = pgTable(
+  "Order",
+  {
+    id: uuid("id")
+      .defaultRandom()
+      .primaryKey(),
+
+    userId: uuid("userId")
+      .notNull(),
+
+    shippingAddress: json("shippingAddress")
+      .notNull(),
+
+    paymentMethod: text("paymentMethod")
+      .notNull(),
+
+    paymentResult: json("paymentResult"),
+
+    itemsPrice: numeric("itemsPrice", {
+      precision: 12,
+      scale: 2,
+    })
+      .notNull(),
+
+    shippingPrice: numeric("shippingPrice", {
+      precision: 12,
+      scale: 2,
+    })
+      .notNull(),
+
+    taxPrice: numeric("taxPrice", {
+      precision: 12,
+      scale: 2,
+    })
+      .notNull(),
+
+    totalPrice: numeric("totalPrice", {
+      precision: 12,
+      scale: 2,
+    })
+      .notNull(),
+
+    isPaid: boolean("isPaid")
+      .default(false)
+      .notNull(),
+
+    paidAt: timestamp("paidAt", {
+      precision: 6,
+    }),
+
+    isDelivered: boolean("isDelivered")
+      .default(false)
+      .notNull(),
+
+    deliveredAt: timestamp("deliveredAt", {
+      precision: 6,
+    }),
+
+    createdAt: timestamp("createdAt", {
+      precision: 6,
+    })
+      .defaultNow()
+      .notNull(),
+  }
+);
+
+
+// =====================
+// Order Items
+// =====================
+
+export const orderItems = pgTable(
+  "OrderItem",
+  {
+    orderId: uuid("orderId")
+      .notNull(),
+
+    productId: uuid("productId")
+      .notNull(),
+
+    qty: integer("qty")
+      .notNull(),
+
+    price: numeric("price", {
+      precision: 12,
+      scale: 2,
+    })
+      .notNull(),
+
+    name: text("name")
+      .notNull(),
+
+    slug: text("slug")
+      .notNull(),
+
+    image: text("image")
+      .notNull(),
+  },
+  (table) => ({
+    pk: primaryKey({
+      columns: [table.orderId, table.productId],
+    }),
+  })
+);

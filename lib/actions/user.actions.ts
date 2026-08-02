@@ -1,7 +1,7 @@
 "use server";
 
 import { auth, signIn, signOut } from "@/auth";
-import { shippingAddressSchema, signInFormSchema, signUpFormSchema } from "@/app/lib/validators";
+import { paymentMethodSchema, shippingAddressSchema, signInFormSchema, signUpFormSchema } from "@/app/lib/validators";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { hashSync } from "bcrypt-ts-edge";
 import { AuthError } from "next-auth";
@@ -11,7 +11,8 @@ import { db } from "@/app/db";
 import { users } from "@/app/db/schema";
 import { ShippingAddress } from "@/types";
 import { id } from "zod/v4/locales";
-import { success } from "zod";
+import z, { success } from "zod";
+import { revalidatePath } from "next/cache";
 
 function formatError(error: unknown) {
   return error instanceof Error ? error.message : "An unexpected error occurred";
@@ -174,5 +175,64 @@ export async function updateUserAddress(data: ShippingAddress) {
     };
   } catch (error) {
     return { success: false, message: formatError(error) };
+  }
+}
+
+
+//Update user's payment method 
+
+export async function updateUserPaymentMethod(
+  data: z.infer<typeof paymentMethodSchema>
+) {
+  try {
+    // Validate input against schema
+    const parsed = paymentMethodSchema.safeParse(data);
+    if (!parsed.success) {
+      return {
+        success: false,
+        message: "Invalid payment method data provided.",
+      };
+    }
+
+    // Check authentication
+    const session = await auth();
+    if (!session?.user?.id) {
+      return {
+        success: false,
+        message: "You must be signed in to update your payment method.",
+      };
+    }
+
+    // Confirm the user exists
+    const currentUser = await db.query.users.findFirst({
+      where: eq(users.id, session.user.id),
+    });
+
+    if (!currentUser) {
+      return {
+        success: false,
+        message: "User not found.",
+      };
+    }
+
+    // Update the payment method
+    await db
+      .update(users)
+      .set({ paymentMethod: parsed.data.type })
+      .where(eq(users.id, currentUser.id));
+
+    // Revalidate any cached pages that show this data
+    revalidatePath("/account");
+
+    return {
+      success: true,
+      message: "Payment method updated successfully.",
+    };
+  } catch (error) {
+    console.error("updateUserPaymentMethod error:", error);
+    return {
+      success: false,
+      message: "Something went wrong while updating your payment method.",
+    };
   }
 }

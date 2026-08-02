@@ -1,6 +1,6 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-const CheckkoutSteps = ({current = 0}) => {
+const CheckoutSteps = ({current = 0}) => {
     return ( 
     <div className="flex items-center text-accent  flex-between flex-col md:flex-row space-x-2 space-y-2 mb-10">
         {['User Login', 'Shipping Address', 'Payement Method', 'Place Order'].map((step,index) =>(
@@ -16,4 +16,4 @@ const CheckkoutSteps = ({current = 0}) => {
     </div> );
 }
  
-export default CheckkoutSteps;
+export default CheckoutSteps;
