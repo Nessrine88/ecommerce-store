@@ -32,15 +32,18 @@ export async function getMyCart() {
   const session = await auth()
   const userId = session?.user?.id as string | undefined
 
-  const cart = await db.query.carts.findFirst({
-    where: userId
-      ? eq(carts.userId, userId)
-      : eq(carts.sessionCartId, sessionCartId),
-  })
-
-  if (!cart) return undefined
-
-  return convertToPlainObject(cart)
+  try {
+    const cart = await db.query.carts.findFirst({
+      where: userId
+        ? eq(carts.userId, userId)
+        : eq(carts.sessionCartId, sessionCartId),
+    })
+    if (!cart) return undefined
+    return convertToPlainObject(cart)
+  } catch (err) {
+    console.error('RAW CART QUERY ERROR:', err); // check terminal, not browser
+    throw err;
+  }
 }
 
 export async function addItemToCart(data: CartItem) {

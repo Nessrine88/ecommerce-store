@@ -1,8 +1,12 @@
 import { PAYMENT_METHODS } from "@/lib/constants";
 import { formatNumberWithDecimal } from "@/lib/utils";
 import z from "zod";
-const currency = z.string().refine((value)=> /^\d+(\.\d{2})?$/.test(formatNumberWithDecimal(Number(value))),
-'Price must have exactly two decimal places')
+export const currency = z
+  .string()
+  .refine(
+    (value) => /^\d+\.\d{2}$/.test(value),
+    "Price must have exactly two decimal places"
+  );
 
 export const insertProductSchema = z.object({
  name: z.string().min(3, 'Name must be at least 3 characters'),
