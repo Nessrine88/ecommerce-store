@@ -1,7 +1,7 @@
 "use server";
 
 import { auth, signIn, signOut } from "@/auth";
-import { paymentMethodSchema, shippingAddressSchema, signInFormSchema, signUpFormSchema } from "@/app/lib/validators";
+import { paymentMethodSchema, shippingAddressSchema, signInFormSchema, signUpFormSchema } from "@/lib/validators";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { hashSync } from "bcrypt-ts-edge";
 import { AuthError } from "next-auth";

@@ -1,7 +1,7 @@
 'use server'
 import { cookies } from "next/headers"
 import { CartItem } from "@/types"
-import { formatError, convertToPlainObject, round2 } from "@/app/lib/utils"
+import { formatError, convertToPlainObject, round2 } from "@/lib/utils"
 import { auth } from "@/auth"
 import { db } from "@/app/db"
 import { carts } from "@/app/db/schema"

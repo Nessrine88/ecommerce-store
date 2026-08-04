@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import {
   pgTable,
   uuid,
@@ -133,7 +134,10 @@ export const accounts = pgTable(
   "accounts",
   {
     userId: uuid("userId")
-      .notNull(),
+  .notNull()
+  .references(() => users.id, {
+    onDelete: "cascade",
+  }),
 
     type: text("type")
       .notNull(),
@@ -180,7 +184,10 @@ export const sessions = pgTable(
       .primaryKey(),
 
     userId: uuid("userId")
-      .notNull(),
+    .notNull()
+    .references(() => users.id, {
+      onDelete: "cascade",
+    }),
 
     expires: timestamp("expires", {
       precision: 6,
@@ -228,7 +235,10 @@ export const carts = pgTable(
       .defaultRandom()
       .primaryKey(),
 
-    userId: uuid("userId"),
+    userId: uuid("userId")
+  .references(() => users.id, {
+    onDelete: "cascade",
+  }),
 
     sessionCartId: text("sessionCartId")
       .notNull(),
@@ -270,9 +280,7 @@ export const carts = pgTable(
 // =====================
 // Order
 // =====================
-// =====================
-// Order
-// =====================
+
 
 export const orders = pgTable(
   "Order",
@@ -282,7 +290,9 @@ export const orders = pgTable(
       .primaryKey(),
 
     userId: uuid("userId")
-      .notNull(),
+  .references(() => users.id, {
+    onDelete: "cascade",
+  }),
 
     shippingAddress: json("shippingAddress")
       .notNull(),
@@ -378,3 +388,56 @@ export const orderItems = pgTable(
     }),
   })
 );
+
+export const usersRelations = relations(users, ({ many }) => ({
+  orders: many(orders),
+  carts: many(carts),
+  accounts: many(accounts),
+  sessions: many(sessions),
+}));
+
+export const ordersRelations = relations(orders, ({ one, many }) => ({
+  user: one(users, {
+    fields: [orders.userId],
+    references: [users.id],
+  }),
+
+  orderItems: many(orderItems),
+}));
+
+export const orderItemsRelations = relations(orderItems, ({ one }) => ({
+  order: one(orders, {
+    fields: [orderItems.orderId],
+    references: [orders.id],
+  }),
+
+  product: one(products, {
+    fields: [orderItems.productId],
+    references: [products.id],
+  }),
+}));
+
+export const productsRelations = relations(products, ({ many }) => ({
+  orderItems: many(orderItems),
+}));
+
+export const cartsRelations = relations(carts, ({ one }) => ({
+  user: one(users, {
+    fields: [carts.userId],
+    references: [users.id],
+  }),
+}));
+
+export const accountsRelations = relations(accounts, ({ one }) => ({
+  user: one(users, {
+    fields: [accounts.userId],
+    references: [users.id],
+  }),
+}));
+
+export const sessionsRelations = relations(sessions, ({ one }) => ({
+  user: one(users, {
+    fields: [sessions.userId],
+    references: [users.id],
+  }),
+}));

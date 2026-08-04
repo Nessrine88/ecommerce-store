@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
-import { paymentMethodSchema } from "@/app/lib/validators";
+import { paymentMethodSchema } from "@/lib/validators";
 import CheckoutSteps from "@/components/shared/checkout-steps";
 import { DEFAULT_PAYMENT_METHOD, PAYMENT_METHODS } from "@/lib/constants";
 import { updateUserPaymentMethod } from "@/lib/actions/user.actions";

@@ -1,11 +1,11 @@
 'use server';
 
 import { isRedirectError } from "next/dist/client/components/redirect-error";
-import { formatError } from "@/app/lib/utils";
+import { convertToPlainObject, formatError } from "@/lib/utils";
 import { auth } from "@/auth";
 import { getMyCart } from "./cart.actions";
 import { getUserById } from "./user.actions";
-import { insertOrderSchema } from "@/app/lib/validators";
+import { insertOrderSchema } from "@/lib/validators";
 import { db } from "@/app/db";
 import { orders, orderItems, carts  } from "@/app/db/schema";
 import { eq } from "drizzle-orm";
@@ -85,4 +85,23 @@ console.log('CART PRICES DEBUG:', {
         if (isRedirectError(error)) throw error;
         return { success: false, message: formatError(error) };
     }
+}
+
+//Get Order By Id 
+
+export async function getOrderById(orderId: string) {
+  const data = await db.query.orders.findFirst({
+    where: eq(orders.id, orderId),
+    with: {
+      orderItems: true,
+      user: {
+        columns: {
+          name: true,
+          email: true,
+        },
+      },
+    },
+  });
+
+  return convertToPlainObject(data);
 }

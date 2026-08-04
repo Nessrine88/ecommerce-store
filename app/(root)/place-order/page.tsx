@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { getMyCart } from "@/lib/actions/cart.actions";
 import { getUserById, updateUserAddress } from "@/lib/actions/user.actions";
-import { ShippingAddress } from "@/types";
+import { Cart, CartItem, ShippingAddress } from "@/types";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import CheckoutSteps from "@/components/shared/checkout-steps";
@@ -10,7 +10,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import Image from "next/image";
-import { formatCurrency } from "@/app/lib/utils";
+import { formatCurrency } from "@/lib/utils";
 import PlaceOrderForm from "./place-order-form";
 
 export const metadata: Metadata = {
@@ -76,7 +76,7 @@ const PlaceOrderPage = async() => {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {cart.items.map((item) =>(
+                                {cart.items.map((item:CartItem) =>(
                                     <TableRow key={item.slug}>
                                         <TableCell className="flex items-center">
                                             <Link href= {`/product/${item.slug} `}>
@@ -86,7 +86,7 @@ const PlaceOrderPage = async() => {
                                         </TableCell>
                                         <TableCell>
                                             <span className="px-2">
-                                                {item.Quantity}
+                                                {item.qty}
                                             </span>
                                         </TableCell>
                                         <TableCell>
