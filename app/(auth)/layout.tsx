@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "../globals.css";
-import { APP_DESCRIPTION, APP_NAME, SERVER_URL } from "../lib/constants";
+import { APP_DESCRIPTION, APP_NAME, SERVER_URL } from "@/lib/constants";
 import Header from "@/components/shared/header";
 import Footer from "@/components/Footer";
 

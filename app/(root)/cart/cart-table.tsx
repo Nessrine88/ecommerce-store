@@ -9,7 +9,7 @@ import Image from "next/image";
 import { Cart } from "@/types";
 import { Table, TableBody, TableHead, TableHeader, TableRow, TableCell } from "@/components/ui/table";
 import { Button } from "@base-ui/react";
-import { formatCurrency } from "@/app/lib/utils";
+import { formatCurrency } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 
 const CartTable = ({cart}: {cart?: Cart}) => {

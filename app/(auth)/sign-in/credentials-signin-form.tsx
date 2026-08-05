@@ -6,7 +6,7 @@ import { useFormStatus } from "react-dom";
 import { Button, Input } from "@base-ui/react";
 
 import { Label } from "@/components/ui/label";
-import { signInDefaultValues } from "@/app/lib/constants";
+import { signInDefaultValues } from "@/lib/constants";
 import { signInWithCredentials } from "@/lib/actions/user.actions";
 import { useSearchParams } from "next/navigation";
 function SignInButton() {
