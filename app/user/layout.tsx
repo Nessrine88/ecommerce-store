@@ -10,7 +10,7 @@ export default function UserLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex flex-col bg-bg min-h-screen text-accent">
+    <div className="flex flex-col bg-bg dark:bg-black min-h-screen text-accent">
      <div className="border-b container mx-auto">
         <div className="flex items-center h-16 px-4">
             <Link href='/'>
