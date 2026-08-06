@@ -8,8 +8,8 @@ import { getUserById } from "./user.actions";
 import { insertOrderSchema } from "@/lib/validators";
 import { db } from "@/app/db";
 import { orders, orderItems, carts  } from "@/app/db/schema";
-import { eq } from "drizzle-orm";
-
+import { count, desc, eq } from "drizzle-orm";
+import { PAGE_SIZE } from "../constants";
 export async function createOrder() {
     try {
         const session = await auth();
@@ -104,4 +104,37 @@ export async function getOrderById(orderId: string) {
   });
 
   return convertToPlainObject(data);
+}
+
+//Get user's orders
+
+export async function getMyOrders({
+  limit = PAGE_SIZE,
+  page,
+}: {
+  limit?: number;
+  page: number;
+}) {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    throw new Error("User is not authorized");
+  }
+
+  const data = await db.query.orders.findMany({
+    where: eq(orders.userId, session.user.id),
+    orderBy: [desc(orders.createdAt)],
+    limit,
+    offset: (page - 1) * limit,
+  });
+
+  const [{ count: dataCount }] = await db
+    .select({ count: count() })
+    .from(orders)
+    .where(eq(orders.userId, session.user.id));
+
+  return {
+    data: convertToPlainObject(data),
+    totalPages: Math.ceil(dataCount / limit),
+  };
 }
