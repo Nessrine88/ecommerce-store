@@ -236,3 +236,28 @@ export async function updateUserPaymentMethod(
     };
   }
 }
+
+//Shema for updating the user profile
+export const updateUserProfile = async (user: { name: string; email: string }) => {
+  try {
+    const session = await auth();
+    if (!session?.user?.id) throw new Error('Not authenticated');
+
+    const currentUser = await db.query.users.findFirst({
+      where: eq(users.id, session.user.id),
+    });
+    if (!currentUser) throw new Error('User Not Found');
+
+    await db
+      .update(users)
+      .set({ name: user.name })
+      .where(eq(users.id, currentUser.id));
+
+    return {
+      success: true,
+      message: 'User updated successfully',
+    };
+  } catch (error) {
+    return { success: false, message: formatError(error) };
+  }
+};
