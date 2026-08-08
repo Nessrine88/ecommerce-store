@@ -14,7 +14,7 @@ const Profile = async () => {
     <div className='text-accent'>
       <SessionProvider session={session}>
         <div className="max-w-md mx-auto space-y-4">
-          <h2>{session?.user?.name}</h2>
+          <h2 className="font-bold text-4xl mt-5">{session?.user?.name}</h2>
           <ProfileForm />
         </div>
       </SessionProvider>
