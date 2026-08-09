@@ -24,7 +24,7 @@ const UserButton = async () => {
   const firstInitial = session.user?.name?.charAt(0).toUpperCase() ?? "U"
 
   return (
-    <div className="text-accent">
+    <div className="bg-white/20  backdrop-blur-2xl ">
       <DropdownMenu>
         <DropdownMenuTrigger
           render={
@@ -53,6 +53,11 @@ const UserButton = async () => {
             <DropdownMenuItem>
               <Link href= "/user/orders" className="w-full">Order History</Link>
             </DropdownMenuItem>
+            { session?.user?.role === 'admin' && (
+               <DropdownMenuItem>
+              <Link href= "/admin/overview" className="w-full">Admin</Link>
+            </DropdownMenuItem>
+            )}
           <DropdownMenuItem
             className="p-0 mb-1"
             render={<form action={signOutUser} className="w-full" />}
