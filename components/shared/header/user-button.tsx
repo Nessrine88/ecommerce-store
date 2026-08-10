@@ -24,8 +24,8 @@ const UserButton = async () => {
   const firstInitial = session.user?.name?.charAt(0).toUpperCase() ?? "U"
 
   return (
-    <div className="bg-white/20  backdrop-blur-2xl ">
-      <DropdownMenu>
+    <div className="text-black">
+      <DropdownMenu >
         <DropdownMenuTrigger
           render={
             <Button
@@ -37,7 +37,7 @@ const UserButton = async () => {
           }
         />
 
-        <DropdownMenuContent className="w-56 text-accent" align="end">
+        <DropdownMenuContent className="w-56 text-white backdrop-blur bg-white/30 " align="end">
           <div className="px-1.5 py-1 text-xs font-medium text-muted-foreground">
             <div className="flex flex-col space-y-1">
               <div className="text-sm font-medium leading-none">

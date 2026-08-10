@@ -7,9 +7,10 @@ import { getMyCart } from "./cart.actions";
 import { getUserById } from "./user.actions";
 import { insertOrderSchema } from "@/lib/validators";
 import { db } from "@/app/db";
-import { orders, orderItems, carts  } from "@/app/db/schema";
-import { count, desc, eq } from "drizzle-orm";
+import { orders, orderItems, carts,products, users  } from "@/app/db/schema";
+import { count, desc, eq, sql, sum } from "drizzle-orm";
 import { PAGE_SIZE } from "../constants";
+
 export async function createOrder() {
     try {
         const session = await auth();
@@ -136,5 +137,61 @@ export async function getMyOrders({
   return {
     data: convertToPlainObject(data),
     totalPages: Math.ceil(dataCount / limit),
+  };
+};
+
+// Get sales data and order summary
+type SalesDataType = {
+  month: string;
+  totalSales: number;
+}[];
+
+export async function getOrderSummary() {
+  // Get counts
+  const [productsCount] = await db.select({ count: count() }).from(products);
+  const [ordersCount] = await db.select({ count: count() }).from(orders);
+  const [usersCount] = await db.select({ count: count() }).from(users);
+
+  // Calculate total sales
+  const [{ totalSales }] = await db
+    .select({ totalSales: sum(orders.totalPrice) })
+    .from(orders);
+
+  // Get monthly sales
+  const salesDataRaw = await db.execute<{
+    month: string;
+    totalSales: string;
+  }>(
+    sql`
+      SELECT 
+        to_char("createdAt", 'MM/YY') AS "month",
+        SUM("totalPrice") AS "totalSales"
+      FROM "Order"
+      GROUP BY to_char("createdAt", 'MM/YY')
+      ORDER BY MIN("createdAt")
+    `
+  );
+
+  const salesData: SalesDataType = salesDataRaw.rows.map((entry) => ({
+    month: entry.month,
+    totalSales: Number(entry.totalSales),
+  }));
+
+  // Get latest sales
+  const latestSales = await db.query.orders.findMany({
+    orderBy: (orders, { desc }) => [desc(orders.createdAt)],
+    with: {
+      user: { columns: { name: true } },
+    },
+    limit: 6,
+  });
+
+  return {
+    products: productsCount.count,
+    orders: ordersCount.count,
+    users: usersCount.count,
+    totalSales: totalSales ?? "0",
+    salesData,
+    latestSales,
   };
 }
