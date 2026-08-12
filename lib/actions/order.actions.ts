@@ -12,6 +12,7 @@ import { count, desc, eq, sql, sum } from "drizzle-orm";
 import { PAGE_SIZE } from "../constants";
 import { revalidatePath } from "next/cache";
 
+
 export async function createOrder() {
     try {
         const session = await auth();
@@ -228,6 +229,39 @@ export async function getAllOrders({
   };
 }
 
+
+export async function updateOrderToPaid({
+  orderId,
+  paymentResult,
+}: {
+  orderId: string;
+  paymentResult?: any
+}) {
+  const order = await db.query.orders.findFirst({
+    where: eq(orders.id, orderId),
+    with: { orderItems: true },
+  });
+
+  if (!order) throw new Error('Order not found');
+  if (order.isPaid) throw new Error('Order is already paid');
+
+  await db.transaction(async (tx) => {
+    await tx
+      .update(orders)
+      .set({
+        isPaid: true,
+        paidAt: new Date(),
+        paymentResult,
+      })
+      .where(eq(orders.id, orderId));
+  });
+
+  const updatedOrder = await db.query.orders.findFirst({
+    where: eq(orders.id, orderId),
+  });
+
+  if (!updatedOrder) throw new Error('Order not found after update');
+}
 //Delete an order
 
 export async function deleteOrder(id: string) {
@@ -247,5 +281,44 @@ export async function deleteOrder(id: string) {
       success: false,
       message: "Failed to delete order",
     };
+  }
+}
+
+//Update COD order to paid 
+
+export async function updateOrderToPaidCOD(orderId: string){
+try {
+  await updateOrderToPaid({orderId})
+  revalidatePath(`/order/${orderId} `);
+  return {success: true, message: 'Order marked as paid'};
+} catch (error) {
+  return {success: false, message: formatError(error)}
+}
+}
+
+//Update COD order to delivered
+export async function deliverOrder(orderId: string) {
+  try {
+    const order = await db.query.orders.findFirst({
+      where: eq(orders.id, orderId),
+    });
+
+    if (!order) throw new Error('Order not found');
+    if (!order.isPaid) throw new Error('Order is not paid');
+    if (order.isDelivered) throw new Error('Order is already delivered');
+
+    await db
+      .update(orders)
+      .set({
+        isDelivered: true,
+        deliveredAt: new Date(),
+      })
+      .where(eq(orders.id, orderId));
+
+    revalidatePath(`/order/${orderId}`);
+
+    return { success: true, message: 'Order marked as delivered' };
+  } catch (error) {
+    return { success: false, message: formatError(error) };
   }
 }
