@@ -10,6 +10,7 @@ import { db } from "@/app/db";
 import { orders, orderItems, carts,products, users  } from "@/app/db/schema";
 import { count, desc, eq, sql, sum } from "drizzle-orm";
 import { PAGE_SIZE } from "../constants";
+import { revalidatePath } from "next/cache";
 
 export async function createOrder() {
     try {
@@ -194,4 +195,57 @@ export async function getOrderSummary() {
     salesData,
     latestSales,
   };
+}
+
+// Get all orders 
+export async function getAllOrders({
+  limit = PAGE_SIZE,
+  page,
+}: {
+  limit?: number;
+  page: number;
+}) {
+  const data = await db.query.orders.findMany({
+    orderBy: (orders, { desc }) => [desc(orders.createdAt)],
+    limit,
+    offset: (page - 1) * limit,
+    with: {
+      user: {
+        columns: {
+          name: true,
+        },
+      },
+    },
+  });
+
+  const [{ count: totalCount }] = await db
+    .select({ count: count() })
+    .from(orders);
+
+  return {
+    data,
+    totalPages: Math.ceil(Number(totalCount) / limit),
+  };
+}
+
+//Delete an order
+
+export async function deleteOrder(id: string) {
+  try {
+    await db
+      .delete(orders)
+      .where(eq(orders.id, id));
+
+    revalidatePath("/admin/orders");
+
+    return {
+      success: true,
+      message: "Order deleted successfully",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Failed to delete order",
+    };
+  }
 }
