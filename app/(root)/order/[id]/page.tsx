@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import OrderDetailsTable from "./order-details-table";
 import { getOrderById } from "@/lib/actions/order.actions";
 import { ShippingAddress } from "@/types";
+import { auth } from "@/auth";
 
 export const metadata: Metadata = {
   title: "Order Details",
@@ -22,6 +23,8 @@ const OrderDetailsPage = async ({
     notFound();
   }
 
+  const session = await auth();
+
   return (
     <div className="min-h-screen text-accent">
       <OrderDetailsTable
@@ -34,7 +37,7 @@ const OrderDetailsPage = async ({
       email: order.user?.email ?? "",
     },
   }}
-
+isAdmin= {session?.user?.role === 'admin' || false }
 />
     </div>
   );

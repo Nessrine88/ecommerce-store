@@ -1,3 +1,4 @@
+"use client"
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -10,11 +11,13 @@ import {
 } from "@/components/ui/table";
 import Image from "next/image";
 import Link from "next/link";
-
+import { updateOrderToPaidCOD, deliverOrder } from "@/lib/actions/order.actions";
+import { useTransition } from "react";
+import { Button } from "@/components/ui/button";
 import { formatCurrency, formatDateTime, formatId } from "@/lib/utils";
 import { Order } from "@/types";
-
-const OrderDetailsTable = ({ order }: { order: Order }) => {
+import {toast} from 'sonner'
+const OrderDetailsTable = ({ order , isAdmin}: { order: Order; isAdmin:boolean }) => {
   const {
     id,
     shippingAddress,
@@ -29,7 +32,41 @@ const OrderDetailsTable = ({ order }: { order: Order }) => {
     isDelivered,
     deliveredAt,
   } = order;
+const MarkAsPaidButton = ()=> {
+  const [isPending, startTranssition] = useTransition();
+  return(
+    <Button
+    type= "button"
+    disabled = {isPending}
+    onClick={
+      ()=> startTranssition(
+      async()=> {
+      const res = await updateOrderToPaidCOD(order.id);
+      res.success ? toast.success(res.message) : toast.error(res.message)
+    })}
+  >
 
+{isPending ? 'processing...' : 'Mark As Paid'}
+  </Button>
+)}
+
+const MarkAsDeliveredButton = ()=> {
+  const [isPending, startTranssition] = useTransition();
+  return(
+    <Button
+    type= "button"
+    disabled = {isPending}
+    onClick={
+      ()=> startTranssition(
+      async()=> {
+      const res = await deliverOrder(order.id);
+     res.success ? toast.success(res.message) : toast.error(res.message)
+    })}
+  >
+
+{isPending ? 'processing...' : 'Mark As Delivered'}
+  </Button>
+)}
   return (
     <>
       <h1 className="py-4 text-2xl">Order {formatId(id)}</h1>
@@ -144,6 +181,50 @@ const OrderDetailsTable = ({ order }: { order: Order }) => {
                 <span>Total</span>
                 <span>{formatCurrency(totalPrice)}</span>
               </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-4 space-y-2">
+              <div className="flex justify-between">
+                <span>Items</span>
+                <span>{formatCurrency(itemsPrice)}</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>Tax</span>
+                <span>{formatCurrency(taxPrice)}</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>Shipping</span>
+                <span>{formatCurrency(shippingPrice)}</span>
+              </div>
+
+              <div className="flex justify-between font-semibold text-lg">
+                <span>Total</span>
+                <span>{formatCurrency(totalPrice)}</span>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-4 space-y-2">
+            {/*Cash on delivery */}
+
+             {
+              isAdmin && paymentMethod === 'CashOnDelivery' &&(
+                <MarkAsPaidButton />
+              )
+             }
+
+              {
+              isAdmin && !isDelivered &&(
+                <MarkAsDeliveredButton />
+              )
+             }
+
+
             </CardContent>
           </Card>
         </div>
