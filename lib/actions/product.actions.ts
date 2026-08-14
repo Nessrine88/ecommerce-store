@@ -1,8 +1,9 @@
-'use server'
+
 
 import { db } from '@/app/db'
 import { products } from '@/app/db/schema'
-import { desc, eq } from 'drizzle-orm'
+import { and, count, eq, ilike,desc } from "drizzle-orm";
+import { PAGE_SIZE } from '../constants'
 
 // Get latest products
 export async function getLatestProducts() {
@@ -34,4 +35,39 @@ export async function getProductBySlug(slug: string) {
     price: product.price.toString(),
     rating: Number(product.rating),
   }
+}
+
+
+export async function getAllProducts({
+  query,
+  limit = PAGE_SIZE,
+  page,
+  category,
+}: {
+  query?: string;
+  limit?: number;
+  page: number;
+  category?: string;
+}) {
+  const filters = and(
+    query ? ilike(products.name, `%${query}%`) : undefined,
+    category ? eq(products.category, category) : undefined
+  );
+
+  const [data, [{ dataCount }]] = await Promise.all([
+    db.query.products.findMany({
+      where: filters,
+      limit,
+      offset: (page - 1) * limit,
+    }),
+    db
+      .select({ dataCount: count() })
+      .from(products)
+      .where(filters),
+  ]);
+
+  return {
+    data,
+    totalPages: Math.ceil(dataCount / limit),
+  };
 }

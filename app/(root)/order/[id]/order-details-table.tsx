@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -11,13 +11,22 @@ import {
 } from "@/components/ui/table";
 import Image from "next/image";
 import Link from "next/link";
-import { updateOrderToPaidCOD, deliverOrder } from "@/lib/actions/order.actions";
+import {
+  updateOrderToPaidCOD,
+  deliverOrder,
+} from "@/lib/actions/order.actions";
 import { useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { formatCurrency, formatDateTime, formatId } from "@/lib/utils";
 import { Order } from "@/types";
-import {toast} from 'sonner'
-const OrderDetailsTable = ({ order , isAdmin}: { order: Order; isAdmin:boolean }) => {
+import { toast } from "sonner";
+const OrderDetailsTable = ({
+  order,
+  isAdmin,
+}: {
+  order: Order;
+  isAdmin: boolean;
+}) => {
   const {
     id,
     shippingAddress,
@@ -32,41 +41,41 @@ const OrderDetailsTable = ({ order , isAdmin}: { order: Order; isAdmin:boolean }
     isDelivered,
     deliveredAt,
   } = order;
-const MarkAsPaidButton = ()=> {
-  const [isPending, startTranssition] = useTransition();
-  return(
-    <Button
-    type= "button"
-    disabled = {isPending}
-    onClick={
-      ()=> startTranssition(
-      async()=> {
-      const res = await updateOrderToPaidCOD(order.id);
-      res.success ? toast.success(res.message) : toast.error(res.message)
-    })}
-  >
+  const MarkAsPaidButton = () => {
+    const [isPending, startTranssition] = useTransition();
+    return (
+      <Button
+        type="button"
+        disabled={isPending}
+        onClick={() =>
+          startTranssition(async () => {
+            const res = await updateOrderToPaidCOD(order.id);
+            res.success ? toast.success(res.message) : toast.error(res.message);
+          })
+        }
+      >
+        {isPending ? "processing..." : "Mark As Paid"}
+      </Button>
+    );
+  };
 
-{isPending ? 'processing...' : 'Mark As Paid'}
-  </Button>
-)}
-
-const MarkAsDeliveredButton = ()=> {
-  const [isPending, startTranssition] = useTransition();
-  return(
-    <Button
-    type= "button"
-    disabled = {isPending}
-    onClick={
-      ()=> startTranssition(
-      async()=> {
-      const res = await deliverOrder(order.id);
-     res.success ? toast.success(res.message) : toast.error(res.message)
-    })}
-  >
-
-{isPending ? 'processing...' : 'Mark As Delivered'}
-  </Button>
-)}
+  const MarkAsDeliveredButton = () => {
+    const [isPending, startTranssition] = useTransition();
+    return (
+      <Button
+        type="button"
+        disabled={isPending}
+        onClick={() =>
+          startTranssition(async () => {
+            const res = await deliverOrder(order.id);
+            res.success ? toast.success(res.message) : toast.error(res.message);
+          })
+        }
+      >
+        {isPending ? "processing..." : "Mark As Delivered"}
+      </Button>
+    );
+  };
   return (
     <>
       <h1 className="py-4 text-2xl">Order {formatId(id)}</h1>
@@ -210,21 +219,13 @@ const MarkAsDeliveredButton = ()=> {
 
           <Card>
             <CardContent className="p-4 space-y-2">
-            {/*Cash on delivery */}
+              {/*Cash on delivery */}
 
-             {
-              isAdmin && paymentMethod === 'CashOnDelivery' &&(
+              {isAdmin && paymentMethod === "CashOnDelivery" && (
                 <MarkAsPaidButton />
-              )
-             }
+              )}
 
-              {
-              isAdmin && !isDelivered &&(
-                <MarkAsDeliveredButton />
-              )
-             }
-
-
+              {isAdmin && !isDelivered && <MarkAsDeliveredButton />}
             </CardContent>
           </Card>
         </div>
