@@ -33,12 +33,7 @@ export async function createOrder() {
         if (!user.paymentMethod) {
             return { success: false, message: 'No payment method', redirectTo: '/payment-method' };
         }
-console.log('CART PRICES DEBUG:', {
-  itemsPrice: cart.itemsPrice, typeofItems: typeof cart.itemsPrice,
-  shippingPrice: cart.shippingPrice, typeofShipping: typeof cart.shippingPrice,
-  taxPrice: cart.taxPrice, typeofTax: typeof cart.taxPrice,
-  totalPrice: cart.totalPrice, typeofTotal: typeof cart.totalPrice,
-});
+
 
 
         // Create order object
