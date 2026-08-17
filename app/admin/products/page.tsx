@@ -1,8 +1,12 @@
+
+
 import Link from "next/link";
-import { getAllProducts } from "@/lib/actions/product.actions";
+import { deleteProduct, getAllProducts } from "@/lib/actions/product.actions";
 import { formatCurrency,formatId } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import Pagination from "@/components/shared/pagination";
+import DeleteDialog from "@/components/shared/delete-dialog";
 const AdminProductsPage = async(props:{
     searchParams: Promise <{
         page:string;
@@ -19,7 +23,7 @@ const AdminProductsPage = async(props:{
         page,
         category
     });
-    console.log(products)
+    
   return (
     <div className="space-y-2">
         <div className="flex-between">
@@ -64,10 +68,22 @@ const AdminProductsPage = async(props:{
                              <TableCell >
                                 {product.rating}
                             </TableCell>
+                            <TableCell  className="space-x-2 ">
+                                <Button variant='outline' size='sm'  >
+                                  <Link href= { `/admin/products/${product.id}`} >
+                                   Edit
+                                  </Link>
+                                </Button>    
+                                <button className="bg-red-700 rounded-sm">
+                                    <DeleteDialog id={product.id} action={deleteProduct}  />   </button>            
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
             </Table>
+            {products?.totalPages && products.totalPages > 1 && (
+                <Pagination page={page} totalPages={products.totalPages} />
+            )}
         </div>
     </div>
   )

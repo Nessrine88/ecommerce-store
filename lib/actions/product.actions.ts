@@ -1,9 +1,11 @@
 
+'use server';
 
 import { db } from '@/app/db'
 import { products } from '@/app/db/schema'
 import { and, count, eq, ilike,desc } from "drizzle-orm";
 import { PAGE_SIZE } from '../constants'
+import { formatError } from '../utils';
 
 // Get latest products
 export async function getLatestProducts() {
@@ -70,4 +72,28 @@ export async function getAllProducts({
     data,
     totalPages: Math.ceil(dataCount / limit),
   };
+}
+
+export async function deleteProduct(id: string) {
+  try {
+    const product = await db.query.products.findFirst({
+      where: eq(products.id, id),
+    });
+
+    if (!product) {
+      throw new Error("Product not found");
+    }
+
+    await db.delete(products).where(eq(products.id, id));
+
+    return {
+      success: true,
+      message: "Product deleted successfully",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: formatError(error),
+    };
+  }
 }
