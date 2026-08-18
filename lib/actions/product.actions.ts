@@ -103,19 +103,72 @@ export async function deleteProduct(id: string) {
 
 //Create a prodcut
 
-export async function createProduct(data: z.infer<typeof insertProductSchema>) {
+export async function createProduct(
+  data: z.infer<typeof insertProductSchema>
+) {
+  console.log('====================================');
+  console.log('🚀 CREATE PRODUCT START');
+  console.log('====================================');
+
   try {
+    console.log('📦 Raw data received:', data);
+
     const product = insertProductSchema.parse(data);
-    await db.insert(products).values(product)
+
+    console.log('✅ Zod validation passed');
+    console.log('📦 Parsed product:', product);
+    console.log('🖼️ Images from Zod:', product.images);
+
+    const productToInsert = {
+      ...product,
+      images: product.images ?? [],
+    };
+
+    console.log('📦 FINAL PRODUCT TO INSERT:');
+    console.log(JSON.stringify(productToInsert, null, 2));
+
+    console.log('🟡 Executing database INSERT...');
+
+    const result = await db
+      .insert(products)
+      .values(productToInsert)
+      .returning();
+
+    console.log('====================================');
+    console.log('✅ PRODUCT INSERTED SUCCESSFULLY');
+    console.log('====================================');
+
+    console.log('Database result:', result);
+
     revalidatePath('/admin/products');
+
     return {
       success: true,
       message: 'Product created successfully',
     };
   } catch (error) {
+    console.error('====================================');
+    console.error('❌ CREATE PRODUCT FAILED');
+    console.error('====================================');
+
+    console.error('FULL ERROR:', error);
+
+    if (error instanceof Error) {
+      console.error('ERROR NAME:', error.name);
+      console.error('ERROR MESSAGE:', error.message);
+      console.error('ERROR STACK:', error.stack);
+
+      if ('cause' in error) {
+        console.error('ERROR CAUSE:', error.cause);
+      }
+    }
+
     return {
       success: false,
-      message: formatError(error),
+      message:
+        error instanceof Error
+          ? error.message
+          : 'Failed to create product',
     };
   }
 }

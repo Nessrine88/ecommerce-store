@@ -30,9 +30,9 @@ export const products = pgTable(
 
     category: text("category").notNull(),
 
-    images: text("images")
-      .array()
-      .notNull(),
+    // images: text("images")
+    //   .array()
+    //   .notNull(),
 
     brand: text("brand").notNull(),
 

@@ -47,7 +47,7 @@ export const productDefaultValues = {
   name: '',
   slug: '',
   category: '',
-  images: [],
+  images: ['/logo.png'],
   brand: '',
   description: '',
   price: '0',

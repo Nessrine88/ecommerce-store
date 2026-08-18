@@ -6,6 +6,7 @@ export const metadata:Metadata= {
 const CreateProductPage = () => {
   return (
     <div>
+        <h2>Create product</h2>
         <ProductForm type="Create" />
     </div>
   )
