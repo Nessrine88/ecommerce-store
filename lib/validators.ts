@@ -26,9 +26,9 @@ export const currency = z
 
   stock: z.coerce.number(),
 
-  isFeatured: z.boolean(),
+//   isFeatured: z.boolean(),
 
-  banner: z.string().nullable(),
+//   banner: z.string().nullable(),
 
   price: currency,
 });

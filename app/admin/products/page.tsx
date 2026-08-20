@@ -74,8 +74,8 @@ const AdminProductsPage = async(props:{
                                    Edit
                                   </Link>
                                 </Button>    
-                                <button className="bg-red-700 rounded-sm">
-                                    <DeleteDialog id={product.id} action={deleteProduct}  />   </button>            
+                                <div className="bg-red-700 rounded-sm">
+                                    <DeleteDialog id={product.id} action={deleteProduct}  />   </div>            
                             </TableCell>
                         </TableRow>
                     ))}

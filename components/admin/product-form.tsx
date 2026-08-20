@@ -9,8 +9,7 @@ import { ControllerRenderProps, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod';
 import slugify from 'slugify';
-import { X } from 'lucide-react';
-
+import { UploadButton } from '@/lib/uploadthing';
 import {
   Form,
   FormControl,
@@ -23,9 +22,10 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
-import { UploadButton } from '@/lib/uploadthing';
 
 import { createProduct, updateProduct } from '@/lib/actions/product.actions';
+import { Card, CardContent } from '../ui/card';
+import Image from 'next/image';
 
 const ProductForm = ({
   type,
@@ -74,7 +74,7 @@ const ProductForm = ({
       }
     }
   };
-
+const images = form.watch('images')
   return (
     <Form {...form}>
       <form
@@ -222,58 +222,29 @@ const ProductForm = ({
 
         <div className="upload-field flex flex-col gap-5 md:flex-row">
           {/* Images */}
-          <FormField
+            <FormField
             control={form.control}
             name="images"
             render={() => (
               <FormItem className="w-full">
-                <FormLabel>Images</FormLabel>
-                <FormControl>
-                  <div className="space-y-4">
-                    <div className="flex flex-wrap items-start gap-5">
-                      {form.getValues('images')?.map((image: string) => (
-                        <div key={image} className="relative">
-                          <img
-                            src={image}
-                            alt="product image"
-                            className="w-20 h-20 object-cover object-center rounded-sm border"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => {
-                              const current = form.getValues('images') ?? [];
-                              form.setValue(
-                                'images',
-                                current.filter((img) => img !== image),
-                                { shouldValidate: true, shouldDirty: true }
-                              );
-                            }}
-                            className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
-                            aria-label="Remove image"
-                          >
-                            <X className="w-3 h-3" />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
+                <FormLabel>Image</FormLabel>
+                <Card>
+                  <CardContent className='spaace-y-2 min-h-48'>
+                    <div className="flex-start space-x-2">
+                     {images.map((image:string)=>(
 
-                    <UploadButton
-                      endpoint="productImage"
-                      onClientUploadComplete={(res:any) => {
-                        const urls = res.map((file:any) => file.url);
-                        const current = form.getValues('images') ?? [];
-                        form.setValue('images', [...current, ...urls], {
-                          shouldValidate: true,
-                          shouldDirty: true,
-                        });
-                        toast.success('Image uploaded successfully');
+                      <Image key={image} src={image} alt = 'product image' width={100} height={100} />
+
+                     ))}
+                     <FormControl>
+                      <UploadButton endpoint={'imageUploader'} onClientUploadComplete={(res: {url:string}[]) => {
+                        form.setValue('images', [...images, res[0].url])
                       }}
-                      onUploadError={(error: Error) => {
-                        toast.error(`Upload failed: ${error.message}`);
-                      }}
-                    />
-                  </div>
-                </FormControl>
+                      />
+                     </FormControl>
+                    </div>
+                  </CardContent>
+                </Card>
                 <FormMessage />
               </FormItem>
             )}
@@ -282,7 +253,7 @@ const ProductForm = ({
 
         <div className="upload-field">
           {/* isFeatured */}
-          <FormField
+          {/* <FormField
             control={form.control}
             name="isFeatured"
             render={({ field }) => (
@@ -296,7 +267,7 @@ const ProductForm = ({
                 <FormLabel>Is Featured?</FormLabel>
               </FormItem>
             )}
-          />
+          /> */}
           {/* TODO: banner upload for featured products goes here */}
         </div>
 

@@ -11,7 +11,7 @@ const ProductCard = ({product}: {product:Product}) => {
         <CardHeader>
             <Link href = {`/product/${product.slug}`}>
             <div className='h-42 bg-amber-500'>
-                <Image src= {product.images[0]} width={500} height={500} alt={product.name} priority className='w-full h-full object-cover'/>
+                <Image src= {product?.images[0]} width={500} height={500} alt={product.name} priority className='w-full h-full object-cover'/>
             </div>
             </Link>
         </CardHeader>
