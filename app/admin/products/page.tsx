@@ -68,14 +68,15 @@ const AdminProductsPage = async(props:{
                              <TableCell >
                                 {product.rating}
                             </TableCell>
-                            <TableCell  className="space-x-2 ">
+                            <TableCell  className="space-x-2 flex items-center">
                                 <Button variant='outline' size='sm'  >
                                   <Link href= { `/admin/products/${product.id}`} >
                                    Edit
                                   </Link>
                                 </Button>    
                                 <div className="bg-red-700 rounded-sm">
-                                    <DeleteDialog id={product.id} action={deleteProduct}  />   </div>            
+                                    <DeleteDialog id={product.id} action={deleteProduct}  />   
+                                </div>            
                             </TableCell>
                         </TableRow>
                     ))}

@@ -1,11 +1,12 @@
 import { auth } from "@/auth";
-import { getAllOrders } from "@/lib/actions/order.actions";
+import { deleteOrder, getAllOrders } from "@/lib/actions/order.actions";
 import { Metadata } from "next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatCurrency, formatDateTime, formatId } from "@/lib/utils";
 import Link from "next/link";
 import Pagination from "@/components/shared/pagination";
 import { Button } from "@/components/ui/button";
+import DeleteDialog from "@/components/shared/delete-dialog";
 
 export const metadata:Metadata = {
     title: 'Admin Orders'
@@ -47,13 +48,16 @@ const AdminOrdersPage = async(props:{searchParams: Promise <{page:string} >} ) =
                             </TableCell>
                             <TableCell>{formatCurrency(order.totalPrice)} </TableCell>
                             <TableCell>{order.isDelivered  && order.deliveredAt ? formatDateTime(order.deliveredAt).datetime : 'Not Paid' } </TableCell>
-                            <TableCell>{order.isPaid && order.paidAt ? formatDateTime(order.paidAt).datetime : 'Not Paid' } </TableCell>
-                            <TableCell>
+                            <TableCell>{order.isPaid && order.paidAt ? formatDateTime(order.paidAt).datetime : 'Not Delivered' } </TableCell>
+                            <TableCell className="space-x-2 flex items-center">
                                 <Link href={`/order/${order.id}`} >
                                     <Button variant='outline' size='sm'>
                                         Details
                                     </Button>
                                 </Link>
+                                <div className="bg-red-700 rounded-sm">
+                                    <DeleteDialog id={order.id} action={deleteOrder}  />   
+                                </div>
                             </TableCell>
                         </TableRow>
                     ))}

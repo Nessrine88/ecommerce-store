@@ -31,10 +31,10 @@ export const products = pgTable(
     category: text("category").notNull(),
 
     images: text("images")
-      .array()
-      .notNull(),
+      .array(),
+  
 
-    brand: text("brand").notNull(),
+    brand: text("brand"),
 
     description: text("description").notNull(),
 
@@ -52,14 +52,15 @@ export const products = pgTable(
       scale: 2,
     })
       .default("0")
-      .notNull(),
+      ,
 
     numReviews: integer("numReviews")
       .default(0)
-      .notNull(),
+      ,
 
     isFeatured: boolean("isFeatured")
-      .notNull(),
+  .notNull()
+  .default(false),
 
     banner: text("banner"),
 

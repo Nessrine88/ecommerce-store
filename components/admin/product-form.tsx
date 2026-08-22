@@ -78,7 +78,7 @@ const images = form.watch('images')
   return (
     <Form {...form}>
       <form
-        method="post"
+        method="POST"
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-8"
       >
@@ -241,6 +241,9 @@ const images = form.watch('images')
                         form.setValue('images', [...images, res[0].url])
                       }}
                       />
+                      {/* onUploadError = {(error: Error)=> {
+                        toast.error(error.message)
+                      }} */}
                      </FormControl>
                     </div>
                   </CardContent>
@@ -251,25 +254,7 @@ const images = form.watch('images')
           />
         </div>
 
-        <div className="upload-field">
-          {/* isFeatured */}
-          {/* <FormField
-            control={form.control}
-            name="isFeatured"
-            render={({ field }) => (
-              <FormItem className="flex items-center gap-2 space-y-0">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-                <FormLabel>Is Featured?</FormLabel>
-              </FormItem>
-            )}
-          /> */}
-          {/* TODO: banner upload for featured products goes here */}
-        </div>
+      
 
         <div>
           {/* Description */}
