@@ -74,7 +74,12 @@ const ProductForm = ({
       }
     }
   };
-const images = form.watch('images')
+
+  // Default to an empty array so .map never runs on undefined
+  const images = form.watch('images') ?? [];
+const isFeatured = form.watch('isFeatured');
+const banner = form.watch('banner');
+
   return (
     <Form {...form}>
       <form
@@ -222,29 +227,35 @@ const images = form.watch('images')
 
         <div className="upload-field flex flex-col gap-5 md:flex-row">
           {/* Images */}
-            <FormField
+          <FormField
             control={form.control}
             name="images"
             render={() => (
               <FormItem className="w-full">
                 <FormLabel>Image</FormLabel>
                 <Card>
-                  <CardContent className='spaace-y-2 min-h-48'>
+                  <CardContent className="space-y-2 min-h-48">
                     <div className="flex-start space-x-2">
-                     {images.map((image:string)=>(
-
-                      <Image key={image} src={image} alt = 'product image' width={100} height={100} />
-
-                     ))}
-                     <FormControl>
-                      <UploadButton endpoint={'imageUploader'} onClientUploadComplete={(res: {url:string}[]) => {
-                        form.setValue('images', [...images, res[0].url])
-                      }}
-                      />
-                      {/* onUploadError = {(error: Error)=> {
-                        toast.error(error.message)
-                      }} */}
-                     </FormControl>
+                      {images.map((image: string) => (
+                        <Image
+                          key={image}
+                          src={image}
+                          alt="product image"
+                          width={100}
+                          height={100}
+                        />
+                      ))}
+                      <FormControl>
+                        <UploadButton
+                          endpoint={'imageUploader'}
+                          onClientUploadComplete={(res: { url: string }[]) => {
+                            form.setValue('images', [...images, res[0].url]);
+                          }}
+                          onUploadError={(error: Error) => {
+                            toast.error(error.message);
+                          }}
+                        />
+                      </FormControl>
                     </div>
                   </CardContent>
                 </Card>
@@ -254,8 +265,44 @@ const images = form.watch('images')
           />
         </div>
 
-      
 
+Featured Product
+<Card>
+  <CardContent className='space-y-2 mt-2'>
+   <FormField
+  control={form.control}
+  name="isFeatured"
+  render={({ field }) => (
+    <FormItem className="space-x-2 items-center flex">
+      <FormControl>
+        <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+      </FormControl>
+     
+      <FormLabel>Is Featured?</FormLabel>
+    </FormItem>
+  )}
+/>
+
+{isFeatured && banner &&(
+  <Image src={banner} alt='banner image'
+  className='w-full object-cover object-center rounded-sm'
+  width={1920}
+  height={680}
+  />
+)}
+{isFeatured && !banner &&(
+  <UploadButton
+  endpoint='imageUploader'
+  onClientUploadComplete={(res:{url:string}[] )=>{
+    form.setValue('banner', res[0].url)
+  } }
+  onUploadError={(error:Error)=> {
+    toast.error(error.message)
+  }}
+  />
+)}
+  </CardContent>
+</Card>
         <div>
           {/* Description */}
           <FormField
