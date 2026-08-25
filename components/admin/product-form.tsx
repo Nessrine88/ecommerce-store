@@ -121,7 +121,7 @@ const banner = form.watch('banner');
                 <FormControl>
                   <div className="relative">
                     <Input placeholder="Enter product slug" className="pl-8" {...field} />
-                    <button
+                    <Button
                       type="button"
                       onClick={() =>
                         form.setValue(
@@ -129,10 +129,10 @@ const banner = form.watch('banner');
                           slugify(form.getValues('name'), { lower: true })
                         )
                       }
-                      className="absolute right-2 top-2.5 text-sm text-blue-600"
+                      className="absolute right-2 top-10 text-sm "
                     >
                       Generate
-                    </button>
+                    </Button>
                   </div>
                 </FormControl>
                 <FormMessage />
@@ -228,41 +228,55 @@ const banner = form.watch('banner');
         <div className="upload-field flex flex-col gap-5 md:flex-row">
           {/* Images */}
           <FormField
-            control={form.control}
-            name="images"
-            render={() => (
-              <FormItem className="w-full">
-                <FormLabel>Image</FormLabel>
-                <Card>
-                  <CardContent className="space-y-2 min-h-48">
-                    <div className="flex-start space-x-2">
-                      {images.map((image: string) => (
-                        <Image
-                          key={image}
-                          src={image}
-                          alt="product image"
-                          width={100}
-                          height={100}
-                        />
-                      ))}
-                      <FormControl>
-                        <UploadButton
-                          endpoint={'imageUploader'}
-                          onClientUploadComplete={(res: { url: string }[]) => {
-                            form.setValue('images', [...images, res[0].url]);
-                          }}
-                          onUploadError={(error: Error) => {
-                            toast.error(error.message);
-                          }}
-                        />
-                      </FormControl>
-                    </div>
-                  </CardContent>
-                </Card>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+  control={form.control}
+  name="images"
+  render={() => (
+    <FormItem className="w-full">
+      <FormLabel>Image</FormLabel>
+      <Card>
+        <CardContent className="space-y-2 min-h-48">
+          <div className="flex-start space-x-2">
+            {images.map((image: string) => (
+              <div key={image} className="relative">
+                <Image
+                  src={image}
+                  alt="product image"
+                  width={100}
+                  height={100}
+                />
+                <button
+                  type="button"
+                  onClick={() =>
+                    form.setValue(
+                      'images',
+                      images.filter((img) => img !== image)
+                    )
+                  }
+                  className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                  aria-label="Remove image"
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+            <FormControl>
+              <UploadButton
+                endpoint={'imageUploader'}
+                onClientUploadComplete={(res: { url: string }[]) => {
+                  form.setValue('images', [...images, res[0].url]);
+                }}
+                onUploadError={(error: Error) => {
+                  toast.error(error.message);
+                }}
+              />
+            </FormControl>
+          </div>
+        </CardContent>
+      </Card>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
         </div>
 
 
