@@ -56,6 +56,4 @@ export const productDefaultValues = {
   numReviews: '0',
   isFeatured: false,
   banner: null,
-
-
 }

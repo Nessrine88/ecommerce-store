@@ -43,7 +43,7 @@ const ProductDetailsPage = async ({
         {/* Product Image */}
         <div className="md:col-span-5">
           <div className="md:sticky md:top-24">
-            <ProdductImages images={product.images} />
+            <ProdductImages images={product.images ?? []} />
           </div>
         </div>
 
@@ -130,7 +130,7 @@ const ProductDetailsPage = async ({
                           slug: product.slug,
                           price: product.price,
                           qty: 1,
-                          image: product.images[0],
+                          image: product.images?.[0] ?? "",
                         }}
                       />
                     ) : (
