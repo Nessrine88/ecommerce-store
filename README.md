@@ -165,9 +165,9 @@ You can deploy this project using:
 
 # 👥 Authors <a name="authors"></a>
 
-👤 **Your Name**
-- GitHub: [@your-github-handle](https://github.com/your-github-handle)
-- LinkedIn: [LinkedIn](https://www.linkedin.com/in/your-linkedin-handle/)
+👤 **Macherki Nessrine**
+- GitHub: [@Nessrine88](https://github.com/Nessrine88)
+- LinkedIn: [LinkedIn](https://www.linkedin.com/in/nessrine-macherki/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
