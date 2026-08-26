@@ -1,20 +1,41 @@
+"use server"
 import { Button } from "@/components/ui/button";
 import ModeToggle from "./mode-toggle";
-import { EllipsisVertical, ShoppingCart, UserIcon } from "lucide-react";
+import { EllipsisVertical, ShoppingCart } from "lucide-react";
 import Link from "next/link";
-import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import UserButton from "./user-button";
-const Menu = () => {
+import { getMyCart } from "@/lib/actions/cart.actions";
+
+const Menu = async () => {
+  const cart = await getMyCart();
+  const cartCount = Array.isArray(cart?.items)
+    ? cart.items.reduce((acc, item) => acc + item.qty, 0)
+    : 0;
+
   return (
     <div>
       <nav className="hidden md:flex items-center gap-2">
         <ModeToggle />
 
-        <Button variant="ghost" >
+        <Button variant="ghost" className="relative">
           <Link href="/cart" className="flex gap-2 hover:text-primary">
-            <ShoppingCart /> Cart
+            <ShoppingCart />
+            Cart
+            {cartCount > 0 && (
+              <span className="absolute -right-2 -top-2 rounded-full bg-primary text-primary-foreground text-xs px-2 py-0.5">
+                {cartCount}
+              </span>
+            )}
           </Link>
         </Button>
+
         <UserButton />
       </nav>
 
@@ -28,11 +49,18 @@ const Menu = () => {
 
             <ModeToggle />
 
-            <Button variant="ghost" >
+            <Button variant="ghost" className="relative">
               <Link href="/cart" className="flex gap-2 hover:text-primary">
-                <ShoppingCart /> Cart
+                <ShoppingCart />
+                Cart
+                {cartCount > 0 && (
+                  <span className="absolute -top-2 -right-2 rounded-full bg-primary text-primary-foreground text-xs px-2 py-0.5">
+                    {cartCount}
+                  </span>
+                )}
               </Link>
             </Button>
+
             <UserButton />
 
             <SheetDescription></SheetDescription>

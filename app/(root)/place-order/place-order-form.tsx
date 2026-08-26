@@ -19,9 +19,6 @@ const PlaceOrderForm = () => {
 
     try {
       const res = await createOrder();
-
-      console.log("createOrder raw result:", JSON.stringify(res, null, 2));
-
       if (res.redirectTo) {
         router.push(res.redirectTo);
       } else {

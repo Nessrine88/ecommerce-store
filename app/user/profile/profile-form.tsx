@@ -32,7 +32,7 @@ const ProfileForm = () => {
   }, [session, form]);
 
   const onSubmit = (values: z.infer<typeof updateProfileSchema>) => {
-    console.log(values);
+   
   };
 
   return (
