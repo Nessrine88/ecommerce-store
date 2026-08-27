@@ -1,4 +1,4 @@
-import { getAllUsers } from "@/lib/actions/user.actions";
+import { deleteUser, getAllUsers } from "@/lib/actions/user.actions";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Metadata } from "next";
 import { formatId } from "@/lib/utils";
@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Pagination from "@/components/shared/pagination";
 import { Badge } from "@/components/ui/badge";
+import DeleteDialog from "@/components/shared/delete-dialog";
 export const metadata: Metadata={
     title: 'Admin Users'
 }
@@ -43,15 +44,16 @@ return (
                             </TableCell>
                             <TableCell>{user.email} </TableCell>
                             <TableCell>{user.role === 'user' ? (<Badge variant={'secondary'} >User</Badge>):(<Badge variant={'default'} >Admin</Badge>) } </TableCell>
+                               <TableCell className="flex items-center gap-2">
                               <Link href={`admin/users/${user.id}`} >
                                     <Button variant='outline' size='sm'>
                                         Details
                                     </Button>
                                 </Link>
-                                {/* <div className="bg-red-700 rounded-sm">
-                                    <DeleteDialog id={order.id} action={deleteOrder}  />   
-                                </div> */}
-                            {/* </TableCell> */}
+                                 <div className="bg-red-700 rounded-sm">
+                                    <DeleteDialog id={user.id} action={deleteUser}  />   
+                                </div> 
+                             </TableCell> 
                         </TableRow>
                     ))}
                 </TableBody>
