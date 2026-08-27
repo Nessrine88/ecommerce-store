@@ -45,11 +45,11 @@ return (
                             <TableCell>{user.email} </TableCell>
                             <TableCell>{user.role === 'user' ? (<Badge variant={'secondary'} >User</Badge>):(<Badge variant={'default'} >Admin</Badge>) } </TableCell>
                                <TableCell className="flex items-center gap-2">
-                              <Link href={`admin/users/${user.id}`} >
-                                    <Button variant='outline' size='sm'>
-                                        Details
-                                    </Button>
-                                </Link>
+                            <Link href={`/admin/users/${user.id}`}>
+                                <Button variant='outline' size='sm'>
+                                    Update
+                                </Button>
+                            </Link>
                                  <div className="bg-red-700 rounded-sm">
                                     <DeleteDialog id={user.id} action={deleteUser}  />   
                                 </div> 

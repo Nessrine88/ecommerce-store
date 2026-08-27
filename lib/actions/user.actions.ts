@@ -292,7 +292,7 @@ export async function deleteUser(id: string) {
   try {
     await db.delete(users).where(eq(users.id, id));
 
-    revalidatePath('/admin/users');
+    revalidatePath('/users');
 
     return {
       success: true,
