@@ -1,12 +1,12 @@
 "use server";
 
 import { auth, signIn, signOut } from "@/auth";
-import { paymentMethodSchema, shippingAddressSchema, signInFormSchema, signUpFormSchema } from "@/lib/validators";
+import { paymentMethodSchema, shippingAddressSchema, signInFormSchema, signUpFormSchema, UpdateUserSchema } from "@/lib/validators";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { hashSync } from "bcrypt-ts-edge";
 import { AuthError } from "next-auth";
 import { count, eq } from "drizzle-orm";
-
+import { redirect } from 'next/navigation';
 import { db } from "@/app/db";
 import { users } from "@/app/db/schema";
 import { ShippingAddress } from "@/types";
@@ -14,10 +14,12 @@ import { id } from "zod/v4/locales";
 import z, { success } from "zod";
 import { revalidatePath } from "next/cache";
 import { PAGE_SIZE } from "../constants";
+import { Users } from "lucide-react";
 
 function formatError(error: unknown) {
   return error instanceof Error ? error.message : "An unexpected error occurred";
 }
+
 
 export async function signInWithCredentials(
   prevState: unknown,
@@ -42,11 +44,8 @@ export async function signInWithCredentials(
       };
     }
 
-    return {
-      success: true,
-      message: "Signed in successfully",
-    };
-
+    revalidatePath('/');
+    redirect('/');
   } catch (error) {
     if (isRedirectError(error)) {
       throw error;
@@ -303,5 +302,25 @@ export async function deleteUser(id: string) {
       success: false,
       message: formatError(error),
     };
+  }
+}
+
+//Update a user 
+
+export async function updateUser(user: z.infer<typeof UpdateUserSchema>){
+  try {
+    await db.update(users).set({
+    name:user.name,
+    role:user.role
+    },
+ 
+  ).where(eq(users.id, user.id))
+  revalidatePath('/admin/users');
+  return {
+    success: true,
+    messsage: 'User Updated'
+  }
+  } catch (error) {
+    return {success: false, message: formatError(error)}
   }
 }

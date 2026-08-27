@@ -18,6 +18,8 @@ import { Select, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/
 import { SelectContent } from "@/components/ui/select"
 import { USER_ROLES } from "@/lib/constants"
 import { Button } from "@/components/ui/button"
+import { toast } from "sonner"
+import { updateUser } from "@/lib/actions/user.actions"
 
 type FormValues = z.infer<typeof UpdateUserSchema>;
 
@@ -33,10 +35,21 @@ const UpdateUserForm = ({ user }: UpdateUserFormProps) => {
     defaultValues: user
   });
 
-  const onSubmit = async (values: FormValues) => {
-    // TODO: Implement your update logic / API call here
-    console.log(values);
-    router.refresh();
+  const onSubmit = async (values: z.infer<typeof UpdateUserSchema>) => {
+  try {
+    const res = await updateUser({
+        ...values,
+        id:user.id
+    });
+    if(!res.success){
+        return toast.error(res.message)
+    }
+    toast.success(res.message);
+    form.reset();
+    router.push('/admin/users')
+  } catch (error) {
+    
+  }
   };
 
   return (
