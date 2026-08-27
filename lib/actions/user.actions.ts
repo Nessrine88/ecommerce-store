@@ -5,7 +5,7 @@ import { paymentMethodSchema, shippingAddressSchema, signInFormSchema, signUpFor
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { hashSync } from "bcrypt-ts-edge";
 import { AuthError } from "next-auth";
-import { eq } from "drizzle-orm";
+import { count, eq } from "drizzle-orm";
 
 import { db } from "@/app/db";
 import { users } from "@/app/db/schema";
@@ -13,6 +13,7 @@ import { ShippingAddress } from "@/types";
 import { id } from "zod/v4/locales";
 import z, { success } from "zod";
 import { revalidatePath } from "next/cache";
+import { PAGE_SIZE } from "../constants";
 
 function formatError(error: unknown) {
   return error instanceof Error ? error.message : "An unexpected error occurred";
@@ -261,3 +262,27 @@ export const updateUserProfile = async (user: { name: string; email: string }) =
     return { success: false, message: formatError(error) };
   }
 };
+
+
+
+//Get all users 
+
+export async function getAllUsers({
+  limit = PAGE_SIZE,
+  page = 1,
+}) {
+  const data = await db.query.users.findMany({
+    orderBy: (users, { desc }) => [desc(users.createdAt)],
+    limit,
+    offset: (page - 1) * limit,
+  });
+
+  const [{ dataCount }] = await db
+    .select({ dataCount: count() })
+    .from(users);
+
+  return {
+    data,
+    totalPages: Math.ceil(dataCount / limit),
+  };
+}
