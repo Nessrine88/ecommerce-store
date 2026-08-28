@@ -8,7 +8,7 @@ import { getUserById } from "./user.actions";
 import { insertOrderSchema } from "@/lib/validators";
 import { db } from "@/app/db";
 import { orders, orderItems, carts,products, users  } from "@/app/db/schema";
-import { count, desc, eq, sql, sum } from "drizzle-orm";
+import { count, desc, eq, ilike, inArray, sql, sum } from "drizzle-orm";
 import { PAGE_SIZE } from "../constants";
 import { revalidatePath } from "next/cache";
 
@@ -194,14 +194,34 @@ export async function getOrderSummary() {
 }
 
 // Get all orders 
+
 export async function getAllOrders({
   limit = PAGE_SIZE,
   page,
+  query,
 }: {
   limit?: number;
   page: number;
+  query: string;
 }) {
+  // Resolve matching user IDs when a search query is provided
+  const matchingUserIds =
+    query && query !== 'all'
+      ? await db
+          .select({ id: users.id })
+          .from(users)
+          .where(ilike(users.name, `%${query}%`))
+      : null;
+
+  const whereClause = matchingUserIds
+    ? inArray(
+        orders.userId,
+        matchingUserIds.map((u) => u.id)
+      )
+    : undefined;
+
   const data = await db.query.orders.findMany({
+    where: whereClause,
     orderBy: (orders, { desc }) => [desc(orders.createdAt)],
     limit,
     offset: (page - 1) * limit,
@@ -216,7 +236,8 @@ export async function getAllOrders({
 
   const [{ count: totalCount }] = await db
     .select({ count: count() })
-    .from(orders);
+    .from(orders)
+    .where(whereClause);
 
   return {
     data,

@@ -5,7 +5,7 @@ import { paymentMethodSchema, shippingAddressSchema, signInFormSchema, signUpFor
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { hashSync } from "bcrypt-ts-edge";
 import { AuthError } from "next-auth";
-import { count, eq } from "drizzle-orm";
+import { count, eq, ilike, inArray } from "drizzle-orm";
 import { redirect } from 'next/navigation';
 import { db } from "@/app/db";
 import { users } from "@/app/db/schema";
@@ -266,25 +266,49 @@ export const updateUserProfile = async (user: { name: string; email: string }) =
 
 //Get all users 
 
+
 export async function getAllUsers({
   limit = PAGE_SIZE,
-  page = 1,
+  page,
+  query,
+}: {
+  limit?: number;
+  page: number;
+  query: string;
 }) {
+   const matchingUserIds =
+      query && query !== 'all'
+        ? await db
+            .select({ id: users.id })
+            .from(users)
+            .where(ilike(users.name, `%${query}%`))
+        : null;
+  
+    const whereClause = matchingUserIds
+      ? inArray(
+          users.id,
+          matchingUserIds.map((u) => u.id)
+        )
+      : undefined;
+
   const data = await db.query.users.findMany({
+    where: whereClause,
     orderBy: (users, { desc }) => [desc(users.createdAt)],
     limit,
     offset: (page - 1) * limit,
   });
 
-  const [{ dataCount }] = await db
-    .select({ dataCount: count() })
-    .from(users);
+  const [{ count: totalCount }] = await db
+    .select({ count: count() })
+    .from(users)
+    .where(whereClause);
 
   return {
     data,
-    totalPages: Math.ceil(dataCount / limit),
+    totalPages: Math.ceil(Number(totalCount) / limit),
   };
 }
+
 
 //Delete a user 
 export async function deleteUser(id: string) {

@@ -12,7 +12,7 @@ const AdminSearch = () => {
     ? '/admin/users'
     :'/admin/products';
     const searchParams = useSearchParams();
-    const [queryValue, setQueryValue] = useState(searchParams.get('query'));
+    const [queryValue, setQueryValue] = useState(searchParams.get('query') || '');
     useEffect(()=>{
         setQueryValue(searchParams.get('query') || '')
     },[searchParams])
