@@ -3,7 +3,7 @@
 
 import { db } from '@/app/db'
 import { products } from '@/app/db/schema'
-import { and, count, eq, ilike,desc } from "drizzle-orm";
+import { and, asc, count, desc, eq, gte, ilike, lte, SQL, } from "drizzle-orm";
 import { PAGE_SIZE } from '../constants'
 import { convertToPlainObject, formatError } from '../utils';
 import { insertProductSchema, updateProductsSchema } from '../validators';
@@ -44,6 +44,9 @@ export async function getProductBySlug(slug: string) {
 }
 
 
+
+
+
 export async function getAllProducts({
   query,
   limit = PAGE_SIZE,
@@ -61,27 +64,64 @@ export async function getAllProducts({
   rating?: string;
   sort?: string;
 }) {
-  const filters = and(
-    query && query !== "all"
-      ? ilike(products.name, `%${query}%`)
-      : undefined,
+  const conditions: (SQL | undefined)[] = [];
 
-    category && category !== "all"
-      ? eq(products.category, category)
-      : undefined
-  );
+  // Query filter (case-insensitive search on name)
+  if (query && query !== "all") {
+    conditions.push(ilike(products.name, `%${query}%`));
+  }
+
+  // Category filter
+  if (category && category !== "all") {
+    conditions.push(eq(products.category, category));
+  }
+
+  // Price filter (expects "min-max", e.g. "10-50")
+  if (price && price !== "all") {
+    const [minStr, maxStr] = price.split("-");
+    const min = Number(minStr);
+    const max = Number(maxStr);
+
+    if (!isNaN(min)) {
+      conditions.push(gte(products.price, min.toString()));
+    }
+    if (!isNaN(max)) {
+      conditions.push(lte(products.price, max.toString()));
+    }
+  }
+
+  // Rating filter
+  if (rating && rating !== "all") {
+    const ratingNum = Number(rating);
+    if (!isNaN(ratingNum)) {
+      conditions.push(gte(products.rating, ratingNum.toString()));
+    }
+  }
+
+  const filters = conditions.length > 0 ? and(...conditions) : undefined;
+
+  // Sort order
+  const orderBy =
+    sort === "price-low"
+      ? asc(products.price)
+      : sort === "price-high"
+      ? desc(products.price)
+      : sort === "rating"
+      ? desc(products.rating)
+      : sort === "newest"
+      ? desc(products.createdAt)
+      : desc(products.createdAt); // default sort
 
   const [data, [{ dataCount }]] = await Promise.all([
     db.query.products.findMany({
       where: filters,
+      orderBy,
       limit,
       offset: (page - 1) * limit,
     }),
 
     db
-      .select({
-        dataCount: count(),
-      })
+      .select({ dataCount: count() })
       .from(products)
       .where(filters),
   ]);
@@ -91,7 +131,6 @@ export async function getAllProducts({
     totalPages: Math.ceil(dataCount / limit),
   };
 }
-
 export async function deleteProduct(id: string) {
   try {
     const product = await db.query.products.findFirst({
