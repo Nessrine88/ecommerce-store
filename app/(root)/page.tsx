@@ -1,19 +1,49 @@
 import Hero from "@/components/Hero";
+import ProductCarousel from "@/components/shared/product/product-carousel";
 import ProductList from "@/components/shared/product/product-list";
-import { getLatestProducts } from "@/lib/actions/product.actions";
-const page = async() => {
-  const latestProducts = await getLatestProducts()
+import {
+  getFeaturedProducts,
+  getLatestProducts,
+} from "@/lib/actions/product.actions";
+
+const Page = async () => {
+  const latestProducts = await getLatestProducts();
+  const featuredProducts = await getFeaturedProducts();
+
   const normalizedLatestProducts = latestProducts.map((product) => ({
     ...product,
     images: product.images ?? [],
     brand: product.brand ?? "",
-  }))
+    rating:
+      typeof product.rating === "number"
+        ? product.rating
+        : Number(product.rating ?? 0),
+  }));
+
+  const normalizedFeaturedProducts = featuredProducts.map((product) => ({
+    ...product,
+    images: product.images ?? [],
+    brand: product.brand ?? "",
+    rating:
+      typeof product.rating === "number"
+        ? product.rating
+        : Number(product.rating ?? 0),
+  }));
+
   return (
     <div className="text-accent">
-      <Hero />
-      <ProductList title = "Newest Product" data={normalizedLatestProducts} />
+     
+
+      {normalizedFeaturedProducts.length > 0 && (
+        <ProductCarousel data={normalizedFeaturedProducts} />
+      )}
+
+      <ProductList
+        title="Newest Products"
+        data={normalizedLatestProducts}
+      />
     </div>
   );
 };
 
-export default page;
+export default Page;

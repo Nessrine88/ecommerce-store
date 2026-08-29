@@ -191,3 +191,28 @@ export async function getProductById(productId: string) {
   );
   return convertToPlainObject(data)
 }
+
+//Get all categories
+
+export async function getAllCategories() {
+  const data = await db
+    .select({
+      category: products.category,
+      count: count(products.id),
+    })
+    .from(products)
+    .groupBy(products.category);
+
+  return data;
+}
+
+// Get featured products
+export async function getFeaturedProducts() {
+  const data = await db.query.products.findMany({
+    where: eq(products.isFeatured, true),
+    orderBy: [desc(products.createdAt)],
+    limit: 4,
+  });
+
+  return convertToPlainObject(data);
+}

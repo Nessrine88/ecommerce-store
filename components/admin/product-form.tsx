@@ -297,12 +297,25 @@ Featured Product
   )}
 />
 
-{isFeatured && banner &&(
-  <Image src={banner} alt='banner image'
-  className='w-full object-cover object-center rounded-sm'
-  width={1920}
-  height={680}
-  />
+{isFeatured && banner && (
+  <div className="relative">
+    <Image
+      src={banner}
+      alt="Banner image"
+      className="w-full rounded-sm object-cover object-center"
+      width={1920}
+      height={680}
+    />
+
+    <button
+      type="button"
+      onClick={() => form.setValue("banner", null)}
+      className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-600 text-xs text-white"
+      aria-label="Remove banner"
+    >
+      ×
+    </button>
+  </div>
 )}
 {isFeatured && !banner &&(
   <UploadButton
