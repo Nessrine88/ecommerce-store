@@ -49,15 +49,26 @@ export async function getAllProducts({
   limit = PAGE_SIZE,
   page,
   category,
+  price,
+  rating,
+  sort,
 }: {
   query?: string;
   limit?: number;
   page: number;
   category?: string;
+  price?: string;
+  rating?: string;
+  sort?: string;
 }) {
   const filters = and(
-    query ? ilike(products.name, `%${query}%`) : undefined,
-    category ? eq(products.category, category) : undefined
+    query && query !== "all"
+      ? ilike(products.name, `%${query}%`)
+      : undefined,
+
+    category && category !== "all"
+      ? eq(products.category, category)
+      : undefined
   );
 
   const [data, [{ dataCount }]] = await Promise.all([
@@ -66,8 +77,11 @@ export async function getAllProducts({
       limit,
       offset: (page - 1) * limit,
     }),
+
     db
-      .select({ dataCount: count() })
+      .select({
+        dataCount: count(),
+      })
       .from(products)
       .where(filters),
   ]);

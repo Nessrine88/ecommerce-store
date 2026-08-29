@@ -1,6 +1,7 @@
 import Hero from "@/components/Hero";
 import ProductCarousel from "@/components/shared/product/product-carousel";
 import ProductList from "@/components/shared/product/product-list";
+import ViewAllProduct from "@/components/view-all-products";
 import {
   getFeaturedProducts,
   getLatestProducts,
@@ -42,6 +43,7 @@ const Page = async () => {
         title="Newest Products"
         data={normalizedLatestProducts}
       />
+      <ViewAllProduct />
     </div>
   );
 };

@@ -13,10 +13,16 @@ const AdminUserUpdatePage = async(props:{
   const {id} = await props.params;
   const user = await getUserById(id);
   if(!user) notFound();
+
+  const userForForm = {
+    ...user,
+    email: user.email ?? "",
+  };
+
   return (
     <div className="space-y-8 p-5 max-w-lg mx-auto">
       <h1 className=" fon-bold text-2xl">Update User</h1>
-      <UpdateUserForm user= {user} />
+      <UpdateUserForm user={userForForm} />
     </div>
   )
 }
