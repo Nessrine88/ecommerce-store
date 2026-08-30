@@ -7,24 +7,42 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { createUpdateReview } from "@/lib/actions/review-action";
 import { reviewFormDefaultValues } from "@/lib/constants";
 import { insertReviewSchema } from "@/lib/validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { StarIcon } from "lucide-react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import z from "zod";
 
 
 
-const ReviewForm = ({userId, productId, onReviewSubmitted}:{userId:string; productId:string; onReviewSubmitted?:()=> void;}) => {
+const ReviewForm = ({userId, productId, onReviewSubmitted}:{userId:string; productId:string; onReviewSubmitted:()=> void;}) => {
   const [open, setOpen] = useState(false);
   const form = useForm<z.infer<typeof insertReviewSchema>>({
     resolver: zodResolver(insertReviewSchema),
     defaultValues: reviewFormDefaultValues
-  })
+  });
+  //Open form handler 
   const handleOpenForm= ()=> {
+    form.setValue('productId',productId);
+    form.setValue('userId',userId);
     setOpen(true)
+  };
+
+  //Submit form handler
+
+  const onSubmit : SubmitHandler<z.infer<typeof insertReviewSchema>> =async (values)=> {
+    const res = await createUpdateReview({...values, productId});
+    if(!res.success) {
+        toast.error(res.message);
+        return;
+    }
+    toast.success('Review submitted successfully');
+    setOpen(false);
+    onReviewSubmitted();
   }
     return (
     <Dialog open={open} onOpenChange={setOpen}  >
@@ -33,7 +51,7 @@ const ReviewForm = ({userId, productId, onReviewSubmitted}:{userId:string; produ
       </Button>
       <DialogContent className='sm:max-w-[425px] border border-accent '>
         <Form {...form} >
-            <form method='post'>
+            <form method='post' onSubmit={form.handleSubmit(onSubmit)}>
  <DialogHeader>
                 <DialogTitle className='text-accent '>
                     Write a review
@@ -75,21 +93,25 @@ const ReviewForm = ({userId, productId, onReviewSubmitted}:{userId:string; produ
                     <FormItem>
                         <FormLabel>Rating</FormLabel>
                         
-                            <Select onValueChange={field.onChange} value={field.value.toString()} >
-                                <FormControl>
-                                    <SelectTrigger>
-                                      <SelectValue  placeholder='Select a rating' />  
-                                    </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                    {Array.from({length:5}).map((_,index)=> (
-                                        <SelectItem key={index} value={(index+1).toString()} >
-                                                {index + 1} {''}
-                                                <StarIcon className="inline h-4 w-4"/>
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
+                         <Select
+  onValueChange={(value) => field.onChange(Number(value))}
+  value={field.value?.toString()}
+>
+  <FormControl>
+    <SelectTrigger>
+      <SelectValue placeholder="Select a rating" />
+    </SelectTrigger>
+  </FormControl>
+
+  <SelectContent>
+    {Array.from({ length: 5 }).map((_, index) => (
+      <SelectItem key={index} value={(index + 1).toString()}>
+        {index + 1}{' '}
+        <StarIcon className="inline h-4 w-4" />
+      </SelectItem>
+    ))}
+  </SelectContent>
+</Select>
                        <FormMessage />
                     </FormItem>
                 )}

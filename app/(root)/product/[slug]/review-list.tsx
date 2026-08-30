@@ -8,11 +8,14 @@ import ReviewForm from "./review-form";
 
 const ReviewList = ({userId, productId, productSlug}:{userId:string; productId:string; productSlug:string;} ) => {
 const [reviews, setReviews] = useState<Reviews[]>([]);
+const reload = ()=> {
+    console.log('Review Submitted')
+}
     return (
     <div className="space-y-4">
    {reviews.length === 0 && <div>No reviews yet </div>}
    {
-    userId ? (<> <ReviewForm userId={userId} productId={productId} /> </>) : ( <div>
+    userId ? ( <ReviewForm userId={userId} productId={productId} onReviewSubmitted={reload}/> ) : ( <div>
         Please <Link className="text-sky-500 font-bold px-2" href={`/sign-in?callbackUrl=/product/${productSlug}`}>
         sign in
         </Link>
