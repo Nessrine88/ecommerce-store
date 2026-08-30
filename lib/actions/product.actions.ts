@@ -102,9 +102,9 @@ export async function getAllProducts({
 
   // Sort order
   const orderBy =
-    sort === "price-low"
+    sort === "lowest"
       ? asc(products.price)
-      : sort === "price-high"
+      : sort === "highest"
       ? desc(products.price)
       : sort === "rating"
       ? desc(products.rating)
