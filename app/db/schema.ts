@@ -11,6 +11,7 @@ import {
   primaryKey,
   json,
 } from "drizzle-orm/pg-core";
+import { title } from "process";
 
 
 // =====================
@@ -390,11 +391,49 @@ export const orderItems = pgTable(
   })
 );
 
+
+// =====================
+// Review table
+// =====================
+
+export const reviews = pgTable("Review", {
+  id: uuid("id").defaultRandom().primaryKey(),
+
+  userId: uuid("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+
+  productId: uuid("productId")
+    .notNull()
+    .references(() => products.id, { onDelete: "cascade" }),
+
+  rating: integer("rating").notNull(),
+
+  title: text("title").notNull(),
+
+  description: text("description").notNull(),
+
+  isVerifiedPurchase: boolean("isVerifiedPurchase").notNull().default(false),
+
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+});
+
+export const reviewsRelations = relations(reviews, ({ one }) => ({
+  product: one(products, {
+    fields: [reviews.productId],
+    references: [products.id],
+  }),
+  user: one(users, {
+    fields: [reviews.userId],
+    references: [users.id],
+  }),
+}));
 export const usersRelations = relations(users, ({ many }) => ({
   orders: many(orders),
   carts: many(carts),
   accounts: many(accounts),
   sessions: many(sessions),
+  reviews: many(reviews),
 }));
 
 export const ordersRelations = relations(orders, ({ one, many }) => ({
@@ -420,6 +459,7 @@ export const orderItemsRelations = relations(orderItems, ({ one }) => ({
 
 export const productsRelations = relations(products, ({ many }) => ({
   orderItems: many(orderItems),
+  reviews: many(reviews),
 }));
 
 export const cartsRelations = relations(carts, ({ one }) => ({
@@ -442,3 +482,6 @@ export const sessionsRelations = relations(sessions, ({ one }) => ({
     references: [users.id],
   }),
 }));
+
+
+

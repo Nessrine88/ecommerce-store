@@ -11,6 +11,8 @@ import { Button } from "@base-ui/react";
 import AddToCart from "@/components/shared/product/add-to-cart";
 import { getMyCart } from "@/lib/actions/cart.actions";
 import { carts } from "@/app/db/schema";
+import { auth } from "@/auth";
+import ReviewList from "./review-list";
 const ProductDetailsPage = async ({
   params,
 }: {
@@ -19,6 +21,8 @@ const ProductDetailsPage = async ({
   const { slug } = await params;
 
   const product = await getProductBySlug(slug);
+const session = await auth();
+const userId = session?.user?.id;
 
   if (!product) notFound();
 
@@ -38,6 +42,7 @@ const ProductDetailsPage = async ({
       }
     : undefined;
   return (
+    <div className="flex flex-col ">
     <section className="min-h-screen py-10 text-accent">
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 md:grid-cols-12">
         {/* Product Image */}
@@ -145,6 +150,15 @@ const ProductDetailsPage = async ({
         </div>
       </div>
     </section>
+    <section className=" w-full h-full  text-accent">
+      <h2 className="font-bold"> Custmer Reviews  </h2>
+        <ReviewList userId={userId || ''}
+        productId ={product.id}
+        productSlug= {product.slug}
+        />
+   
+    </section>
+    </div>
   );
 };
 

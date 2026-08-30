@@ -32,18 +32,22 @@ const Page = async () => {
   }));
 
   return (
-    <div className="text-accent">
-     
+    <div className="min-h-screen bg-bg text-text">
+      <div className="mx-auto max-w-7xl space-y-12 px-4 py-10 md:px-8">
+        {normalizedFeaturedProducts.length > 0 && (
+          <section>
+            <ProductCarousel data={normalizedFeaturedProducts} />
+          </section>
+        )}
 
-      {normalizedFeaturedProducts.length > 0 && (
-        <ProductCarousel data={normalizedFeaturedProducts} />
-      )}
+        <section>
+          <ProductList title="Newest Products" data={normalizedLatestProducts} />
+        </section>
 
-      <ProductList
-        title="Newest Products"
-        data={normalizedLatestProducts}
-      />
-      <ViewAllProduct />
+        <section className="flex justify-center pb-4">
+          <ViewAllProduct />
+        </section>
+      </div>
     </div>
   );
 };
