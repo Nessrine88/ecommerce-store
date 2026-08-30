@@ -5,7 +5,7 @@ import { db } from "@/app/db";
 import { products, reviews } from "@/app/db/schema";
 import { insertReviewSchema } from "@/lib/validators";
 import { formatError } from "@/lib/utils";
-import { and, avg, count, eq } from "drizzle-orm";
+import { and, avg, count, desc, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -79,4 +79,36 @@ export async function createUpdateReview(
   } catch (error) {
     return { success: false, message: formatError(error) };
   }
+}
+
+//Get all reviews for a product 
+
+export async function getReviews({ productId }: { productId: string }) {
+  const data = await db.query.reviews.findMany({
+    where: eq(reviews.productId, productId),
+    with: {
+      user: {
+        columns: {
+          name: true,
+        },
+      },
+    },
+    orderBy: [desc(reviews.createdAt)],
+  });
+
+  return { data };
+}
+
+//Get a review written by the current user 
+
+export async function getReviewByProduct({ productId }: { productId: string }) {
+  const session = await auth();
+  if (!session) throw new Error("User is not authenticated");
+
+  const userId = session.user?.id;
+  if (!userId) throw new Error("User is not authenticated");
+
+  return await db.query.reviews.findFirst({
+    where: and(eq(reviews.productId, productId), eq(reviews.userId, userId)),
+  });
 }

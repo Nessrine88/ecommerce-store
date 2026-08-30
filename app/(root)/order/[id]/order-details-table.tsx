@@ -20,12 +20,15 @@ import { Button } from "@/components/ui/button";
 import { formatCurrency, formatDateTime, formatId } from "@/lib/utils";
 import { Order } from "@/types";
 import { toast } from "sonner";
+import StripePayment from "./stripe-payment";
 const OrderDetailsTable = ({
   order,
   isAdmin,
+  stripeClientSecret
 }: {
   order: Order;
   isAdmin: boolean;
+  stripeClientSecret: string | null;
 }) => {
   const {
     id,
@@ -216,7 +219,21 @@ const OrderDetailsTable = ({
               </div>
             </CardContent>
           </Card>
+        <Card>
+            <CardContent className="p-4 space-y-2">
+              {/*Stripe Payment */}
 
+              {!isPaid && paymentMethod === "Stripe" && stripeClientSecret &&(
+                <StripePayment 
+                priceInCents = {Number(order.totalPrice) *100}
+                orderId={order.id}
+                clientSecret={stripeClientSecret}
+                />
+              )}
+
+              {isAdmin && !isDelivered && <MarkAsDeliveredButton />}
+            </CardContent>
+          </Card>
           <Card>
             <CardContent className="p-4 space-y-2">
               {/*Cash on delivery */}

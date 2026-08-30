@@ -7,7 +7,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { createUpdateReview } from "@/lib/actions/review-action";
+import { createUpdateReview, getReviewByProduct } from "@/lib/actions/review-action";
 import { reviewFormDefaultValues } from "@/lib/constants";
 import { insertReviewSchema } from "@/lib/validators";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,9 +26,16 @@ const ReviewForm = ({userId, productId, onReviewSubmitted}:{userId:string; produ
     defaultValues: reviewFormDefaultValues
   });
   //Open form handler 
-  const handleOpenForm= ()=> {
+  const handleOpenForm= async()=> {
     form.setValue('productId',productId);
     form.setValue('userId',userId);
+
+    const review = await getReviewByProduct({productId})
+    if(review){
+        form.setValue('title', review.title);
+        form.setValue('description', review.description);
+        form.setValue('rating', review.rating);
+    }
     setOpen(true)
   };
 
