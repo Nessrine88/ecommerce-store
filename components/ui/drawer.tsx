@@ -52,16 +52,40 @@ function Drawer({
   )
 }
 
-function DrawerTrigger({ ...props }: DrawerPrimitive.Trigger.Props) {
-  return <DrawerPrimitive.Trigger data-slot="drawer-trigger" {...props} />
+function DrawerTrigger({
+  asChild,
+  children,
+  ...props
+}: DrawerPrimitive.Trigger.Props & { asChild?: boolean }) {
+  return (
+    <DrawerPrimitive.Trigger
+      data-slot="drawer-trigger"
+      render={asChild ? (children as React.ReactElement) : undefined}
+      {...props}
+    >
+      {asChild ? undefined : children}
+    </DrawerPrimitive.Trigger>
+  )
 }
 
 function DrawerPortal({ ...props }: DrawerPrimitive.Portal.Props) {
   return <DrawerPrimitive.Portal data-slot="drawer-portal" {...props} />
 }
 
-function DrawerClose({ ...props }: DrawerPrimitive.Close.Props) {
-  return <DrawerPrimitive.Close data-slot="drawer-close" {...props} />
+function DrawerClose({
+  asChild,
+  children,
+  ...props
+}: DrawerPrimitive.Close.Props & { asChild?: boolean }) {
+  return (
+    <DrawerPrimitive.Close
+      data-slot="drawer-close"
+      render={asChild ? (children as React.ReactElement) : undefined}
+      {...props}
+    >
+      {asChild ? undefined : children}
+    </DrawerPrimitive.Close>
+  )
 }
 
 function DrawerOverlay({
