@@ -11,6 +11,8 @@ import { orders, orderItems, carts,products, users  } from "@/app/db/schema";
 import { count, desc, eq, ilike, inArray, sql, sum } from "drizzle-orm";
 import { PAGE_SIZE } from "../constants";
 import { revalidatePath } from "next/cache";
+import { sendPurchaseReceipt } from "@/app/email";
+import { Order, PaymentResult, ShippingAddress } from "@/types";
 
 
 export async function createOrder() {
@@ -254,11 +256,8 @@ export async function updateOrderToPaid({
   paymentResult,
 }: {
   orderId: string;
-  paymentResult?: any;
+  paymentResult?: PaymentResult;
 }) {
-  console.log("Order ID:", orderId);
-  console.log("Payment result received:", paymentResult);
-
   const order = await db.query.orders.findFirst({
     where: eq(orders.id, orderId),
   });
@@ -279,10 +278,31 @@ export async function updateOrderToPaid({
     .where(eq(orders.id, orderId))
     .returning();
 
-  console.log("Updated order:", updatedOrder);
-
   if (!updatedOrder) {
     throw new Error("Order not found after update");
+  }
+
+  const fullOrder = await db.query.orders.findFirst({
+    where: eq(orders.id, orderId),
+    with: {
+      orderItems: true,
+      user: { columns: { name: true, email: true } },
+    },
+  });
+
+  if (!fullOrder) {
+    throw new Error("Order not found after update");
+  }
+
+  // 👇 add these three lines here
+  console.log("Has Resend key:", !!process.env.RESEND_API_KEY);
+  console.log("Sending receipt to:", fullOrder.user?.email);
+
+  try {
+    const result = await sendPurchaseReceipt({ order: fullOrder as Order });
+    console.log("Resend result:", result); // 👈 and this
+  } catch (err) {
+    console.error("sendPurchaseReceipt failed:", err); // 👈 and this
   }
 
   revalidatePath(`/order/${orderId}`);
