@@ -254,32 +254,44 @@ export async function updateOrderToPaid({
   paymentResult,
 }: {
   orderId: string;
-  paymentResult?: any
+  paymentResult?: any;
 }) {
+  console.log("Order ID:", orderId);
+  console.log("Payment result received:", paymentResult);
+
   const order = await db.query.orders.findFirst({
     where: eq(orders.id, orderId),
-    with: { orderItems: true },
   });
 
-  if (!order) throw new Error('Order not found');
-  if (order.isPaid) throw new Error('Order is already paid');
+  if (!order) throw new Error("Order not found");
 
-  await db.transaction(async (tx) => {
-    await tx
-      .update(orders)
-      .set({
-        isPaid: true,
-        paidAt: new Date(),
-        paymentResult,
-      })
-      .where(eq(orders.id, orderId));
-  });
+  if (order.isPaid) {
+    throw new Error("Order is already paid");
+  }
 
-  const updatedOrder = await db.query.orders.findFirst({
-    where: eq(orders.id, orderId),
-  });
+  const [updatedOrder] = await db
+    .update(orders)
+    .set({
+      isPaid: true,
+      paidAt: new Date(),
+      paymentResult: paymentResult ?? null,
+    })
+    .where(eq(orders.id, orderId))
+    .returning();
 
-  if (!updatedOrder) throw new Error('Order not found after update');
+  console.log("Updated order:", updatedOrder);
+
+  if (!updatedOrder) {
+    throw new Error("Order not found after update");
+  }
+
+  revalidatePath(`/order/${orderId}`);
+
+  return {
+    success: true,
+    message: "Order marked as paid",
+    data: convertToPlainObject(updatedOrder),
+  };
 }
 //Delete an order
 

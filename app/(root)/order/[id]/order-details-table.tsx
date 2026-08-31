@@ -21,10 +21,11 @@ import { formatCurrency, formatDateTime, formatId } from "@/lib/utils";
 import { Order } from "@/types";
 import { toast } from "sonner";
 import StripePayment from "./stripe-payment";
+
 const OrderDetailsTable = ({
   order,
   isAdmin,
-  stripeClientSecret
+  stripeClientSecret,
 }: {
   order: Order;
   isAdmin: boolean;
@@ -44,54 +45,58 @@ const OrderDetailsTable = ({
     isDelivered,
     deliveredAt,
   } = order;
+
   const MarkAsPaidButton = () => {
-    const [isPending, startTranssition] = useTransition();
+    const [isPending, startTransition] = useTransition();
     return (
       <Button
         type="button"
+        className="w-full"
         disabled={isPending}
         onClick={() =>
-          startTranssition(async () => {
+          startTransition(async () => {
             const res = await updateOrderToPaidCOD(order.id);
             res.success ? toast.success(res.message) : toast.error(res.message);
           })
         }
       >
-        {isPending ? "processing..." : "Mark As Paid"}
+        {isPending ? "Processing..." : "Mark As Paid"}
       </Button>
     );
   };
 
   const MarkAsDeliveredButton = () => {
-    const [isPending, startTranssition] = useTransition();
+    const [isPending, startTransition] = useTransition();
     return (
       <Button
         type="button"
+        className="w-full"
         disabled={isPending}
         onClick={() =>
-          startTranssition(async () => {
+          startTransition(async () => {
             const res = await deliverOrder(order.id);
             res.success ? toast.success(res.message) : toast.error(res.message);
           })
         }
       >
-        {isPending ? "processing..." : "Mark As Delivered"}
+        {isPending ? "Processing..." : "Mark As Delivered"}
       </Button>
     );
   };
+
   return (
     <>
-      <h1 className="py-4 text-2xl">Order {formatId(id)}</h1>
+      <h1 className="py-4 text-2xl font-semibold tracking-tight">
+        Order {formatId(id)}
+      </h1>
 
       <div className="grid gap-5 md:grid-cols-3">
-        <div className="col-span-2 space-y-4 overflow-x-auto ">
+        <div className="col-span-2 space-y-4 overflow-x-auto">
           {/* Payment */}
-          <Card>
-            <CardContent className="p-4 space-y-4">
-              <h2 className="text-xl">Payment Method</h2>
-
-              <p>{paymentMethod}</p>
-
+          <Card className="rounded-xl border shadow-sm">
+            <CardContent className="p-4 space-y-3">
+              <h2 className="text-xl font-medium">Payment Method</h2>
+              <p className="text-sm text-muted-foreground">{paymentMethod}</p>
               {isPaid ? (
                 <Badge variant="secondary">
                   Paid at {formatDateTime(paidAt!).datetime}
@@ -103,20 +108,20 @@ const OrderDetailsTable = ({
           </Card>
 
           {/* Shipping */}
-          <Card>
-            <CardContent className="p-4 space-y-4">
-              <h2 className="text-xl">Shipping Address</h2>
-
-              <p>{shippingAddress.fullName}</p>
-
-              <p>
-                {shippingAddress.streetAddress}, {shippingAddress.city}
-              </p>
-
-              <p>
-                {shippingAddress.postalCode}, {shippingAddress.country}
-              </p>
-
+          <Card className="rounded-xl border shadow-sm">
+            <CardContent className="p-4 space-y-3">
+              <h2 className="text-xl font-medium">Shipping Address</h2>
+              <div className="text-sm text-muted-foreground space-y-0.5">
+                <p className="text-foreground font-medium">
+                  {shippingAddress.fullName}
+                </p>
+                <p>
+                  {shippingAddress.streetAddress}, {shippingAddress.city}
+                </p>
+                <p>
+                  {shippingAddress.postalCode}, {shippingAddress.country}
+                </p>
+              </div>
               {isDelivered ? (
                 <Badge variant="secondary">
                   Delivered at {formatDateTime(deliveredAt!).datetime}
@@ -128,40 +133,42 @@ const OrderDetailsTable = ({
           </Card>
 
           {/* Order Items */}
-          <Card>
+          <Card className="rounded-xl border shadow-sm">
             <CardContent className="p-4">
-              <h2 className="pb-4 text-xl">Order Items</h2>
-
+              <h2 className="pb-4 text-xl font-medium">Order Items</h2>
               <Table>
                 <TableHeader>
                   <TableRow>
                     <TableHead>Item</TableHead>
-                    <TableHead>Quantity</TableHead>
-                    <TableHead>Price</TableHead>
+                    <TableHead className="text-center">Quantity</TableHead>
+                    <TableHead className="text-right">Price</TableHead>
                   </TableRow>
                 </TableHeader>
-
                 <TableBody>
                   {orderItems.map((item) => (
-                    <TableRow key={item.slug}>
+                    <TableRow
+                      key={item.slug}
+                      className="hover:bg-muted/50 transition-colors"
+                    >
                       <TableCell>
                         <Link
                           href={`/product/${item.slug}`}
-                          className="flex items-center"
+                          className="flex items-center gap-3"
                         >
                           <Image
                             src={item.image}
                             alt={item.name}
                             width={50}
                             height={50}
+                            className="rounded-md border object-cover"
                           />
-                          <span className="ml-2">{item.name}</span>
+                          <span className="line-clamp-2">{item.name}</span>
                         </Link>
                       </TableCell>
-
-                      <TableCell>{item.qty}</TableCell>
-
-                      <TableCell>{formatCurrency(item.price)}</TableCell>
+                      <TableCell className="text-center">{item.qty}</TableCell>
+                      <TableCell className="text-right">
+                        {formatCurrency(item.price)}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -171,24 +178,22 @@ const OrderDetailsTable = ({
         </div>
 
         {/* Order Summary */}
-        <div className="space-y-4 mb-4">
-          <Card>
+        <div className="space-y-4 mb-4 md:sticky md:top-4 md:self-start">
+          <Card className="rounded-xl border shadow-sm">
             <CardContent className="p-4 space-y-2">
-              <div className="flex justify-between">
-                <span>Items</span>
+              <div className="flex justify-between text-sm">
+                <span className="text-muted-foreground">Items</span>
                 <span>{formatCurrency(itemsPrice)}</span>
               </div>
-
-              <div className="flex justify-between">
-                <span>Tax</span>
+              <div className="flex justify-between text-sm">
+                <span className="text-muted-foreground">Tax</span>
                 <span>{formatCurrency(taxPrice)}</span>
               </div>
-
-              <div className="flex justify-between">
-                <span>Shipping</span>
+              <div className="flex justify-between text-sm">
+                <span className="text-muted-foreground">Shipping</span>
                 <span>{formatCurrency(shippingPrice)}</span>
               </div>
-
+              <div className="my-1 h-px bg-border" />
               <div className="flex justify-between font-semibold text-lg">
                 <span>Total</span>
                 <span>{formatCurrency(totalPrice)}</span>
@@ -196,55 +201,34 @@ const OrderDetailsTable = ({
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="p-4 space-y-2">
-              <div className="flex justify-between">
-                <span>Items</span>
-                <span>{formatCurrency(itemsPrice)}</span>
-              </div>
-
-              <div className="flex justify-between">
-                <span>Tax</span>
-                <span>{formatCurrency(taxPrice)}</span>
-              </div>
-
-              <div className="flex justify-between">
-                <span>Shipping</span>
-                <span>{formatCurrency(shippingPrice)}</span>
-              </div>
-
-              <div className="flex justify-between font-semibold text-lg">
-                <span>Total</span>
-                <span>{formatCurrency(totalPrice)}</span>
-              </div>
-            </CardContent>
-          </Card>
-        <Card>
-            <CardContent className="p-4 space-y-2">
-              {/*Stripe Payment */}
-
-              {!isPaid && paymentMethod === "Stripe" && stripeClientSecret &&(
-                <StripePayment 
-                priceInCents = {Number(order.totalPrice) *100}
-                orderId={order.id}
-                clientSecret={stripeClientSecret}
+          {/* Payment action (Stripe or COD) */}
+          {!isPaid && paymentMethod === "Stripe" && stripeClientSecret && (
+            <Card className="rounded-xl border shadow-sm">
+              <CardContent className="p-4">
+                <StripePayment
+                  priceInCents={Number(order.totalPrice) * 100}
+                  orderId={order.id}
+                  clientSecret={stripeClientSecret}
                 />
-              )}
+              </CardContent>
+            </Card>
+          )}
 
-              {isAdmin && !isDelivered && <MarkAsDeliveredButton />}
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4 space-y-2">
-              {/*Cash on delivery */}
-
-              {isAdmin && paymentMethod === "CashOnDelivery" && (
+          {isAdmin && !isPaid && paymentMethod === "CashOnDelivery" && (
+            <Card className="rounded-xl border shadow-sm">
+              <CardContent className="p-4">
                 <MarkAsPaidButton />
-              )}
+              </CardContent>
+            </Card>
+          )}
 
-              {isAdmin && !isDelivered && <MarkAsDeliveredButton />}
-            </CardContent>
-          </Card>
+          {isAdmin && !isDelivered && (
+            <Card className="rounded-xl border shadow-sm">
+              <CardContent className="p-4">
+                <MarkAsDeliveredButton />
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
     </>

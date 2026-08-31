@@ -9,7 +9,11 @@ export function cn(...inputs: ClassValue[]) {
 // Convert a Drizzle/Postgres result (with Decimal-like fields, Dates, etc.)
 // into a plain JSON-serializable object
 export function convertToPlainObject<T>(value: T): T {
-  return JSON.parse(JSON.stringify(value));
+  if (value === undefined || value === null) {
+    return value;
+  }
+
+  return JSON.parse(JSON.stringify(value)) as T;
 }
 
 // Round a number to 2 decimal places, avoiding floating point drift

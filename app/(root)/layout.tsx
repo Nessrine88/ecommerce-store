@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="dark:bg-inherit bg-bg relative" >
+    <div className="dark:bg-inherit bg-bg relative" suppressHydrationWarning>
       <div className="sticky top-0 z-30">
         <Header />
       </div>
