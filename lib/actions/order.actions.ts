@@ -88,6 +88,8 @@ export async function createOrder() {
 //Get Order By Id 
 
 export async function getOrderById(orderId: string) {
+  console.log("orderId from URL:", orderId);
+
   const data = await db.query.orders.findFirst({
     where: eq(orders.id, orderId),
     with: {
@@ -101,9 +103,10 @@ export async function getOrderById(orderId: string) {
     },
   });
 
+  console.log("order found:", data);
+
   return convertToPlainObject(data);
 }
-
 //Get user's orders
 
 export async function getMyOrders({

@@ -84,7 +84,7 @@ const OrderDetailsTable = ({
       <h1 className="py-4 text-2xl">Order {formatId(id)}</h1>
 
       <div className="grid gap-5 md:grid-cols-3">
-        <div className="col-span-2 space-y-4 overflow-x-auto">
+        <div className="col-span-2 space-y-4 overflow-x-auto ">
           {/* Payment */}
           <Card>
             <CardContent className="p-4 space-y-4">
@@ -171,7 +171,7 @@ const OrderDetailsTable = ({
         </div>
 
         {/* Order Summary */}
-        <div>
+        <div className="space-y-4 mb-4">
           <Card>
             <CardContent className="p-4 space-y-2">
               <div className="flex justify-between">
