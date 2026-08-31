@@ -49,7 +49,7 @@ const OrderDetailsPage = async ({
     ...order,
     userId: order.userId ?? '',
     shippingAddress: order.shippingAddress as ShippingAddress,
-
+    paymentResult: order.paymentResult as { id: string; status: string; email_address: string; pricePaid: string; },
     user: order.user
       ? {
           ...order.user,
