@@ -6,6 +6,8 @@ import {
   getFeaturedProducts,
   getLatestProducts,
 } from "@/lib/actions/product.actions";
+import IconBoxes from "@/components/icon-boxes";
+
 
 const Page = async () => {
   const latestProducts = await getLatestProducts();
@@ -44,8 +46,11 @@ const Page = async () => {
           <ProductList title="Newest Products" data={normalizedLatestProducts} />
         </section>
 
-        <section className="flex justify-center pb-4">
+        <section className="flex justify-center ">
           <ViewAllProduct />
+        </section>
+                <section className="flex justify-center pb-4">
+          <IconBoxes />
         </section>
       </div>
     </div>
