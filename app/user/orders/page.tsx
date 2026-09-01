@@ -51,9 +51,7 @@ const OrdersPage = async (props: {
             {orders.data.map((order) => (
               <TableRow key={order.id}>
                 {/* ID */}
-                <TableCell>
-                  {formatId(order.id)}
-                </TableCell>
+                <TableCell>{formatId(order.id)}</TableCell>
 
                 {/* DATE */}
                 <TableCell>
@@ -61,9 +59,7 @@ const OrdersPage = async (props: {
                 </TableCell>
 
                 {/* TOTAL */}
-                <TableCell>
-                  {formatCurrency(order.totalPrice)}
-                </TableCell>
+                <TableCell>{formatCurrency(order.totalPrice)}</TableCell>
 
                 {/* PAID */}
                 <TableCell>
@@ -89,10 +85,7 @@ const OrdersPage = async (props: {
                       Details
                     </Link>
 
-                    <DeleteDialog
-                      id={order.id}
-                      action={deleteOrder}
-                    />
+                    <DeleteDialog id={order.id} action={deleteOrder} />
                   </div>
                 </TableCell>
               </TableRow>
@@ -102,10 +95,7 @@ const OrdersPage = async (props: {
 
         {/* PAGINATION */}
         {orders.totalPages > 1 && (
-          <Pagination
-            page={currentPage}
-            totalPages={orders.totalPages}
-          />
+          <Pagination page={currentPage} totalPages={orders.totalPages} />
         )}
       </div>
     </div>

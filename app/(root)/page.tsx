@@ -8,7 +8,6 @@ import {
 } from "@/lib/actions/product.actions";
 import IconBoxes from "@/components/icon-boxes";
 
-
 const Page = async () => {
   const latestProducts = await getLatestProducts();
   const featuredProducts = await getFeaturedProducts();
@@ -43,13 +42,17 @@ const Page = async () => {
         )}
 
         <section>
-          <ProductList title="Newest Products" data={normalizedLatestProducts} />
+          <ProductList
+            title="Newest Products"
+            data={normalizedLatestProducts}
+            limit={5}
+          />
         </section>
 
         <section className="flex justify-center ">
           <ViewAllProduct />
         </section>
-                <section className="flex justify-center pb-4">
+        <section className="flex justify-center pb-4">
           <IconBoxes />
         </section>
       </div>

@@ -7,21 +7,24 @@ import { ShippingAddress } from "@/types";
 import ShippingAddressForm from "./shipping-address-form";
 import CheckkoutSteps from "@/components/shared/checkout-steps";
 export const metadata: Metadata = {
-    title: 'Shipping Address'
-}
-async function  ShppingAddressPage () {
-    const cart = await getMyCart();
-  if (!cart || !(cart.items as ShippingAddress[] | undefined)?.length) redirect('/cart');
-    const session = await auth();
-    const userId = session?.user?.id;
-    if(!userId) {throw new Error('No user ID')};
-    const user = await getUserById(userId)
+  title: "Shipping Address",
+};
+async function ShppingAddressPage() {
+  const cart = await getMyCart();
+  if (!cart || !(cart.items as ShippingAddress[] | undefined)?.length)
+    redirect("/cart");
+  const session = await auth();
+  const userId = session?.user?.id;
+  if (!userId) {
+    throw new Error("No user ID");
+  }
+  const user = await getUserById(userId);
   return (
     <div className="flex flex-col ">
-      <CheckkoutSteps current = {1} />
-      <ShippingAddressForm address= {user.address as ShippingAddress} />
+      <CheckkoutSteps current={1} />
+      <ShippingAddressForm address={user.address as ShippingAddress} />
     </div>
-  )
+  );
 }
 
-export default ShppingAddressPage
+export default ShppingAddressPage;

@@ -17,7 +17,7 @@ export default function AuthLayout({
 }>) {
   return (
     <div className="dark:bg-inherit bg-bg flex min-h-screen w-full">
-    {children}
+      {children}
     </div>
   );
 }

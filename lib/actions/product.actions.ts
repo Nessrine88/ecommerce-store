@@ -1,15 +1,14 @@
+"use server";
 
-'use server';
-
-import { db } from '@/app/db'
-import { products } from '@/app/db/schema'
-import { and, asc, count, desc, eq, gte, ilike, lte, SQL, } from "drizzle-orm";
-import { PAGE_SIZE } from '../constants'
-import { convertToPlainObject, formatError } from '../utils';
-import { insertProductSchema, updateProductsSchema } from '../validators';
-import { revalidatePath } from 'next/cache';
-import z from 'zod';
-import { id } from 'zod/v4/locales';
+import { db } from "@/app/db";
+import { products } from "@/app/db/schema";
+import { and, asc, count, desc, eq, gte, ilike, lte, SQL } from "drizzle-orm";
+import { PAGE_SIZE } from "../constants";
+import { convertToPlainObject, formatError } from "../utils";
+import { insertProductSchema, updateProductsSchema } from "../validators";
+import { revalidatePath } from "next/cache";
+import z from "zod";
+import { id } from "zod/v4/locales";
 
 // Get latest products
 export async function getLatestProducts() {
@@ -17,13 +16,13 @@ export async function getLatestProducts() {
     .select()
     .from(products)
     .orderBy(desc(products.createdAt))
-    .limit(10)
+    .limit(4);
 
   return latestProducts.map((product) => ({
     ...product,
     price: product.price.toString(),
     rating: Number(product.rating),
-  }))
+  }));
 }
 
 // Get single product by slug
@@ -32,20 +31,16 @@ export async function getProductBySlug(slug: string) {
     .select()
     .from(products)
     .where(eq(products.slug, slug))
-    .limit(1)
+    .limit(4);
 
-  if (!product) return null
+  if (!product) return null;
 
   return {
     ...product,
     price: product.price.toString(),
     rating: Number(product.rating),
-  }
+  };
 }
-
-
-
-
 
 export async function getAllProducts({
   query,
@@ -105,12 +100,12 @@ export async function getAllProducts({
     sort === "lowest"
       ? asc(products.price)
       : sort === "highest"
-      ? desc(products.price)
-      : sort === "rating"
-      ? desc(products.rating)
-      : sort === "newest"
-      ? desc(products.createdAt)
-      : desc(products.createdAt); // default sort
+        ? desc(products.price)
+        : sort === "rating"
+          ? desc(products.rating)
+          : sort === "newest"
+            ? desc(products.createdAt)
+            : desc(products.createdAt); // default sort
 
   const [data, [{ dataCount }]] = await Promise.all([
     db.query.products.findMany({
@@ -120,10 +115,7 @@ export async function getAllProducts({
       offset: (page - 1) * limit,
     }),
 
-    db
-      .select({ dataCount: count() })
-      .from(products)
-      .where(filters),
+    db.select({ dataCount: count() }).from(products).where(filters),
   ]);
 
   return {
@@ -157,10 +149,7 @@ export async function deleteProduct(id: string) {
 
 //Create a prodcut
 
-export async function createProduct(
-  data: z.infer<typeof insertProductSchema>
-) {
-  
+export async function createProduct(data: z.infer<typeof insertProductSchema>) {
   try {
     const product = insertProductSchema.parse(data);
     const productToInsert = {
@@ -171,40 +160,38 @@ export async function createProduct(
       .insert(products)
       .values(productToInsert)
       .returning();
-    revalidatePath('/admin/products');
+    revalidatePath("/admin/products");
 
     return {
       success: true,
-      message: 'Product created successfully',
+      message: "Product created successfully",
     };
   } catch (error) {
-
-
-    console.error('FULL ERROR:', error);
+    console.error("FULL ERROR:", error);
 
     if (error instanceof Error) {
-      console.error('ERROR NAME:', error.name);
-      console.error('ERROR MESSAGE:', error.message);
-      console.error('ERROR STACK:', error.stack);
+      console.error("ERROR NAME:", error.name);
+      console.error("ERROR MESSAGE:", error.message);
+      console.error("ERROR STACK:", error.stack);
 
-      if ('cause' in error) {
-        console.error('ERROR CAUSE:', error.cause);
+      if ("cause" in error) {
+        console.error("ERROR CAUSE:", error.cause);
       }
     }
 
     return {
       success: false,
       message:
-        error instanceof Error
-          ? error.message
-          : 'Failed to create product',
+        error instanceof Error ? error.message : "Failed to create product",
     };
   }
 }
 
 //Update a prodcut
 
-export async function updateProduct(data: z.infer<typeof updateProductsSchema>) {
+export async function updateProduct(
+  data: z.infer<typeof updateProductsSchema>,
+) {
   try {
     const product = updateProductsSchema.parse(data);
     const { id, ...updateData } = product;
@@ -216,19 +203,19 @@ export async function updateProduct(data: z.infer<typeof updateProductsSchema>) 
       .returning();
 
     if (updated.length === 0) {
-      throw new Error('Product not found or update failed');
+      throw new Error("Product not found or update failed");
     }
 
-    revalidatePath('/admin/products');
+    revalidatePath("/admin/products");
     revalidatePath(`/admin/products/${id}`);
 
     return {
       success: true,
-      message: 'Product updated successfully',
+      message: "Product updated successfully",
       data: updated[0],
     };
   } catch (error) {
-    console.error('updateProduct error:', error);
+    console.error("updateProduct error:", error);
     return {
       success: false,
       message: formatError(error),
@@ -239,10 +226,10 @@ export async function updateProduct(data: z.infer<typeof updateProductsSchema>) 
 //get single product by it's ID
 
 export async function getProductById(productId: string) {
-  const data = await db.query.products.findFirst(
-   { where: eq(products.id, productId)}
-  );
-  return convertToPlainObject(data)
+  const data = await db.query.products.findFirst({
+    where: eq(products.id, productId),
+  });
+  return convertToPlainObject(data);
 }
 
 //Get all categories

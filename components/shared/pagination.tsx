@@ -18,12 +18,12 @@ const Pagination = ({ page, totalPages, urlParamName }: PaginationProps) => {
 
   const handleClick = (btnType: string) => {
     const pageValue = btnType === "next" ? currentPage + 1 : currentPage - 1;
-const newUrl = formUrlQuery({
-    params: searchParams.toString(),
-    key: urlParamName || 'page',
-    value: pageValue.toString(),
-});
-router.push(newUrl)
+    const newUrl = formUrlQuery({
+      params: searchParams.toString(),
+      key: urlParamName || "page",
+      value: pageValue.toString(),
+    });
+    router.push(newUrl);
     const params = new URLSearchParams(searchParams.toString());
     params.set(urlParamName || "page", String(pageValue));
 

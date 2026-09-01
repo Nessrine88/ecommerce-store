@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { updateProfileSchema } from "@/lib/validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
@@ -6,7 +6,13 @@ import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import z from "zod";
 import { toast } from "sonner";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -16,28 +22,29 @@ const ProfileForm = () => {
   const form = useForm<z.infer<typeof updateProfileSchema>>({
     resolver: zodResolver(updateProfileSchema),
     defaultValues: {
-      name: session?.user?.name ?? '',
-      email: session?.user?.email ?? '',
-    }
+      name: session?.user?.name ?? "",
+      email: session?.user?.email ?? "",
+    },
   });
 
   // Reset form once session data actually loads
   useEffect(() => {
     if (session?.user) {
       form.reset({
-        name: session.user.name ?? '',
-        email: session.user.email ?? '',
+        name: session.user.name ?? "",
+        email: session.user.email ?? "",
       });
     }
   }, [session, form]);
 
-  const onSubmit = (values: z.infer<typeof updateProfileSchema>) => {
-   
-  };
+  const onSubmit = (values: z.infer<typeof updateProfileSchema>) => {};
 
   return (
     <Form {...form}>
-      <form className="flex flex-col gap-5" onSubmit={form.handleSubmit(onSubmit)}>
+      <form
+        className="flex flex-col gap-5"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
         <div className="flex flex-col gap-5">
           <FormField
             control={form.control}
@@ -45,7 +52,12 @@ const ProfileForm = () => {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormControl>
-                  <Input disabled placeholder="Email" className="input-field" {...field} />
+                  <Input
+                    disabled
+                    placeholder="Email"
+                    className="input-field"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -57,7 +69,11 @@ const ProfileForm = () => {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormControl>
-                  <Input placeholder="Name" className="input-field" {...field} />
+                  <Input
+                    placeholder="Name"
+                    className="input-field"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -65,11 +81,11 @@ const ProfileForm = () => {
           />
         </div>
         <Button type="submit" className="button col-span-2 w-full">
-          {form.formState.isSubmitting ? 'Submitting...' : 'Update Profile'}
+          {form.formState.isSubmitting ? "Submitting..." : "Update Profile"}
         </Button>
       </form>
     </Form>
-  )
-}
+  );
+};
 
-export default ProfileForm
+export default ProfileForm;

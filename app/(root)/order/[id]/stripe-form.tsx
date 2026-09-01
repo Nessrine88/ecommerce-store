@@ -49,9 +49,7 @@ const StripeForm = ({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <LinkAuthenticationElement
-        onChange={(e) => setEmail(e.value.email)}
-      />
+      <LinkAuthenticationElement onChange={(e) => setEmail(e.value.email)} />
       <PaymentElement />
 
       {errorMessage && (

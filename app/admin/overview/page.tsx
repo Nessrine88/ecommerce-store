@@ -47,7 +47,9 @@ const AdminOverviewPage = async () => {
             <CreditCard />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatNumber(summary.orders)}</div>
+            <div className="text-2xl font-bold">
+              {formatNumber(summary.orders)}
+            </div>
           </CardContent>
         </Card>
 
@@ -57,7 +59,9 @@ const AdminOverviewPage = async () => {
             <Users />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatNumber(summary.users)}</div>
+            <div className="text-2xl font-bold">
+              {formatNumber(summary.users)}
+            </div>
           </CardContent>
         </Card>
 
@@ -67,7 +71,9 @@ const AdminOverviewPage = async () => {
             <Barcode />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatNumber(summary.products)}</div>
+            <div className="text-2xl font-bold">
+              {formatNumber(summary.products)}
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -78,7 +84,7 @@ const AdminOverviewPage = async () => {
             <CardTitle>Overview</CardTitle>
           </CardHeader>
           <CardContent>
-            <Charts data={{salesData: summary.salesData}} />
+            <Charts data={{ salesData: summary.salesData }} />
           </CardContent>
         </Card>
 
@@ -102,7 +108,9 @@ const AdminOverviewPage = async () => {
                     <TableCell>
                       {order?.user?.name ? order.user.name : "Deleted User"}
                     </TableCell>
-                    <TableCell>{formatDateTime(order.createdAt).date}</TableCell>
+                    <TableCell>
+                      {formatDateTime(order.createdAt).date}
+                    </TableCell>
                     <TableCell>{formatCurrency(order.totalPrice)}</TableCell>
                     <TableCell>
                       <Link href={`/order/${order.id}`}>

@@ -11,42 +11,42 @@ import {
   Section,
   Tailwind,
   Text,
-} from '@react-email/components';
-import { Order } from '@/types';
-import { formatCurrency } from '@/lib/utils';
-import sampleData from '../db/sample-data';
-import { randomUUID } from 'crypto';
+} from "@react-email/components";
+import { Order } from "@/types";
+import { formatCurrency } from "@/lib/utils";
+import sampleData from "../db/sample-data";
+import { randomUUID } from "crypto";
 
-require('dotenv').config();
+require("dotenv").config();
 type OrderInformationProps = {
   order: Order;
 };
 
 PurchaseReceiptEmail.PreviewProps = {
   order: {
-    id:randomUUID(),
-    userId: '123',
+    id: randomUUID(),
+    userId: "123",
     user: {
-      name: 'John Doe',
-      email: 'test@test.com',
+      name: "John Doe",
+      email: "test@test.com",
     },
-    paymentMethod: 'Stripe',
+    paymentMethod: "Stripe",
     shippingAddress: {
-      fullName: 'John Doe',
-      streetAddress: '123 Main st',
-      city: 'New York',
-      postalCode: '10001',
-      country: 'US',
+      fullName: "John Doe",
+      streetAddress: "123 Main st",
+      city: "New York",
+      postalCode: "10001",
+      country: "US",
     },
     createdAt: new Date(),
-    totalPrice: '100',
-    taxPrice: '10',
-    shippingPrice: '10',
-    itemsPrice: '80',
+    totalPrice: "100",
+    taxPrice: "10",
+    shippingPrice: "10",
+    itemsPrice: "80",
     orderItems: sampleData.products.map((x) => ({
       name: x.name,
-      orderId: '123',
-      productId: '123',
+      orderId: "123",
+      productId: "123",
       slug: x.slug,
       qty: x.stock,
       image: x.images[0],
@@ -57,15 +57,15 @@ PurchaseReceiptEmail.PreviewProps = {
     isPaid: true,
     paidAt: new Date(), // ← added
     paymentResult: {
-      id: '123',
-      status: 'succeeded',
-      pricePaid: '100',
-      email_address: 'test@test.com',
+      id: "123",
+      status: "succeeded",
+      pricePaid: "100",
+      email_address: "test@test.com",
     },
   },
 } satisfies OrderInformationProps;
 
-const dateFormatter = new Intl.DateTimeFormat('en', { dateStyle: 'medium' });
+const dateFormatter = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
 
 export default function PurchaseReceiptEmail({ order }: OrderInformationProps) {
   return (
@@ -112,7 +112,7 @@ export default function PurchaseReceiptEmail({ order }: OrderInformationProps) {
                       alt={item.name}
                       className="rounded"
                       src={
-                        item.image.startsWith('/')
+                        item.image.startsWith("/")
                           ? `${process.env.NEXT_PUBLIC_SERVER_URL}${item.image}`
                           : item.image
                       }
@@ -128,10 +128,10 @@ export default function PurchaseReceiptEmail({ order }: OrderInformationProps) {
               ))}
 
               {[
-                { name: 'Items', price: order.itemsPrice },
-                { name: 'Tax', price: order.taxPrice },
-                { name: 'Shipping', price: order.shippingPrice },
-                { name: 'Total', price: order.totalPrice },
+                { name: "Items", price: order.itemsPrice },
+                { name: "Tax", price: order.taxPrice },
+                { name: "Shipping", price: order.shippingPrice },
+                { name: "Total", price: order.totalPrice },
               ].map(({ name, price }) => (
                 <Row key={name} className="py-1">
                   <Column align="right" width={140} className="align-top">

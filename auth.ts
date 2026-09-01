@@ -47,7 +47,7 @@ export const config: NextAuthConfig = {
 
         const isMatch = compareSync(
           credentials.password as string,
-          user.password
+          user.password,
         );
 
         if (!isMatch) {
@@ -126,7 +126,7 @@ export const config: NextAuthConfig = {
     },
 
     authorized({ request, auth }: any) {
-      //Array of regex patterns of paths we want to protect 
+      //Array of regex patterns of paths we want to protect
       const protectedPaths = [
         /\/shipping-address/,
         /\/payment-method/,
@@ -137,9 +137,9 @@ export const config: NextAuthConfig = {
         /\/admin/,
       ];
       // get pathname from the req URL object
-      const {pathname} = request.nextUrl;
+      const { pathname } = request.nextUrl;
       //Check if user is not authenticated and accessing a protected path
-      if(!auth && protectedPaths.some((p) => p.test(pathname))) return false;
+      if (!auth && protectedPaths.some((p) => p.test(pathname))) return false;
       if (!request.cookies.get("sessionCartId")) {
         const sessionCartId = crypto.randomUUID();
         const newRequestHeaders = new Headers(request.headers);

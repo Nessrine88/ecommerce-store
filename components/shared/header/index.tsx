@@ -1,4 +1,3 @@
-
 import Menu from "./menu";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,7 +8,6 @@ const Header = () => {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-accent/10 bg-background/95 text-accent shadow-sm backdrop-blur-xl">
       <div className="relative mx-auto flex h-16 max-w-7xl items-center px-4 md:px-6">
-        
         {/* Left */}
         <div className="flex shrink-0 items-center gap-3">
           <CategoryDrawer />
@@ -52,4 +50,3 @@ const Header = () => {
 };
 
 export default Header;
-

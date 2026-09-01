@@ -1,12 +1,18 @@
 "use server";
 
 import { auth, signIn, signOut } from "@/auth";
-import { paymentMethodSchema, shippingAddressSchema, signInFormSchema, signUpFormSchema, UpdateUserSchema } from "@/lib/validators";
+import {
+  paymentMethodSchema,
+  shippingAddressSchema,
+  signInFormSchema,
+  signUpFormSchema,
+  UpdateUserSchema,
+} from "@/lib/validators";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { hashSync } from "bcrypt-ts-edge";
 import { AuthError } from "next-auth";
 import { count, eq, ilike, inArray } from "drizzle-orm";
-import { redirect } from 'next/navigation';
+import { redirect } from "next/navigation";
 import { db } from "@/app/db";
 import { users } from "@/app/db/schema";
 import { ShippingAddress } from "@/types";
@@ -17,13 +23,14 @@ import { PAGE_SIZE } from "../constants";
 import { Users } from "lucide-react";
 
 function formatError(error: unknown) {
-  return error instanceof Error ? error.message : "An unexpected error occurred";
+  return error instanceof Error
+    ? error.message
+    : "An unexpected error occurred";
 }
-
 
 export async function signInWithCredentials(
   prevState: unknown,
-  formData: FormData
+  formData: FormData,
 ) {
   try {
     const validatedFields = signInFormSchema.parse({
@@ -44,8 +51,8 @@ export async function signInWithCredentials(
       };
     }
 
-    revalidatePath('/');
-    redirect('/');
+    revalidatePath("/");
+    redirect("/");
   } catch (error) {
     if (isRedirectError(error)) {
       throw error;
@@ -72,16 +79,11 @@ export async function signInWithCredentials(
   }
 }
 
-
 export async function signOutUser() {
   await signOut();
 }
 
-
-export async function signUpUser(
-  prevState: unknown,
-  formData: FormData
-) {
+export async function signUpUser(prevState: unknown, formData: FormData) {
   try {
     const user = signUpFormSchema.parse({
       name: formData.get("name"),
@@ -90,12 +92,10 @@ export async function signUpUser(
       confirmPassword: formData.get("confirmPassword"),
     });
 
-
     // Check existing user
     const existingUser = await db.query.users.findFirst({
       where: eq(users.email, user.email),
     });
-
 
     if (existingUser) {
       return {
@@ -104,16 +104,13 @@ export async function signUpUser(
       };
     }
 
-
     const hashedPassword = hashSync(user.password, 10);
-
 
     await db.insert(users).values({
       name: user.name,
       email: user.email,
       password: hashedPassword,
     });
-
 
     // Automatically login after registration
     await signIn("credentials", {
@@ -122,19 +119,14 @@ export async function signUpUser(
       redirect: false,
     });
 
-
     return {
       success: true,
       message: "User registered successfully",
     };
-
-
   } catch (error) {
-
     if (isRedirectError(error)) {
       throw error;
     }
-
 
     return {
       success: false,
@@ -143,16 +135,15 @@ export async function signUpUser(
   }
 }
 
-
-export async function getUserById(userId: string){
+export async function getUserById(userId: string) {
   const user = await db.query.users.findFirst({
     where: eq(users.id, userId),
-  })
-  if(!user) throw new Error('User not found');
+  });
+  if (!user) throw new Error("User not found");
   return user;
 }
 
-//Update the user's address 
+//Update the user's address
 export async function updateUserAddress(data: ShippingAddress) {
   try {
     const session = await auth();
@@ -160,29 +151,25 @@ export async function updateUserAddress(data: ShippingAddress) {
       where: eq(users.id, session?.user?.id as string),
     });
 
-    if (!currentUser) throw new Error('User not found');
+    if (!currentUser) throw new Error("User not found");
 
     const address = shippingAddressSchema.parse(data);
 
-    await db
-      .update(users)
-      .set({ address })
-      .where(eq(users.id, currentUser.id));
+    await db.update(users).set({ address }).where(eq(users.id, currentUser.id));
 
     return {
       success: true,
-      message: 'User updated successfully',
+      message: "User updated successfully",
     };
   } catch (error) {
     return { success: false, message: formatError(error) };
   }
 }
 
-
-//Update user's payment method 
+//Update user's payment method
 
 export async function updateUserPaymentMethod(
-  data: z.infer<typeof paymentMethodSchema>
+  data: z.infer<typeof paymentMethodSchema>,
 ) {
   try {
     // Validate input against schema
@@ -238,15 +225,18 @@ export async function updateUserPaymentMethod(
 }
 
 //Shema for updating the user profile
-export const updateUserProfile = async (user: { name: string; email: string }) => {
+export const updateUserProfile = async (user: {
+  name: string;
+  email: string;
+}) => {
   try {
     const session = await auth();
-    if (!session?.user?.id) throw new Error('Not authenticated');
+    if (!session?.user?.id) throw new Error("Not authenticated");
 
     const currentUser = await db.query.users.findFirst({
       where: eq(users.id, session.user.id),
     });
-    if (!currentUser) throw new Error('User Not Found');
+    if (!currentUser) throw new Error("User Not Found");
 
     await db
       .update(users)
@@ -255,17 +245,14 @@ export const updateUserProfile = async (user: { name: string; email: string }) =
 
     return {
       success: true,
-      message: 'User updated successfully',
+      message: "User updated successfully",
     };
   } catch (error) {
     return { success: false, message: formatError(error) };
   }
 };
 
-
-
-//Get all users 
-
+//Get all users
 
 export async function getAllUsers({
   limit = PAGE_SIZE,
@@ -276,20 +263,20 @@ export async function getAllUsers({
   page: number;
   query: string;
 }) {
-   const matchingUserIds =
-      query && query !== 'all'
-        ? await db
-            .select({ id: users.id })
-            .from(users)
-            .where(ilike(users.name, `%${query}%`))
-        : null;
-  
-    const whereClause = matchingUserIds
-      ? inArray(
-          users.id,
-          matchingUserIds.map((u) => u.id)
-        )
-      : undefined;
+  const matchingUserIds =
+    query && query !== "all"
+      ? await db
+          .select({ id: users.id })
+          .from(users)
+          .where(ilike(users.name, `%${query}%`))
+      : null;
+
+  const whereClause = matchingUserIds
+    ? inArray(
+        users.id,
+        matchingUserIds.map((u) => u.id),
+      )
+    : undefined;
 
   const data = await db.query.users.findMany({
     where: whereClause,
@@ -309,17 +296,16 @@ export async function getAllUsers({
   };
 }
 
-
-//Delete a user 
+//Delete a user
 export async function deleteUser(id: string) {
   try {
     await db.delete(users).where(eq(users.id, id));
 
-    revalidatePath('/users');
+    revalidatePath("/users");
 
     return {
       success: true,
-      message: 'User deleted successfully',
+      message: "User deleted successfully",
     };
   } catch (error) {
     return {
@@ -329,22 +315,23 @@ export async function deleteUser(id: string) {
   }
 }
 
-//Update a user 
+//Update a user
 
-export async function updateUser(user: z.infer<typeof UpdateUserSchema>){
+export async function updateUser(user: z.infer<typeof UpdateUserSchema>) {
   try {
-    await db.update(users).set({
-    name:user.name,
-    role:user.role
-    },
- 
-  ).where(eq(users.id, user.id))
-  revalidatePath('/admin/users');
-  return {
-    success: true,
-    messsage: 'User Updated'
-  }
+    await db
+      .update(users)
+      .set({
+        name: user.name,
+        role: user.role,
+      })
+      .where(eq(users.id, user.id));
+    revalidatePath("/admin/users");
+    return {
+      success: true,
+      messsage: "User Updated",
+    };
   } catch (error) {
-    return {success: false, message: formatError(error)}
+    return { success: false, message: formatError(error) };
   }
 }

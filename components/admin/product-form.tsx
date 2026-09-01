@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { productDefaultValues } from '@/lib/constants';
-import { insertProductSchema, updateProductsSchema } from '@/lib/validators';
-import { Product } from '@/types';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-import { ControllerRenderProps, useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import z from 'zod';
-import slugify from 'slugify';
-import { UploadButton } from '@/lib/uploadthing';
+import { productDefaultValues } from "@/lib/constants";
+import { insertProductSchema, updateProductsSchema } from "@/lib/validators";
+import { Product } from "@/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { ControllerRenderProps, useForm } from "react-hook-form";
+import { toast } from "sonner";
+import z from "zod";
+import slugify from "slugify";
+import { UploadButton } from "@/lib/uploadthing";
 import {
   Form,
   FormControl,
@@ -17,52 +17,52 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Button } from '@/components/ui/button';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
 
-import { createProduct, updateProduct } from '@/lib/actions/product.actions';
-import { Card, CardContent } from '../ui/card';
-import Image from 'next/image';
+import { createProduct, updateProduct } from "@/lib/actions/product.actions";
+import { Card, CardContent } from "../ui/card";
+import Image from "next/image";
 
 const ProductForm = ({
   type,
   product,
   productId,
 }: {
-  type: 'Create' | 'Update';
+  type: "Create" | "Update";
   product?: Product;
   productId?: string;
 }) => {
   const router = useRouter();
 
   const form = useForm<z.infer<typeof insertProductSchema>>({
-    resolver: (type === 'Update'
+    resolver: (type === "Update"
       ? zodResolver(updateProductsSchema)
       : zodResolver(insertProductSchema)) as any,
     defaultValues:
-      product && type === 'Update' ? product : productDefaultValues,
+      product && type === "Update" ? product : productDefaultValues,
   });
 
   const onSubmit = async (values: z.infer<typeof insertProductSchema>) => {
     // CREATE
-    if (type === 'Create') {
+    if (type === "Create") {
       const res = await createProduct(values);
       if (!res.success) {
         toast.error(res.message);
       } else {
         toast.success(res.message);
-        router.push('/admin/products');
+        router.push("/admin/products");
       }
       return;
     }
 
     // UPDATE
-    if (type === 'Update') {
+    if (type === "Update") {
       if (!productId) {
-        router.push('/admin/products');
+        router.push("/admin/products");
         return;
       }
       const res = await updateProduct({ ...values, id: productId });
@@ -70,15 +70,15 @@ const ProductForm = ({
         toast.error(res.message);
       } else {
         toast.success(res.message);
-        router.push('/admin/products');
+        router.push("/admin/products");
       }
     }
   };
 
   // Default to an empty array so .map never runs on undefined
-  const images = form.watch('images') ?? [];
-const isFeatured = form.watch('isFeatured');
-const banner = form.watch('banner');
+  const images = form.watch("images") ?? [];
+  const isFeatured = form.watch("isFeatured");
+  const banner = form.watch("banner");
 
   return (
     <Form {...form}>
@@ -95,7 +95,10 @@ const banner = form.watch('banner');
             render={({
               field,
             }: {
-              field: ControllerRenderProps<z.infer<typeof insertProductSchema>, 'name'>;
+              field: ControllerRenderProps<
+                z.infer<typeof insertProductSchema>,
+                "name"
+              >;
             }) => (
               <FormItem className="w-full">
                 <FormLabel>Name</FormLabel>
@@ -114,19 +117,26 @@ const banner = form.watch('banner');
             render={({
               field,
             }: {
-              field: ControllerRenderProps<z.infer<typeof insertProductSchema>, 'slug'>;
+              field: ControllerRenderProps<
+                z.infer<typeof insertProductSchema>,
+                "slug"
+              >;
             }) => (
               <FormItem className="w-full">
                 <FormLabel>Slug</FormLabel>
                 <FormControl>
                   <div className="relative">
-                    <Input placeholder="Enter product slug" className="pl-8" {...field} />
+                    <Input
+                      placeholder="Enter product slug"
+                      className="pl-8"
+                      {...field}
+                    />
                     <Button
                       type="button"
                       onClick={() =>
                         form.setValue(
-                          'slug',
-                          slugify(form.getValues('name'), { lower: true })
+                          "slug",
+                          slugify(form.getValues("name"), { lower: true }),
                         )
                       }
                       className="absolute right-2 top-10 text-sm "
@@ -140,7 +150,6 @@ const banner = form.watch('banner');
             )}
           />
         </div>
-
         <div className="flex flex-col gap-5 md:flex-row">
           {/* Category */}
           <FormField
@@ -149,7 +158,10 @@ const banner = form.watch('banner');
             render={({
               field,
             }: {
-              field: ControllerRenderProps<z.infer<typeof insertProductSchema>, 'category'>;
+              field: ControllerRenderProps<
+                z.infer<typeof insertProductSchema>,
+                "category"
+              >;
             }) => (
               <FormItem className="w-full">
                 <FormLabel>Category</FormLabel>
@@ -168,7 +180,10 @@ const banner = form.watch('banner');
             render={({
               field,
             }: {
-              field: ControllerRenderProps<z.infer<typeof insertProductSchema>, 'brand'>;
+              field: ControllerRenderProps<
+                z.infer<typeof insertProductSchema>,
+                "brand"
+              >;
             }) => (
               <FormItem className="w-full">
                 <FormLabel>Brand</FormLabel>
@@ -180,7 +195,6 @@ const banner = form.watch('banner');
             )}
           />
         </div>
-
         <div className="flex flex-col gap-5 md:flex-row">
           {/* Price */}
           <FormField
@@ -189,7 +203,10 @@ const banner = form.watch('banner');
             render={({
               field,
             }: {
-              field: ControllerRenderProps<z.infer<typeof insertProductSchema>, 'price'>;
+              field: ControllerRenderProps<
+                z.infer<typeof insertProductSchema>,
+                "price"
+              >;
             }) => (
               <FormItem className="w-full">
                 <FormLabel>Price</FormLabel>
@@ -208,7 +225,10 @@ const banner = form.watch('banner');
             render={({
               field,
             }: {
-              field: ControllerRenderProps<z.infer<typeof insertProductSchema>, 'stock'>;
+              field: ControllerRenderProps<
+                z.infer<typeof insertProductSchema>,
+                "stock"
+              >;
             }) => (
               <FormItem className="w-full">
                 <FormLabel>Stock</FormLabel>
@@ -224,112 +244,112 @@ const banner = form.watch('banner');
             )}
           />
         </div>
-
         <div className="upload-field flex flex-col gap-5 md:flex-row">
           {/* Images */}
           <FormField
-  control={form.control}
-  name="images"
-  render={() => (
-    <FormItem className="w-full">
-      <FormLabel>Image</FormLabel>
-      <Card>
-        <CardContent className="space-y-2 min-h-48">
-          <div className="flex-start space-x-2">
-            {images.map((image: string) => (
-              <div key={image} className="relative">
+            control={form.control}
+            name="images"
+            render={() => (
+              <FormItem className="w-full">
+                <FormLabel>Image</FormLabel>
+                <Card>
+                  <CardContent className="space-y-2 min-h-48">
+                    <div className="flex-start space-x-2">
+                      {images.map((image: string) => (
+                        <div key={image} className="relative">
+                          <Image
+                            src={image}
+                            alt="product image"
+                            width={100}
+                            height={100}
+                          />
+                          <button
+                            type="button"
+                            onClick={() =>
+                              form.setValue(
+                                "images",
+                                images.filter((img) => img !== image),
+                              )
+                            }
+                            className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                            aria-label="Remove image"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      ))}
+                      <FormControl>
+                        <UploadButton
+                          endpoint={"imageUploader"}
+                          onClientUploadComplete={(res: { url: string }[]) => {
+                            form.setValue("images", [...images, res[0].url]);
+                          }}
+                          onUploadError={(error: Error) => {
+                            toast.error(error.message);
+                          }}
+                        />
+                      </FormControl>
+                    </div>
+                  </CardContent>
+                </Card>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        Featured Product
+        <Card>
+          <CardContent className="space-y-2 mt-2">
+            <FormField
+              control={form.control}
+              name="isFeatured"
+              render={({ field }) => (
+                <FormItem className="space-x-2 items-center flex">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+
+                  <FormLabel>Is Featured?</FormLabel>
+                </FormItem>
+              )}
+            />
+
+            {isFeatured && banner && (
+              <div className="relative">
                 <Image
-                  src={image}
-                  alt="product image"
-                  width={100}
-                  height={100}
+                  src={banner}
+                  alt="Banner image"
+                  className="w-full rounded-sm object-cover object-center"
+                  width={1920}
+                  height={680}
                 />
+
                 <button
                   type="button"
-                  onClick={() =>
-                    form.setValue(
-                      'images',
-                      images.filter((img) => img !== image)
-                    )
-                  }
-                  className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
-                  aria-label="Remove image"
+                  onClick={() => form.setValue("banner", null)}
+                  className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-600 text-xs text-white"
+                  aria-label="Remove banner"
                 >
                   ×
                 </button>
               </div>
-            ))}
-            <FormControl>
+            )}
+            {isFeatured && !banner && (
               <UploadButton
-                endpoint={'imageUploader'}
+                endpoint="imageUploader"
                 onClientUploadComplete={(res: { url: string }[]) => {
-                  form.setValue('images', [...images, res[0].url]);
+                  form.setValue("banner", res[0].url);
                 }}
                 onUploadError={(error: Error) => {
                   toast.error(error.message);
                 }}
               />
-            </FormControl>
-          </div>
-        </CardContent>
-      </Card>
-      <FormMessage />
-    </FormItem>
-  )}
-/>
-        </div>
-
-
-Featured Product
-<Card>
-  <CardContent className='space-y-2 mt-2'>
-   <FormField
-  control={form.control}
-  name="isFeatured"
-  render={({ field }) => (
-    <FormItem className="space-x-2 items-center flex">
-      <FormControl>
-        <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-      </FormControl>
-     
-      <FormLabel>Is Featured?</FormLabel>
-    </FormItem>
-  )}
-/>
-
-{isFeatured && banner && (
-  <div className="relative">
-    <Image
-      src={banner}
-      alt="Banner image"
-      className="w-full rounded-sm object-cover object-center"
-      width={1920}
-      height={680}
-    />
-
-    <button
-      type="button"
-      onClick={() => form.setValue("banner", null)}
-      className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-600 text-xs text-white"
-      aria-label="Remove banner"
-    >
-      ×
-    </button>
-  </div>
-)}
-{isFeatured && !banner &&(
-  <UploadButton
-  endpoint='imageUploader'
-  onClientUploadComplete={(res:{url:string}[] )=>{
-    form.setValue('banner', res[0].url)
-  } }
-  onUploadError={(error:Error)=> {
-    toast.error(error.message)
-  }}
-  />
-)}
-  </CardContent>
-</Card>
+            )}
+          </CardContent>
+        </Card>
         <div>
           {/* Description */}
           <FormField
@@ -338,7 +358,10 @@ Featured Product
             render={({
               field,
             }: {
-              field: ControllerRenderProps<z.infer<typeof insertProductSchema>, 'description'>;
+              field: ControllerRenderProps<
+                z.infer<typeof insertProductSchema>,
+                "description"
+              >;
             }) => (
               <FormItem className="w-full">
                 <FormLabel>Description</FormLabel>
@@ -354,7 +377,6 @@ Featured Product
             )}
           />
         </div>
-
         <div>
           {/* Submit */}
           <Button
@@ -363,7 +385,7 @@ Featured Product
             disabled={form.formState.isSubmitting}
             className="w-full"
           >
-            {form.formState.isSubmitting ? 'Submitting...' : `${type} Product`}
+            {form.formState.isSubmitting ? "Submitting..." : `${type} Product`}
           </Button>
         </div>
       </form>

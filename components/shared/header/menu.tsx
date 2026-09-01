@@ -1,4 +1,4 @@
-"use server"
+"use server";
 import { Button } from "@/components/ui/button";
 import ModeToggle from "./mode-toggle";
 import { EllipsisVertical, ShoppingCart } from "lucide-react";

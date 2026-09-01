@@ -1,10 +1,10 @@
-'use client'
+"use client";
 
-import { UpdateUserSchema } from "@/lib/validators"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useRouter } from "next/navigation"
-import { useForm } from "react-hook-form"
-import z from "zod"
+import { UpdateUserSchema } from "@/lib/validators";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import z from "zod";
 import {
   Form,
   FormControl,
@@ -12,14 +12,19 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
-import { Input } from "@/components/ui/input"
-import { Select, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { SelectContent } from "@/components/ui/select"
-import { USER_ROLES } from "@/lib/constants"
-import { Button } from "@/components/ui/button"
-import { toast } from "sonner"
-import { updateUser } from "@/lib/actions/user.actions"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { SelectContent } from "@/components/ui/select";
+import { USER_ROLES } from "@/lib/constants";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { updateUser } from "@/lib/actions/user.actions";
 
 type FormValues = z.infer<typeof UpdateUserSchema>;
 
@@ -29,33 +34,33 @@ interface UpdateUserFormProps {
 
 const UpdateUserForm = ({ user }: UpdateUserFormProps) => {
   const router = useRouter();
-  
+
   const form = useForm<FormValues>({
     resolver: zodResolver(UpdateUserSchema),
-    defaultValues: user
+    defaultValues: user,
   });
 
   const onSubmit = async (values: z.infer<typeof UpdateUserSchema>) => {
-  try {
-    const res = await updateUser({
+    try {
+      const res = await updateUser({
         ...values,
-        id:user.id
-    });
-    if(!res.success){
-        return toast.error(res.message)
-    }
-    toast.success(res.message);
-    form.reset();
-    router.push('/admin/users')
-  } catch (error) {
-    
-  }
+        id: user.id,
+      });
+      if (!res.success) {
+        return toast.error(res.message);
+      }
+      toast.success(res.message);
+      form.reset();
+      router.push("/admin/users");
+    } catch (error) {}
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="gap-5 space-y-8 p-5">
-        
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="gap-5 space-y-8 p-5"
+      >
         {/* Email Field (Disabled) */}
         <FormField
           control={form.control}
@@ -113,7 +118,11 @@ const UpdateUserForm = ({ user }: UpdateUserFormProps) => {
         />
 
         {/* Submit Button */}
-        <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={form.formState.isSubmitting}
+        >
           {form.formState.isSubmitting ? "Updating..." : "Update User"}
         </Button>
       </form>

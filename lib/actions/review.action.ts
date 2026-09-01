@@ -10,7 +10,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 export async function createUpdateReview(
-  data: z.infer<typeof insertReviewSchema>
+  data: z.infer<typeof insertReviewSchema>,
 ) {
   try {
     const session = await auth();
@@ -32,11 +32,11 @@ export async function createUpdateReview(
     const reviewExists = await db.query.reviews.findFirst({
       where: and(
         eq(reviews.productId, review.productId),
-        eq(reviews.userId, review.userId)
+        eq(reviews.userId, review.userId),
       ),
     });
 
-    await db.transaction(async (tx:any) => {
+    await db.transaction(async (tx: any) => {
       if (reviewExists) {
         // Update the existing review
         await tx
@@ -81,7 +81,7 @@ export async function createUpdateReview(
   }
 }
 
-//Get all reviews for a product 
+//Get all reviews for a product
 
 export async function getReviews({ productId }: { productId: string }) {
   const data = await db.query.reviews.findMany({
@@ -99,7 +99,7 @@ export async function getReviews({ productId }: { productId: string }) {
   return { data };
 }
 
-//Get a review written by the current user 
+//Get a review written by the current user
 
 export async function getReviewByProduct({ productId }: { productId: string }) {
   const session = await auth();

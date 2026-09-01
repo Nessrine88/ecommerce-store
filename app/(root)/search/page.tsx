@@ -1,5 +1,8 @@
 import ProductCard from "@/components/shared/product/product-card";
-import { getAllCategories, getAllProducts } from "@/lib/actions/product.actions";
+import {
+  getAllCategories,
+  getAllProducts,
+} from "@/lib/actions/product.actions";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { XIcon } from "lucide-react";
@@ -14,20 +17,25 @@ const prices = [
 
 const ratings = [4, 3, 2, 1];
 const sortOrders = ["newest", "lowest", "highest", "rating"];
-export async function generateMetadata(props:{
+export async function generateMetadata(props: {
   searchParams: Promise<{
     q: string;
-    category:string;
+    category: string;
     price: string;
-    rating:string;
-  }>
-}){
-
-  const {q='all',category='all',price='all',rating='all'} = await props.searchParams;
-  const isQuerySet = q && q !== 'all' && q.trim() !== '';
-  const isCategorySet = category && category !== 'all' && category.trim() !== '';
-  const isPriceSet = price && price !== 'all' && price.trim() !== '';
-  const isRatingSet = rating && rating !== 'all' && rating.trim() !== '';
+    rating: string;
+  }>;
+}) {
+  const {
+    q = "all",
+    category = "all",
+    price = "all",
+    rating = "all",
+  } = await props.searchParams;
+  const isQuerySet = q && q !== "all" && q.trim() !== "";
+  const isCategorySet =
+    category && category !== "all" && category.trim() !== "";
+  const isPriceSet = price && price !== "all" && price.trim() !== "";
+  const isRatingSet = rating && rating !== "all" && rating.trim() !== "";
 
   if (isQuerySet || isCategorySet || isPriceSet || isRatingSet) {
     return {
@@ -38,14 +46,14 @@ export async function generateMetadata(props:{
     };
   } else {
     return {
-      title: 'Search Products '
-    }
+      title: "Search Products ",
+    };
   }
 
   return {
     title: "Search",
   };
-} 
+}
 const SearchPage = async (props: {
   searchParams: Promise<{
     q?: string;
@@ -80,7 +88,14 @@ const SearchPage = async (props: {
     r?: string;
     pg?: string;
   }) => {
-    const params: Record<string, string> = { q, category, price, rating, sort, page };
+    const params: Record<string, string> = {
+      q,
+      category,
+      price,
+      rating,
+      sort,
+      page,
+    };
 
     if (c) params.category = c;
     if (p) params.price = p;
@@ -121,7 +136,7 @@ const SearchPage = async (props: {
         "block rounded-md px-2 py-1 text-sm transition-colors",
         active
           ? "bg-accent font-semibold text-bg"
-          : "text-muted hover:bg-card-hover hover:text-text"
+          : "text-muted hover:bg-card-hover hover:text-text",
       )}
     >
       {children}
@@ -168,13 +183,19 @@ const SearchPage = async (props: {
           </h3>
           <ul className="space-y-0.5">
             <li>
-              <FilterLink href={getFilterUrl({ p: "all" })} active={price === "all"}>
+              <FilterLink
+                href={getFilterUrl({ p: "all" })}
+                active={price === "all"}
+              >
                 Any
               </FilterLink>
             </li>
             {prices.map((p) => (
               <li key={p.value}>
-                <FilterLink href={getFilterUrl({ p: p.value })} active={price === p.value}>
+                <FilterLink
+                  href={getFilterUrl({ p: p.value })}
+                  active={price === p.value}
+                >
                   {p.name}
                 </FilterLink>
               </li>
@@ -191,13 +212,19 @@ const SearchPage = async (props: {
           </h3>
           <ul className="space-y-0.5">
             <li>
-              <FilterLink href={getFilterUrl({ r: "all" })} active={rating === "all"}>
+              <FilterLink
+                href={getFilterUrl({ r: "all" })}
+                active={rating === "all"}
+              >
                 Any
               </FilterLink>
             </li>
             {ratings.map((r) => (
               <li key={r}>
-                <FilterLink href={getFilterUrl({ r: `${r}` })} active={rating === r.toString()}>
+                <FilterLink
+                  href={getFilterUrl({ r: `${r}` })}
+                  active={rating === r.toString()}
+                >
                   {r} stars & up
                 </FilterLink>
               </li>
@@ -211,7 +238,9 @@ const SearchPage = async (props: {
         <div className="flex flex-col gap-3 border-b border-primary/20 pb-4 md:flex-row md:items-center md:justify-between">
           <div className="flex flex-wrap items-center gap-2 text-sm text-muted">
             {q !== "all" && q !== "" && (
-              <span className="rounded-full bg-card px-3 py-1 text-text">Query: {q}</span>
+              <span className="rounded-full bg-card px-3 py-1 text-text">
+                Query: {q}
+              </span>
             )}
             {category !== "all" && category !== "" && (
               <span className="rounded-full bg-card px-3 py-1 text-text">
@@ -219,7 +248,9 @@ const SearchPage = async (props: {
               </span>
             )}
             {price !== "all" && price !== "" && (
-              <span className="rounded-full bg-card px-3 py-1 text-text">Price: {price}</span>
+              <span className="rounded-full bg-card px-3 py-1 text-text">
+                Price: {price}
+              </span>
             )}
             {rating !== "all" && (
               <span className="rounded-full bg-card px-3 py-1 text-text">
@@ -245,7 +276,9 @@ const SearchPage = async (props: {
                 href={getFilterUrl({ s })}
                 className={cn(
                   "rounded-md px-2 py-1 capitalize transition-colors hover:bg-card-hover",
-                  sort === s ? "font-semibold text-accent" : "text-muted hover:text-text"
+                  sort === s
+                    ? "font-semibold text-accent"
+                    : "text-muted hover:text-text",
                 )}
               >
                 {s}
@@ -269,7 +302,12 @@ const SearchPage = async (props: {
               price: product.price ?? "0",
             };
 
-            return <ProductCard key={product.id} product={normalizedProduct as any} />;
+            return (
+              <ProductCard
+                key={product.id}
+                product={normalizedProduct as any}
+              />
+            );
           })}
         </div>
       </div>

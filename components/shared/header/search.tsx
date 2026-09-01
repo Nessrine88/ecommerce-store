@@ -1,14 +1,14 @@
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectTrigger,
   SelectValue,
   SelectItem,
-} from '@/components/ui/select';
-import { getAllCategories } from '@/lib/actions/product.actions';
-import { SearchIcon } from 'lucide-react';
+} from "@/components/ui/select";
+import { getAllCategories } from "@/lib/actions/product.actions";
+import { SearchIcon } from "lucide-react";
 
 const Search = async () => {
   const categories = await getAllCategories();

@@ -1,31 +1,31 @@
-import { auth } from "@/auth"
-import { signOutUser } from "@/lib/actions/user.actions"
-import { Button, buttonVariants } from "@/components/ui/button"
-import Link from "next/link"
+import { auth } from "@/auth";
+import { signOutUser } from "@/lib/actions/user.actions";
+import { Button, buttonVariants } from "@/components/ui/button";
+import Link from "next/link";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { UserIcon } from "lucide-react"
+} from "@/components/ui/dropdown-menu";
+import { UserIcon } from "lucide-react";
 
 const UserButton = async () => {
-  const session = await auth()
+  const session = await auth();
 
   if (!session) {
     return (
       <Link href="/sign-in" className={buttonVariants()}>
         <UserIcon /> Sign In
       </Link>
-    )
+    );
   }
 
-  const firstInitial = session.user?.name?.charAt(0).toUpperCase() ?? "U"
+  const firstInitial = session.user?.name?.charAt(0).toUpperCase() ?? "U";
 
   return (
     <div className="text-black">
-      <DropdownMenu >
+      <DropdownMenu>
         <DropdownMenuTrigger
           render={
             <Button
@@ -37,7 +37,10 @@ const UserButton = async () => {
           }
         />
 
-        <DropdownMenuContent className="w-56 text-white backdrop-blur bg-white/30 " align="end">
+        <DropdownMenuContent
+          className="w-56 text-white backdrop-blur bg-white/30 "
+          align="end"
+        >
           <div className="px-1.5 py-1 text-xs font-medium text-muted-foreground">
             <div className="flex flex-col space-y-1">
               <div className="text-sm font-medium leading-none">
@@ -50,14 +53,18 @@ const UserButton = async () => {
               </div>
             </div>
           </div>
+          <DropdownMenuItem>
+            <Link href="/user/orders" className="w-full">
+              Order History
+            </Link>
+          </DropdownMenuItem>
+          {session?.user?.role === "admin" && (
             <DropdownMenuItem>
-              <Link href= "/user/orders" className="w-full">Order History</Link>
+              <Link href="/admin/overview" className="w-full">
+                Admin
+              </Link>
             </DropdownMenuItem>
-            { session?.user?.role === 'admin' && (
-               <DropdownMenuItem>
-              <Link href= "/admin/overview" className="w-full">Admin</Link>
-            </DropdownMenuItem>
-            )}
+          )}
           <DropdownMenuItem
             className="p-0 mb-1"
             render={<form action={signOutUser} className="w-full" />}
@@ -73,7 +80,7 @@ const UserButton = async () => {
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
-  )
-}
+  );
+};
 
-export default UserButton
+export default UserButton;

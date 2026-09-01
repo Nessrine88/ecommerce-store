@@ -1,7 +1,7 @@
 import { CartItem } from "@/types";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import qs from 'query-string'
+import qs from "query-string";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -20,24 +20,24 @@ export function convertToPlainObject<T>(value: T): T {
 // e.g. round2(1.005) -> 1.01 (rounds using integer math, not raw float ops)
 // lib/utils.ts
 export function round2(value: number | string) {
-  const num = typeof value === 'number' ? value : Number(value)
-  return Math.round((num + Number.EPSILON) * 100) / 100
+  const num = typeof value === "number" ? value : Number(value);
+  return Math.round((num + Number.EPSILON) * 100) / 100;
 }
 
 export function calcPrice(items: CartItem[]) {
   const itemsPrice = round2(
-    items.reduce((acc, item) => acc + Number(item.price) * item.qty, 0)
-  )
+    items.reduce((acc, item) => acc + Number(item.price) * item.qty, 0),
+  );
   const shippingPrice = round2(itemsPrice > 50 ? 0 : 5);
-  const taxPrice = round2(0.15 * itemsPrice)
-  const totalPrice = round2(itemsPrice + shippingPrice + taxPrice)
+  const taxPrice = round2(0.15 * itemsPrice);
+  const totalPrice = round2(itemsPrice + shippingPrice + taxPrice);
 
   return {
     itemsPrice: itemsPrice.toFixed(2),
     shippingPrice: shippingPrice.toFixed(2),
     taxPrice: taxPrice.toFixed(2),
     totalPrice: totalPrice.toFixed(2),
-  }
+  };
 }
 
 // Format a number as a string with exactly 2 decimal places
@@ -94,27 +94,25 @@ export function formatError(error: unknown): string {
   return "Something went wrong";
 }
 
-const CURRENCY_FORMATTER = new Intl.NumberFormat('en-US', {
-  currency: 'USD',
-  style: 'currency',
+const CURRENCY_FORMATTER = new Intl.NumberFormat("en-US", {
+  currency: "USD",
+  style: "currency",
   minimumFractionDigits: 2,
-})
+});
 export function formatCurrency(amount: number | string | null) {
-  if(typeof amount === 'number') {
+  if (typeof amount === "number") {
     return CURRENCY_FORMATTER.format(amount);
-  } else if(typeof amount === 'string') {
-    return CURRENCY_FORMATTER.format(Number (amount));
+  } else if (typeof amount === "string") {
+    return CURRENCY_FORMATTER.format(Number(amount));
+  } else {
+    return "NaN";
   }
-
-  else {
-    return 'NaN';
-  }
-};
+}
 
 // Shorten UUID
 
 export function formatId(id: string) {
-  return `..${id.substring(id.length - 6)}`
+  return `..${id.substring(id.length - 6)}`;
 }
 
 // Format date and times
@@ -144,23 +142,31 @@ export function formatDateTime(date: Date | string) {
 
 // Form the pagination links
 
-export function formUrlQuery({params, key, value}: {params:string; key:string;value: string | null}) {
-const query = qs.parse(params);
-query[key] = value;
-return qs.stringifyUrl(
-  {
-    url: window.location.pathname,
-    query,
-  },
-  {
-    skipNull: true,
-  }
-)
+export function formUrlQuery({
+  params,
+  key,
+  value,
+}: {
+  params: string;
+  key: string;
+  value: string | null;
+}) {
+  const query = qs.parse(params);
+  query[key] = value;
+  return qs.stringifyUrl(
+    {
+      url: window.location.pathname,
+      query,
+    },
+    {
+      skipNull: true,
+    },
+  );
 }
 
 //Format Number
 
-const NUMBER_FORMATTER = new Intl.NumberFormat('en-US');
+const NUMBER_FORMATTER = new Intl.NumberFormat("en-US");
 export function formatNumber(number: number) {
-  return NUMBER_FORMATTER.format(number)
+  return NUMBER_FORMATTER.format(number);
 }

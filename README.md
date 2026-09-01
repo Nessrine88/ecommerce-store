@@ -166,6 +166,7 @@ You can deploy this project using:
 # 👥 Authors <a name="authors"></a>
 
 👤 **Macherki Nessrine**
+
 - GitHub: [@Nessrine88](https://github.com/Nessrine88)
 - LinkedIn: [LinkedIn](https://www.linkedin.com/in/nessrine-macherki/)
 
@@ -216,15 +217,15 @@ Contributions, issues, and feature requests are welcome! Feel free to check the 
 
 > - **Do I need an account to buy plants?**
 
-  - You can browse the catalog freely, but you'll need to sign up or sign in to complete checkout and view your order history.
+- You can browse the catalog freely, but you'll need to sign up or sign in to complete checkout and view your order history.
 
 > - **Can I manage my own plant listings as a regular user?**
 
-  - No, only admin accounts have access to the product management dashboard. Regular users can browse and purchase products.
+- No, only admin accounts have access to the product management dashboard. Regular users can browse and purchase products.
 
 > - **What payment methods are supported?**
 
-  - Payment methods are configurable; check the checkout page for the currently supported options.
+- Payment methods are configurable; check the checkout page for the currently supported options.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

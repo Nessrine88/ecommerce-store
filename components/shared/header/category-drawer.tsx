@@ -1,4 +1,4 @@
-import { Button, buttonVariants } from '@/components/ui/button';
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Drawer,
   DrawerClose,
@@ -6,11 +6,11 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from '@/components/ui/drawer';
-import { getAllCategories } from '@/lib/actions/product.actions';
-import { cn } from '@/lib/utils';
-import { MenuIcon } from 'lucide-react';
-import Link from 'next/link';
+} from "@/components/ui/drawer";
+import { getAllCategories } from "@/lib/actions/product.actions";
+import { cn } from "@/lib/utils";
+import { MenuIcon } from "lucide-react";
+import Link from "next/link";
 
 const CategoryDrawer = async () => {
   const categories = await getAllCategories();
@@ -30,8 +30,8 @@ const CategoryDrawer = async () => {
                 <Link
                   href={`/search?category=${x.category}`}
                   className={cn(
-                    buttonVariants({ variant: 'ghost' }),
-                    'w-full justify-start'
+                    buttonVariants({ variant: "ghost" }),
+                    "w-full justify-start",
                   )}
                 >
                   {x.category} ({x.count})

@@ -1,12 +1,12 @@
-"use client"
-import React, { useEffect, useState } from 'react'
-import { Button } from './ui/button'
-import Link from 'next/link'
-import Image from 'next/image'
+"use client";
+import React, { useEffect, useState } from "react";
+import { Button } from "./ui/button";
+import Link from "next/link";
+import Image from "next/image";
 
 //Static target date (replace with desired date)
 
-const TARGET_DATE = new Date('2026-09-20T00:00:00');
+const TARGET_DATE = new Date("2026-09-20T00:00:00");
 
 //Function to calculate the time remaaining
 
@@ -16,19 +16,14 @@ const calculateTimeRemaining = (targetDate: Date) => {
   return {
     days: Math.floor(timeDifference / (1000 * 60 * 60 * 24)),
     hours: Math.floor(
-      (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
     ),
-    minutes: Math.floor(
-      (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
-    ),
-    seconds: Math.floor(
-      (timeDifference % (1000 * 60)) / (1000)
-    ),
-  }
-}
+    minutes: Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60)),
+    seconds: Math.floor((timeDifference % (1000 * 60)) / 1000),
+  };
+};
 
 const DealCountdown = () => {
-
   const [time, setTime] = useState<ReturnType<typeof calculateTimeRemaining>>();
 
   useEffect(() => {
@@ -36,12 +31,17 @@ const DealCountdown = () => {
     const timerInterval = setInterval(() => {
       const newTime = calculateTimeRemaining(TARGET_DATE);
       setTime(newTime);
-      if (newTime.days === 0 && newTime.hours === 0 && newTime.minutes === 0 && newTime.seconds === 0) {
-        clearInterval(timerInterval)
+      if (
+        newTime.days === 0 &&
+        newTime.hours === 0 &&
+        newTime.minutes === 0 &&
+        newTime.seconds === 0
+      ) {
+        clearInterval(timerInterval);
       }
-    }, 1000)
+    }, 1000);
     return () => clearInterval(timerInterval);
-  }, [])
+  }, []);
 
   if (!time) {
     return (
@@ -52,10 +52,14 @@ const DealCountdown = () => {
           </h3>
         </div>
       </section>
-    )
+    );
   }
 
-  const hasEnded = time.days === 0 && time.hours === 0 && time.minutes === 0 && time.seconds === 0;
+  const hasEnded =
+    time.days === 0 &&
+    time.hours === 0 &&
+    time.minutes === 0 &&
+    time.seconds === 0;
 
   if (hasEnded) {
     return (
@@ -72,10 +76,7 @@ const DealCountdown = () => {
           </p>
 
           <div>
-            <Button
-            
-              className="h-11 rounded-full bg-amber-400 px-7 text-sm font-semibold text-stone-950 hover:bg-amber-300"
-            >
+            <Button className="h-11 rounded-full bg-amber-400 px-7 text-sm font-semibold text-stone-950 hover:bg-amber-300">
               <Link href="/search">View products</Link>
             </Button>
           </div>
@@ -90,7 +91,7 @@ const DealCountdown = () => {
           />
         </div>
       </section>
-    )
+    );
   }
 
   return (
@@ -107,8 +108,8 @@ const DealCountdown = () => {
 
         <p className="max-w-md text-base leading-relaxed text-stone-400">
           Get ready for a shopping experience like never before. Every purchase
-          comes with exclusive perks and offers, making this month a
-          celebration of savvy choices and amazing deals.
+          comes with exclusive perks and offers, making this month a celebration
+          of savvy choices and amazing deals.
         </p>
 
         <ul className="grid grid-cols-4 gap-3 sm:gap-4">
@@ -119,10 +120,7 @@ const DealCountdown = () => {
         </ul>
 
         <div>
-          <Button
-            
-            className="h-11 rounded-full bg-amber-400 px-7 text-sm font-semibold text-stone-950 hover:bg-amber-300"
-          >
+          <Button className="h-11 rounded-full bg-amber-400 px-7 text-sm font-semibold text-stone-950 hover:bg-amber-300">
             <Link href="/search">View products</Link>
           </Button>
         </div>
@@ -137,16 +135,16 @@ const DealCountdown = () => {
         />
       </div>
     </section>
-  )
-}
+  );
+};
 
-const StatBox = ({ label, value }: { label: string, value: number }) => (
+const StatBox = ({ label, value }: { label: string; value: number }) => (
   <li className="flex flex-col items-center gap-1 rounded-xl border border-stone-800 bg-stone-900/60 py-4">
     <p className="font-serif text-2xl text-stone-50 tabular-nums sm:text-3xl">
-      {String(value).padStart(2, '0')}
+      {String(value).padStart(2, "0")}
     </p>
     <p className="text-xs text-stone-500">{label}</p>
   </li>
-)
+);
 
-export default DealCountdown
+export default DealCountdown;

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Link from "next/link";
 import { useActionState } from "react";
@@ -28,12 +28,12 @@ export default function SignUpForm() {
     success: false,
     message: "",
   });
- const searchParams = useSearchParams();
- const callbackUrl = searchParams.get('/callbackUrl') || '/'
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("/callbackUrl") || "/";
   return (
     <form action={action} className="space-y-6">
-        <input type="hidden" name= "callbackUrl" value = "callbackUrl"  />
-         <div className="space-y-2">
+      <input type="hidden" name="callbackUrl" value="callbackUrl" />
+      <div className="space-y-2">
         <Label htmlFor="name">Name</Label>
 
         <Input
@@ -73,7 +73,7 @@ export default function SignUpForm() {
           className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm outline-none transition focus:border-accent focus:ring-2 focus:ring-blue-500/20"
         />
       </div>
-       <div className="space-y-2">
+      <div className="space-y-2">
         <div className="flex items-center justify-between">
           <Label htmlFor="confirmPassword">Confirm Password</Label>
         </div>

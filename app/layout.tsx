@@ -33,7 +33,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col  ">
         <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
           {children}
-                <Toaster richColors />
+          <Toaster richColors />
         </ThemeProvider>
       </body>
     </html>

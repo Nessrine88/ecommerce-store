@@ -37,7 +37,7 @@ const DeleteDialog = ({
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger >
+      <AlertDialogTrigger>
         <Button size="sm" variant="destructive" className="ml-2">
           Delete
         </Button>

@@ -1,13 +1,36 @@
-'use cleint';
+"use cleint";
 
 import { AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader,DialogTitle } from "@/components/ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { createUpdateReview, getReviewByProduct } from "@/lib/actions/review.action";
+import {
+  createUpdateReview,
+  getReviewByProduct,
+} from "@/lib/actions/review.action";
 import { reviewFormDefaultValues } from "@/lib/constants";
 import { insertReviewSchema } from "@/lib/validators";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,127 +40,136 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 
-
-
-const ReviewForm = ({userId, productId, onReviewSubmitted}:{userId:string; productId:string; onReviewSubmitted:()=> void;}) => {
+const ReviewForm = ({
+  userId,
+  productId,
+  onReviewSubmitted,
+}: {
+  userId: string;
+  productId: string;
+  onReviewSubmitted: () => void;
+}) => {
   const [open, setOpen] = useState(false);
   const form = useForm<z.infer<typeof insertReviewSchema>>({
     resolver: zodResolver(insertReviewSchema),
-    defaultValues: reviewFormDefaultValues
+    defaultValues: reviewFormDefaultValues,
   });
-  //Open form handler 
-  const handleOpenForm= async()=> {
-    form.setValue('productId',productId);
-    form.setValue('userId',userId);
+  //Open form handler
+  const handleOpenForm = async () => {
+    form.setValue("productId", productId);
+    form.setValue("userId", userId);
 
-    const review = await getReviewByProduct({productId})
-    if(review){
-        form.setValue('title', review.title);
-        form.setValue('description', review.description);
-        form.setValue('rating', review.rating);
+    const review = await getReviewByProduct({ productId });
+    if (review) {
+      form.setValue("title", review.title);
+      form.setValue("description", review.description);
+      form.setValue("rating", review.rating);
     }
-    setOpen(true)
+    setOpen(true);
   };
 
   //Submit form handler
 
-  const onSubmit : SubmitHandler<z.infer<typeof insertReviewSchema>> =async (values)=> {
-    const res = await createUpdateReview({...values, productId});
-    if(!res.success) {
-        toast.error(res.message);
-        return;
+  const onSubmit: SubmitHandler<z.infer<typeof insertReviewSchema>> = async (
+    values,
+  ) => {
+    const res = await createUpdateReview({ ...values, productId });
+    if (!res.success) {
+      toast.error(res.message);
+      return;
     }
-    toast.success('Review submitted successfully');
+    toast.success("Review submitted successfully");
     setOpen(false);
     onReviewSubmitted();
-  }
-    return (
-    <Dialog open={open} onOpenChange={setOpen}  >
-      <Button onClick={handleOpenForm} variant='default'>
+  };
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <Button onClick={handleOpenForm} variant="default">
         Write a review
       </Button>
-      <DialogContent className='sm:max-w-[425px] border border-accent '>
-        <Form {...form} >
-            <form method='post' onSubmit={form.handleSubmit(onSubmit)}>
- <DialogHeader>
-                <DialogTitle className='text-accent '>
-                    Write a review
-                </DialogTitle>
-                <DialogDescription className={'text-accent'}>
-                    Share your thoughts with other customers
-                </DialogDescription>
+      <DialogContent className="sm:max-w-[425px] border border-accent ">
+        <Form {...form}>
+          <form method="post" onSubmit={form.handleSubmit(onSubmit)}>
+            <DialogHeader>
+              <DialogTitle className="text-accent ">Write a review</DialogTitle>
+              <DialogDescription className={"text-accent"}>
+                Share your thoughts with other customers
+              </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4 text-accent ">
-                <FormField
+              <FormField
                 control={form.control}
-                name='title'
-                render={({field})=>(
-                    <FormItem>
-                        <FormLabel>Title</FormLabel>
-                        <FormControl>
-                            <Input placeholder='Enter title' {...field} />
-                        </FormControl>
-                    </FormItem>
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Title</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter title" {...field} />
+                    </FormControl>
+                  </FormItem>
                 )}
-                />
+              />
 
-                <FormField
+              <FormField
                 control={form.control}
-                name='description'
-                render={({field})=>(
-                    <FormItem>
-                        <FormLabel>Description</FormLabel>
-                        <FormControl>
-                            <Textarea placeholder='Enter Description' {...field} />
-                        </FormControl>
-                    </FormItem>
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="Enter Description" {...field} />
+                    </FormControl>
+                  </FormItem>
                 )}
-                />
-                <FormField
+              />
+              <FormField
                 control={form.control}
-                name='rating'
-                render={({field})=>(
-                    <FormItem>
-                        <FormLabel>Rating</FormLabel>
-                        
-                         <Select
-  onValueChange={(value) => field.onChange(Number(value))}
-  value={field.value?.toString()}
->
-  <FormControl>
-    <SelectTrigger>
-      <SelectValue placeholder="Select a rating" />
-    </SelectTrigger>
-  </FormControl>
+                name="rating"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Rating</FormLabel>
 
-  <SelectContent>
-    {Array.from({ length: 5 }).map((_, index) => (
-      <SelectItem key={index} value={(index + 1).toString()}>
-        {index + 1}{' '}
-        <StarIcon className="inline h-4 w-4" />
-      </SelectItem>
-    ))}
-  </SelectContent>
-</Select>
-                       <FormMessage />
-                    </FormItem>
+                    <Select
+                      onValueChange={(value) => field.onChange(Number(value))}
+                      value={field.value?.toString()}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a rating" />
+                        </SelectTrigger>
+                      </FormControl>
+
+                      <SelectContent>
+                        {Array.from({ length: 5 }).map((_, index) => (
+                          <SelectItem
+                            key={index}
+                            value={(index + 1).toString()}
+                          >
+                            {index + 1} <StarIcon className="inline h-4 w-4" />
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
                 )}
-                />
+              />
             </div>
             <DialogFooter>
-                <Button type= 'submit'
-                size='lg'
-                className= 'w-full'
-                disabled = {form.formState.isSubmitting}>
-                    {form.formState.isSubmitting ? 'Submitting...' : 'Submit'}
-                </Button>
+              <Button
+                type="submit"
+                size="lg"
+                className="w-full"
+                disabled={form.formState.isSubmitting}
+              >
+                {form.formState.isSubmitting ? "Submitting..." : "Submit"}
+              </Button>
             </DialogFooter>
-            </form>
-           
+          </form>
         </Form>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
 
-export default ReviewForm
+export default ReviewForm;

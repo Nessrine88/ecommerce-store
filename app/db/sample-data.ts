@@ -1,4 +1,3 @@
-
 import { hashSync } from "bcrypt-ts-edge";
 
 const sampleData = {
@@ -186,7 +185,7 @@ const sampleData = {
       numReviews: 31,
       stock: 14,
       isFeatured: true,
-      banner:"https://images.unsplash.com/photo-1593482892290-f54927ae2f5a",
+      banner: "https://images.unsplash.com/photo-1593482892290-f54927ae2f5a",
     },
 
     {
@@ -249,4 +248,3 @@ const sampleData = {
 };
 
 export default sampleData;
-

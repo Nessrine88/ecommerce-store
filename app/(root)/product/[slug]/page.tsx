@@ -21,8 +21,8 @@ const ProductDetailsPage = async ({
   const { slug } = await params;
 
   const product = await getProductBySlug(slug);
-const session = await auth();
-const userId = session?.user?.id;
+  const session = await auth();
+  const userId = session?.user?.id;
 
   if (!product) notFound();
 
@@ -43,88 +43,88 @@ const userId = session?.user?.id;
     : undefined;
   return (
     <div className="flex flex-col ">
-    <section className="min-h-screen py-10 text-accent">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 md:grid-cols-12">
-        {/* Product Image */}
-        <div className="md:col-span-5">
-          <div className="md:sticky md:top-24">
-            <ProdductImages images={product.images ?? []} />
-          </div>
-        </div>
-
-        {/* Product Details */}
-        <div className="md:col-span-4">
-          <div className="flex flex-col gap-6">
-            <div>
-              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                {product.brand} · {product.category}
-              </p>
-
-              <h1 className="mt-2 text-3xl font-semibold tracking-tight text-foreground">
-                {product.name}
-              </h1>
+      <section className="min-h-screen py-10 text-accent">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 md:grid-cols-12">
+          {/* Product Image */}
+          <div className="md:col-span-5">
+            <div className="md:sticky md:top-24">
+              <ProdductImages images={product.images ?? []} />
             </div>
+          </div>
 
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <div className="flex items-center gap-0.5">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star
-                    key={i}
-                    className={
-                      i < Math.round(Number(product.rating))
-                        ? "h-4 w-4 fill-yellow-400 text-yellow-400"
-                        : "h-4 w-4 text-muted-foreground/30"
-                    }
-                  />
-                ))}
+          {/* Product Details */}
+          <div className="md:col-span-4">
+            <div className="flex flex-col gap-6">
+              <div>
+                <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                  {product.brand} · {product.category}
+                </p>
+
+                <h1 className="mt-2 text-3xl font-semibold tracking-tight text-foreground">
+                  {product.name}
+                </h1>
               </div>
-            <span>
-              {Number(product.rating)} · {product.numReviews}{" "}
-              {product.numReviews === 1 ? "review" : "reviews"}
-            </span>
-            </div>
 
-            <ProductPrice
-              value={Number(product.price)}
-              className="w-fit rounded-full bg-green-100 px-3 py-1.5 text-sm font-medium text-green-700"
-            />
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <div className="flex items-center gap-0.5">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star
+                      key={i}
+                      className={
+                        i < Math.round(Number(product.rating))
+                          ? "h-4 w-4 fill-yellow-400 text-yellow-400"
+                          : "h-4 w-4 text-muted-foreground/30"
+                      }
+                    />
+                  ))}
+                </div>
+                <span>
+                  {Number(product.rating)} · {product.numReviews}{" "}
+                  {product.numReviews === 1 ? "review" : "reviews"}
+                </span>
+              </div>
 
-            <Separator />
+              <ProductPrice
+                value={Number(product.price)}
+                className="w-fit rounded-full bg-green-100 px-3 py-1.5 text-sm font-medium text-green-700"
+              />
 
-            <div>
-              <h2 className="mb-2 text-sm font-semibold text-foreground">
-                Description
-              </h2>
-              <p className="leading-relaxed text-muted-foreground">
-                {product.description}
-              </p>
+              <Separator />
+
+              <div>
+                <h2 className="mb-2 text-sm font-semibold text-foreground">
+                  Description
+                </h2>
+                <p className="leading-relaxed text-muted-foreground">
+                  {product.description}
+                </p>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Purchase Card */}
-        <div className="md:col-span-3">
-          <div className="md:sticky md:top-24">
-            <Card>
-              <CardContent className="space-y-5 p-5">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Price</span>
-                  <ProductPrice
-                    value={Number(product.price)}
-                    className="text-lg font-semibold"
-                  />
-                </div>
+          {/* Purchase Card */}
+          <div className="md:col-span-3">
+            <div className="md:sticky md:top-24">
+              <Card>
+                <CardContent className="space-y-5 p-5">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Price</span>
+                    <ProductPrice
+                      value={Number(product.price)}
+                      className="text-lg font-semibold"
+                    />
+                  </div>
 
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">
-                    Status
-                  </span>
-                  {inStock ? (
-                    <Badge variant="outline">In Stock</Badge>
-                  ) : (
-                    <Badge variant="destructive">Out of Stock</Badge>
-                  )}
-                </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">
+                      Status
+                    </span>
+                    {inStock ? (
+                      <Badge variant="outline">In Stock</Badge>
+                    ) : (
+                      <Badge variant="destructive">Out of Stock</Badge>
+                    )}
+                  </div>
                   <div className="pt-2">
                     {inStock ? (
                       <AddToCart
@@ -144,20 +144,20 @@ const userId = session?.user?.id;
                       </Button>
                     )}
                   </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
-    <section className=" w-full h-full  text-accent">
-      <h2 className="font-bold"> Custmer Reviews  </h2>
-        <ReviewList userId={userId || ''}
-        productId ={product.id}
-        productSlug= {product.slug}
+      </section>
+      <section className=" w-full h-full  text-accent">
+        <h2 className="font-bold"> Custmer Reviews </h2>
+        <ReviewList
+          userId={userId || ""}
+          productId={product.id}
+          productSlug={product.slug}
         />
-   
-    </section>
+      </section>
     </div>
   );
 };

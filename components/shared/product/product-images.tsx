@@ -8,9 +8,9 @@ const ProdductImages = ({ images }: { images: string[] }) => {
 
   return (
     <div className="flex flex-col gap-4">
-        <h2 className="mt-2 text-3xl font-semibold tracking-tight text-foreground">
-            Product Details
-        </h2>
+      <h2 className="mt-2 text-3xl font-semibold tracking-tight text-foreground">
+        Product Details
+      </h2>
       <div className="overflow-hidden rounded-lg border bg-muted/20">
         <Image
           src={images[current]}
@@ -34,7 +34,7 @@ const ProdductImages = ({ images }: { images: string[] }) => {
               "relative h-20 w-20 shrink-0 overflow-hidden rounded-md border transition",
               current === index
                 ? "border-foreground ring-2 ring-foreground ring-offset-2"
-                : "border-transparent opacity-70 hover:opacity-100"
+                : "border-transparent opacity-70 hover:opacity-100",
             )}
           >
             <Image

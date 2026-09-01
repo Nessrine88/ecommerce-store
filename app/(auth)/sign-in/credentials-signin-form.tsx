@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Link from "next/link";
 import { useActionState } from "react";
@@ -28,11 +28,11 @@ export default function CredentialsSignInForm() {
     success: false,
     message: "",
   });
- const searchParams = useSearchParams();
- const callbackUrl = searchParams.get('/callbackUrl') || '/'
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("/callbackUrl") || "/";
   return (
     <form action={action} className="space-y-6">
-        <input type="hidden" name= "callbackUrl" value = "callbackUrl"  />
+      <input type="hidden" name="callbackUrl" value="callbackUrl" />
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
 

@@ -1,4 +1,4 @@
-'use server';
+"use server";
 
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { convertToPlainObject, formatError } from "@/lib/utils";
@@ -7,91 +7,105 @@ import { getMyCart } from "./cart.actions";
 import { getUserById } from "./user.actions";
 import { insertOrderSchema } from "@/lib/validators";
 import { db } from "@/app/db";
-import { orders, orderItems, carts,products, users  } from "@/app/db/schema";
+import { orders, orderItems, carts, products, users } from "@/app/db/schema";
 import { count, desc, eq, ilike, inArray, sql, sum } from "drizzle-orm";
 import { PAGE_SIZE } from "../constants";
 import { revalidatePath } from "next/cache";
 import { sendPurchaseReceipt } from "@/app/email";
 import { Order, PaymentResult, ShippingAddress } from "@/types";
 
-
 export async function createOrder() {
-    try {
-        const session = await auth();
-        if (!session) throw new Error('User is not authenticated');
+  try {
+    const session = await auth();
+    if (!session) throw new Error("User is not authenticated");
 
-        const cart = await getMyCart();
-        const userId = session?.user?.id;
-        if (!userId) throw new Error('User not found');
+    const cart = await getMyCart();
+    const userId = session?.user?.id;
+    if (!userId) throw new Error("User not found");
 
-        const user = await getUserById(userId);
+    const user = await getUserById(userId);
 
-        if (!cart || (cart && Array.isArray(cart.items) && cart.items.length === 0)) {
-            return { success: false, message: 'Your cart is empty', redirectTo: '/cart' };
-        }
-        if (!user.address) {
-            return { success: false, message: 'No shipping address', redirectTo: '/shipping-address' };
-        }
-        if (!user.paymentMethod) {
-            return { success: false, message: 'No payment method', redirectTo: '/payment-method' };
-        }
-
-
-
-        // Create order object
-        const order = insertOrderSchema.parse({
-            userId: user.id,
-            shippingAddress: user.address,
-            paymentMethod: user.paymentMethod,
-            itemsPrice: cart.itemsPrice,
-            shippingPrice: cart.shippingPrice,
-            taxPrice: cart.taxPrice,
-            totalPrice: cart.totalPrice,
-        });
-
-        // Run insert + order items + cart cleanup as a single transaction
-        const insertedOrderId = await db.transaction(async (tx) => {
-            const [insertedOrder] = await tx.insert(orders).values(order).returning();
-
-            const cartItems = Array.isArray(cart.items) ? cart.items : [];
-
-            await tx.insert(orderItems).values(
-                cartItems.map((item) => ({
-                    ...item,
-                    price: item.price,
-                    orderId: insertedOrder.id,
-                }))
-            );
-
-            // Clear the cart after order is placed
-            await tx
-                .update(carts)
-                .set({
-                    items: [],
-                    itemsPrice: '0.00',
-                    shippingPrice: '0.00',
-                    taxPrice: '0.00',
-                    totalPrice: '0.00',
-                    })
-                .where(eq(carts.id, cart.id));
-
-            return insertedOrder.id;
-        });
-
-        if (!insertedOrderId) throw new Error('Order creation failed');
-
-        return { success: true, message: 'Order created', redirectTo: `/order/${insertedOrderId}` };
-    } catch (error) {
-        if (isRedirectError(error)) throw error;
-        return { success: false, message: formatError(error) };
+    if (
+      !cart ||
+      (cart && Array.isArray(cart.items) && cart.items.length === 0)
+    ) {
+      return {
+        success: false,
+        message: "Your cart is empty",
+        redirectTo: "/cart",
+      };
     }
+    if (!user.address) {
+      return {
+        success: false,
+        message: "No shipping address",
+        redirectTo: "/shipping-address",
+      };
+    }
+    if (!user.paymentMethod) {
+      return {
+        success: false,
+        message: "No payment method",
+        redirectTo: "/payment-method",
+      };
+    }
+
+    // Create order object
+    const order = insertOrderSchema.parse({
+      userId: user.id,
+      shippingAddress: user.address,
+      paymentMethod: user.paymentMethod,
+      itemsPrice: cart.itemsPrice,
+      shippingPrice: cart.shippingPrice,
+      taxPrice: cart.taxPrice,
+      totalPrice: cart.totalPrice,
+    });
+
+    // Run insert + order items + cart cleanup as a single transaction
+    const insertedOrderId = await db.transaction(async (tx) => {
+      const [insertedOrder] = await tx.insert(orders).values(order).returning();
+
+      const cartItems = Array.isArray(cart.items) ? cart.items : [];
+
+      await tx.insert(orderItems).values(
+        cartItems.map((item) => ({
+          ...item,
+          price: item.price,
+          orderId: insertedOrder.id,
+        })),
+      );
+
+      // Clear the cart after order is placed
+      await tx
+        .update(carts)
+        .set({
+          items: [],
+          itemsPrice: "0.00",
+          shippingPrice: "0.00",
+          taxPrice: "0.00",
+          totalPrice: "0.00",
+        })
+        .where(eq(carts.id, cart.id));
+
+      return insertedOrder.id;
+    });
+
+    if (!insertedOrderId) throw new Error("Order creation failed");
+
+    return {
+      success: true,
+      message: "Order created",
+      redirectTo: `/order/${insertedOrderId}`,
+    };
+  } catch (error) {
+    if (isRedirectError(error)) throw error;
+    return { success: false, message: formatError(error) };
+  }
 }
 
-//Get Order By Id 
+//Get Order By Id
 
 export async function getOrderById(orderId: string) {
-  console.log("orderId from URL:", orderId);
-
   const data = await db.query.orders.findFirst({
     where: eq(orders.id, orderId),
     with: {
@@ -104,9 +118,6 @@ export async function getOrderById(orderId: string) {
       },
     },
   });
-
-  console.log("order found:", data);
-
   return convertToPlainObject(data);
 }
 //Get user's orders
@@ -140,7 +151,7 @@ export async function getMyOrders({
     data: convertToPlainObject(data),
     totalPages: Math.ceil(dataCount / limit),
   };
-};
+}
 
 // Get sales data and order summary
 type SalesDataType = {
@@ -171,7 +182,7 @@ export async function getOrderSummary() {
       FROM "Order"
       GROUP BY to_char("createdAt", 'MM/YY')
       ORDER BY MIN("createdAt")
-    `
+    `,
   );
 
   const salesData: SalesDataType = salesDataRaw.rows.map((entry) => ({
@@ -198,7 +209,7 @@ export async function getOrderSummary() {
   };
 }
 
-// Get all orders 
+// Get all orders
 
 export async function getAllOrders({
   limit = PAGE_SIZE,
@@ -211,7 +222,7 @@ export async function getAllOrders({
 }) {
   // Resolve matching user IDs when a search query is provided
   const matchingUserIds =
-    query && query !== 'all'
+    query && query !== "all"
       ? await db
           .select({ id: users.id })
           .from(users)
@@ -221,7 +232,7 @@ export async function getAllOrders({
   const whereClause = matchingUserIds
     ? inArray(
         orders.userId,
-        matchingUserIds.map((u) => u.id)
+        matchingUserIds.map((u) => u.id),
       )
     : undefined;
 
@@ -249,7 +260,6 @@ export async function getAllOrders({
     totalPages: Math.ceil(Number(totalCount) / limit),
   };
 }
-
 
 export async function updateOrderToPaid({
   orderId,
@@ -294,15 +304,10 @@ export async function updateOrderToPaid({
     throw new Error("Order not found after update");
   }
 
-  // 👇 add these three lines here
-  console.log("Has Resend key:", !!process.env.RESEND_API_KEY);
-  console.log("Sending receipt to:", fullOrder.user?.email);
-
   try {
     const result = await sendPurchaseReceipt({ order: fullOrder as Order });
-    console.log("Resend result:", result); // 👈 and this
   } catch (err) {
-    console.error("sendPurchaseReceipt failed:", err); // 👈 and this
+    console.error("sendPurchaseReceipt failed:", err);
   }
 
   revalidatePath(`/order/${orderId}`);
@@ -317,9 +322,7 @@ export async function updateOrderToPaid({
 
 export async function deleteOrder(id: string) {
   try {
-    await db
-      .delete(orders)
-      .where(eq(orders.id, id));
+    await db.delete(orders).where(eq(orders.id, id));
 
     revalidatePath("/admin/orders");
 
@@ -335,16 +338,16 @@ export async function deleteOrder(id: string) {
   }
 }
 
-//Update COD order to paid 
+//Update COD order to paid
 
-export async function updateOrderToPaidCOD(orderId: string){
-try {
-  await updateOrderToPaid({orderId})
-  revalidatePath(`/order/${orderId} `);
-  return {success: true, message: 'Order marked as paid'};
-} catch (error) {
-  return {success: false, message: formatError(error)}
-}
+export async function updateOrderToPaidCOD(orderId: string) {
+  try {
+    await updateOrderToPaid({ orderId });
+    revalidatePath(`/order/${orderId} `);
+    return { success: true, message: "Order marked as paid" };
+  } catch (error) {
+    return { success: false, message: formatError(error) };
+  }
 }
 
 //Update COD order to delivered
@@ -354,9 +357,9 @@ export async function deliverOrder(orderId: string) {
       where: eq(orders.id, orderId),
     });
 
-    if (!order) throw new Error('Order not found');
-    if (!order.isPaid) throw new Error('Order is not paid');
-    if (order.isDelivered) throw new Error('Order is already delivered');
+    if (!order) throw new Error("Order not found");
+    if (!order.isPaid) throw new Error("Order is not paid");
+    if (order.isDelivered) throw new Error("Order is already delivered");
 
     await db
       .update(orders)
@@ -368,7 +371,7 @@ export async function deliverOrder(orderId: string) {
 
     revalidatePath(`/order/${orderId}`);
 
-    return { success: true, message: 'Order marked as delivered' };
+    return { success: true, message: "Order marked as delivered" };
   } catch (error) {
     return { success: false, message: formatError(error) };
   }

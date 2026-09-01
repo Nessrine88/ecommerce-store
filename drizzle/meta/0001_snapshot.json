@@ -226,10 +226,7 @@
       "compositePrimaryKeys": {
         "OrderItem_orderId_productId_pk": {
           "name": "OrderItem_orderId_productId_pk",
-          "columns": [
-            "orderId",
-            "productId"
-          ]
+          "columns": ["orderId", "productId"]
         }
       },
       "uniqueConstraints": {},
@@ -609,10 +606,7 @@
       "compositePrimaryKeys": {
         "verification_tokens_identifier_token_pk": {
           "name": "verification_tokens_identifier_token_pk",
-          "columns": [
-            "identifier",
-            "token"
-          ]
+          "columns": ["identifier", "token"]
         }
       },
       "uniqueConstraints": {},

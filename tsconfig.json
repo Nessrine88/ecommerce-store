@@ -18,12 +18,12 @@
         "name": "next"
       },
       {
-  "compilerOptions": {
-    "paths": {
-      "@/*": ["./*"]
-    }
-  }
-}
+        "compilerOptions": {
+          "paths": {
+            "@/*": ["./*"]
+          }
+        }
+      }
     ],
     "paths": {
       "@/*": ["./*"]

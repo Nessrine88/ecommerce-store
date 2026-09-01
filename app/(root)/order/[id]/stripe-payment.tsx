@@ -7,7 +7,7 @@ import StripeForm from "./stripe-form";
 
 // Hoisted outside the component so it's only created once, not on every render
 const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string,
 );
 
 const StripePayment = ({

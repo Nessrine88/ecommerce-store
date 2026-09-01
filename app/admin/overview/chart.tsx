@@ -25,7 +25,7 @@ const Charts = ({ data: { salesData } }: ChartsProps) => {
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={salesData}>
           <CartesianGrid strokeDasharray="3 3" />
-          
+
           <XAxis
             dataKey="month"
             stroke="#888888"
