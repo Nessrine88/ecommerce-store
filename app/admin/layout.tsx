@@ -12,17 +12,14 @@ export default function AdminLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex flex-col bg-bg text-accent dark:bg-black">
+    <div className="flex min-h-screen w-full flex-col bg-bg text-accent dark:bg-black">
+
       {/* Header */}
-      <header className="w-full border-b">
-        <div className="container mx-auto w-full">
-          <div className="flex h-16 items-center gap-2 px-3 sm:gap-4 sm:px-6 lg:px-8">
-            
-            {/* Logo */}
-            <Link
-              href="/"
-              className="shrink-0"
-            >
+      <header className="relative w-full border-b">
+        <div className="w-full">
+          <div className="flex h-16 w-full items-center gap-2 px-3 sm:gap-4 sm:px-6 lg:px-8">
+      {/* Logo */}
+            <Link href="/" className="shrink-0">
               <Image
                 src="/logo.svg"
                 height={48}
@@ -31,24 +28,25 @@ export default function AdminLayout({
                 className="h-10 w-10 sm:h-12 sm:w-12"
               />
             </Link>
+            {/* Mobile hamburger */}
+            <MainNav />
 
-            {/* Main navigation - hidden on mobile */}
-            <div className="hidden md:flex">
-              <MainNav />
-            </div>
+      
+
 
             {/* Right side */}
             <div className="ml-auto flex min-w-0 items-center gap-2 sm:gap-4">
-              
+
               {/* Search */}
               <div className="min-w-0">
                 <AdminSearch />
               </div>
 
-              {/* Menu */}
+              {/* User menu */}
               <div className="shrink-0">
                 <Menu />
               </div>
+
             </div>
           </div>
         </div>
@@ -56,11 +54,11 @@ export default function AdminLayout({
 
       {/* Main content */}
       <main className="w-full flex-1">
-        <div className="container mx-auto w-full px-3 py-4 sm:px-6 sm:py-6 lg:px-8">
+        <div className="w-full px-3 sm:px-6 lg:px-8">
           {children}
         </div>
       </main>
+
     </div>
   );
 }
-

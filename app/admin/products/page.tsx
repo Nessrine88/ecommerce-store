@@ -45,7 +45,7 @@ const AdminProductsPage = async (props: {
             </div>
           )}
         </div>
-        <Button variant={"default"}>
+        <Button variant={"default"} className="my-5">
           <Link href="/admin/products/create">Create Product</Link>
         </Button>
         <Table>
