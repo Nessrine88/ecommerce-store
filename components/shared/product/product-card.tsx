@@ -6,7 +6,7 @@ import { Product } from "@/types";
 
 const ProductCard = ({ product }: { product: Product }) => {
   return (
-    <Card>
+    <Card className="border border-accent">
       <CardHeader>
         <Link href={`/product/${product.slug}`}>
           <div className="h-64 rounded-sm border border-accent overflow-hidden">

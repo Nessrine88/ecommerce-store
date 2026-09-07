@@ -34,7 +34,7 @@ const AdminOrdersPage = async (props: {
   });
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 mb-10">
       <div className="flex items-center gap-3">
         <h1 className="font-bold">Orders</h1>
         {searchText && (

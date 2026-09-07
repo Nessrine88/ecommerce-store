@@ -16,12 +16,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="dark:bg-inherit bg-bg relative" suppressHydrationWarning>
+    <div
+      className="dark:bg-inherit bg-bg relative flex min-h-screen flex-col"
+      suppressHydrationWarning
+    >
       <div className="sticky top-0 z-30">
         <Header />
       </div>
 
-      <main className="mx-4 md:mx-6">{children}</main>
+      <main className="mx-4 flex-1 md:mx-6">{children}</main>
       <Footer />
     </div>
   );

@@ -24,7 +24,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
   const [isPending, startTransition] = useTransition();
 
   return (
-    <div className="flex-1 min-h-[calc(100vh_-_100px)] text-accent px-4 sm:px-0">
+    <div className="flex-1 max-w-7xl mx-auto text-accent px-4 sm:px-0">
       {!cart || cart.items.length === 0 ? (
         <div className="text-accent py-10 text-center sm:text-left">
           Cart is empty.{" "}

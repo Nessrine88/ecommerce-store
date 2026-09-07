@@ -85,7 +85,7 @@ const OrderDetailsTable = ({
   };
 
   return (
-    <>
+    <div className="max-w-7xl mx-auto mb-10 ">
       <h1 className="py-4 text-2xl font-semibold tracking-tight">
         Order {formatId(id)}
       </h1>
@@ -231,7 +231,7 @@ const OrderDetailsTable = ({
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

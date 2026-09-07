@@ -33,7 +33,7 @@ const Page = async () => {
   }));
 
   return (
-    <div className="min-h-screen bg-bg text-text">
+    <div className=" bg-bg text-text">
       <div className="mx-auto max-w-7xl space-y-8  py-6 sm:py-8 md:space-y-12 md:py-10">
         {normalizedFeaturedProducts.length > 0 && (
           <section>

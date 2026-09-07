@@ -16,7 +16,7 @@ export default function AuthLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="dark:bg-inherit bg-bg flex min-h-screen w-full">
+    <div className="dark:bg-inherit bg-bg flex w-full">
       {children}
     </div>
   );

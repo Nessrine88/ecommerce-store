@@ -135,7 +135,7 @@ const SearchPage = async (props: {
       className={cn(
         "block rounded-md px-2 py-1 text-sm transition-colors",
         active
-          ? "bg-accent font-semibold text-bg"
+          ? "font-semibold text-accent"
           : "text-muted hover:bg-card-hover hover:text-text",
       )}
     >
@@ -144,7 +144,7 @@ const SearchPage = async (props: {
   );
 
   return (
-    <div className="grid max-w-7xl mx-auto min-h-screen w-full grid-cols-1 gap-6 bg-bg p-4 text-text sm:p-6 md:grid-cols-5 md:gap-8">
+    <div className="grid max-w-7xl mx-auto w-full grid-cols-1 gap-6 bg-bg p-4 text-text sm:p-6 md:grid-cols-5 md:gap-8">
       {/* Filters */}
       <aside className="space-y-6 rounded-lg border border-primary/30 bg-surface p-4 md:col-span-1">
         {/* Categories */}

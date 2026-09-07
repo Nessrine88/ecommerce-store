@@ -35,7 +35,7 @@ const StripePaymentSuccessPage = async (props: {
 
   if (!isSuccess) {
     return (
-      <div className="flex text-accent min-h-screen flex-col items-center justify-center gap-4">
+      <div className="flex text-accent  flex-col items-center justify-center gap-4">
         <h1 className="text-3xl font-bold">Payment failed</h1>
 
         <Button>
@@ -46,7 +46,7 @@ const StripePaymentSuccessPage = async (props: {
   }
 
   return (
-    <div className="flex text-accent  min-h-screen flex-col items-center justify-center gap-4 text-center">
+    <div className="flex text-accent flex-col items-center justify-center gap-4 text-center">
       <h1 className="text-3xl font-bold">Thanks for your purchase</h1>
 
       <p className="text-muted-foreground">

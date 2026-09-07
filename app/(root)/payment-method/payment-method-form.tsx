@@ -53,9 +53,9 @@ const PaymentMethodForm = ({
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen mt-10 text-accent ">
+    <div className="mb-10 flex flex-col items-center mt-6 px-4 text-accent sm:mt-10 sm:px-6">
       <CheckoutSteps current={2} />
-      <div className="max-w-md mx-auto space-y-4">
+      <div className="w-full max-w-md mx-auto space-y-4">
         <h1 className="h2-bold mt-4">Payment Method</h1>
         <p className="text-sm text-muted-foreground">
           Please select your preferred payment method
@@ -97,7 +97,7 @@ const PaymentMethodForm = ({
               )}
             />
 
-            <Button type="submit" disabled={isPending}>
+            <Button type="submit" disabled={isPending} className="w-full sm:w-auto">
               {isPending ? (
                 <Loader className="w-4 h-4 animate-spin" />
               ) : (

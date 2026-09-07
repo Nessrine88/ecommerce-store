@@ -47,7 +47,7 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
   };
 
   return (
-    <div className="max-w-md mx-auto space-y-4 text-accent my-5">
+    <div className="max-w-2xl mx-auto space-y-4 px-4 text-accent my-5 sm:px-6">
       <h1 className="h2-bold mt-4">Shipping Address</h1>
       <p className="text-sm text-muted-foreground">
         Please enter an address to ship to
@@ -137,7 +137,7 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
           </div>
 
           <div className="flex gap-2">
-            <Button type="submit" disabled={isPending}>
+            <Button type="submit" disabled={isPending} className="w-full sm:w-auto">
               {isPending ? (
                 <Loader className="w-4 h-4 animate-spin" />
               ) : (

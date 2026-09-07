@@ -67,7 +67,7 @@ const OrderDetailsPage = async ({
   };
 
   return (
-    <div className="min-h-screen text-accent">
+    <div className=" text-accent">
       <OrderDetailsTable
         order={orderDetails}
         stripeClientSecret={clientSecret}
