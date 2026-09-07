@@ -144,7 +144,7 @@ const SearchPage = async (props: {
   );
 
   return (
-    <div className="grid min-h-screen min-w-7xl grid-cols-1 gap-6 bg-bg p-6 text-text md:grid-cols-5 md:gap-8">
+    <div className="grid max-w-7xl mx-auto min-h-screen w-full grid-cols-1 gap-6 bg-bg p-4 text-text sm:p-6 md:grid-cols-5 md:gap-8">
       {/* Filters */}
       <aside className="space-y-6 rounded-lg border border-primary/30 bg-surface p-4 md:col-span-1">
         {/* Categories */}
@@ -152,7 +152,7 @@ const SearchPage = async (props: {
           <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-secondary">
             Category
           </h3>
-          <ul className="space-y-0.5">
+          <ul className="flex flex-wrap gap-1 md:block md:space-y-0.5">
             <li>
               <FilterLink
                 href={getFilterUrl({ c: "all" })}
@@ -181,7 +181,7 @@ const SearchPage = async (props: {
           <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-secondary">
             Price
           </h3>
-          <ul className="space-y-0.5">
+          <ul className="flex flex-wrap gap-1 md:block md:space-y-0.5">
             <li>
               <FilterLink
                 href={getFilterUrl({ p: "all" })}
@@ -210,7 +210,7 @@ const SearchPage = async (props: {
           <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-secondary">
             Rating
           </h3>
-          <ul className="space-y-0.5">
+          <ul className="flex flex-wrap gap-1 md:block md:space-y-0.5">
             <li>
               <FilterLink
                 href={getFilterUrl({ r: "all" })}
@@ -268,7 +268,7 @@ const SearchPage = async (props: {
             )}
           </div>
 
-          <div className="flex items-center gap-1 text-sm">
+          <div className="flex flex-wrap items-center gap-1 text-sm">
             <span className="text-muted">Sort by:</span>
             {sortOrders.map((s) => (
               <Link
@@ -289,7 +289,7 @@ const SearchPage = async (props: {
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
           {products.data.length === 0 && (
-            <div className="flex min-h-[200px] items-center justify-center rounded-lg border border-dashed border-primary/30 text-muted md:col-span-3">
+            <div className="flex min-h-[200px] items-center justify-center rounded-lg border border-dashed border-primary/30 text-muted sm:col-span-2 md:col-span-3">
               No products found
             </div>
           )}
