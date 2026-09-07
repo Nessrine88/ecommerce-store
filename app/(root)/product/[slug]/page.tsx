@@ -44,7 +44,7 @@ const ProductDetailsPage = async ({
   return (
     <div className="flex flex-col ">
       <section className="min-h-screen py-10 text-accent">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 md:grid-cols-12">
+        <div className="mx-auto grid  grid-cols-1 gap-10 px-4 md:grid-cols-12">
           {/* Product Image */}
           <div className="md:col-span-5">
             <div className="md:sticky md:top-24">

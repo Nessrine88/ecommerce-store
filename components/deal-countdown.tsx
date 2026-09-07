@@ -63,7 +63,7 @@ const DealCountdown = () => {
 
   if (hasEnded) {
     return (
-      <section className="mx-auto my-20 grid max-w-6xl grid-cols-1 items-center gap-10 overflow-hidden rounded-3xl bg-bg px-6 py-12 sm:px-10 md:grid-cols-2 md:gap-16 md:py-16">
+      <section className="mx-auto my-20 grid max-w-6xl grid-cols-1 items-center gap-10 overflow-hidden rounded-3xl bg-bg py-12  md:grid-cols-2 md:gap-16 md:py-16">
         <div className="flex flex-col gap-6">
           <div>
             <h3 className="mt-2 font-serif text-4xl leading-tight text-stone-50 sm:text-5xl">
@@ -82,7 +82,7 @@ const DealCountdown = () => {
           </div>
         </div>
 
-        <div className="relative mx-auto aspect-[4/3] w-full max-w-md overflow-hidden rounded-2xl">
+        <div className="relative mx-auto w-full overflow-hidden rounded-2xl">
           <Image
             src="/promo.webp"
             fill
@@ -126,7 +126,7 @@ const DealCountdown = () => {
         </div>
       </div>
 
-      <div className="relative mx-auto aspect-[4/3] w-full max-w-md overflow-hidden rounded-2xl">
+      <div className="relative mx-auto aspect-video w-full max-w-md overflow-hidden rounded-2xl">
         <Image
           src="/promo.webp"
           fill

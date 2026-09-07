@@ -21,7 +21,7 @@ export default function RootLayout({
         <Header />
       </div>
 
-      <main className="flex h-3/4 justify-center items-center">{children}</main>
+      <main className="mx-4 md:mx-6">{children}</main>
       <Footer />
     </div>
   );

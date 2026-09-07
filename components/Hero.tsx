@@ -3,7 +3,7 @@ import React from "react";
 
 const Hero = () => {
   return (
-    <div className="h-full py-10 max-w-7xl mx-auto flex  justify-center items-center p-4 md:gap-28  ">
+    <div className="h-full py-10  mx-auto flex  justify-center items-center p-4 md:gap-28  ">
       <div className="h-full flex items-center max-w-1/2 ">
         <div>
           <h1 className="font-bold italic text-[clamp(1vw,38px,8vw)] md:text-left w-full  text-accent">

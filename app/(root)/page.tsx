@@ -34,7 +34,7 @@ const Page = async () => {
 
   return (
     <div className="min-h-screen bg-bg text-text">
-      <div className="mx-auto max-w-7xl space-y-12 px-4 py-10 md:px-8">
+      <div className="mx-auto max-w-7xl space-y-8  py-6 sm:py-8 md:space-y-12 md:py-10">
         {normalizedFeaturedProducts.length > 0 && (
           <section>
             <ProductCarousel data={normalizedFeaturedProducts} />
@@ -49,10 +49,11 @@ const Page = async () => {
           />
         </section>
 
-        <section className="flex justify-center ">
+        <section className="flex justify-center">
           <ViewAllProduct />
         </section>
-        <section className="flex justify-center pb-4">
+
+        <section className=" pb-4">
           <IconBoxes />
         </section>
       </div>
