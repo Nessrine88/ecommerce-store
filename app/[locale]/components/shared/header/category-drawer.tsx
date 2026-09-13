@@ -28,7 +28,7 @@ const CategoryDrawer = async () => {
             {categories.map((x) => (
               <DrawerClose asChild key={x.category}>
                 <Link
-                  href={`/search?category=${x.category}`}
+                  href={`/en/search?category=${x.category}`}
                   className={cn(
                     buttonVariants({ variant: "ghost" }),
                     "w-full justify-start",

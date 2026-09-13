@@ -43,6 +43,13 @@
       "when": 1788099065613,
       "tag": "0005_chemical_baron_zemo",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1789163436216,
+      "tag": "0006_modern_wilson_fisk",
+      "breakpoints": true
     }
   ]
 }

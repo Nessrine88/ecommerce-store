@@ -10,6 +10,7 @@ import {
   uniqueIndex,
   primaryKey,
   json,
+  unique,
 } from "drizzle-orm/pg-core";
 import { title } from "process";
 
@@ -60,6 +61,35 @@ export const products = pgTable(
   },
   (table) => ({
     slugIndex: uniqueIndex("product_slug_idx").on(table.slug),
+  }),
+);
+
+
+// =====================
+// Product Translations
+// =====================
+
+export const productTranslations = pgTable(
+  "ProductTranslation",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+
+    productId: uuid("productId")
+      .notNull()
+      .references(() => products.id, {
+        onDelete: "cascade",
+      }),
+
+    locale: text("locale").notNull(),
+
+    name: text("name").notNull(),
+
+    description: text("description").notNull(),
+  },
+  (table) => ({
+    productLocaleIndex: uniqueIndex(
+      "product_translation_product_locale_idx"
+    ).on(table.productId, table.locale),
   }),
 );
 

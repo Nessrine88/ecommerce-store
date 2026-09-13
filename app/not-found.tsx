@@ -1,26 +1,13 @@
-import { Button } from "@/app/[locale]/components/ui/button";
-import Image from "next/image";
-import Link from "next/link";
-
-const NotFound = () => {
+export default function NotFound() {
   return (
-    <div className="h-screen w-full flex flex-col justify-center items-center ">
-      <h3 className="font-bold text-7xl"> NOT FOUND</h3>
-
-      <Image
-        src="/plant1.png"
-        alt="not found image"
-        width={500}
-        height={500}
-        className="w-42 h-auto"
-      />
-
-      <Link href={"/"}>
-        {" "}
-        <Button>Back to home </Button>
-      </Link>
-    </div>
+    <html lang="en">
+      <body>
+        <div style={{ textAlign: "center", padding: "4rem" }}>
+          <h1>404 - Page Not Found</h1>
+          <p>The page you're looking for doesn't exist.</p>
+          <a href="/">Go home</a>
+        </div>
+      </body>
+    </html>
   );
-};
-
-export default NotFound;
+}

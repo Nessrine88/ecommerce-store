@@ -12,6 +12,7 @@ import {
 } from "@/app/[locale]/components/ui/sheet";
 import UserButton from "./user-button";
 import { getMyCart } from "@/lib/actions/cart.actions";
+import SelectedLanguage from "./selected-language";
 
 const Menu = async () => {
   const cart = await getMyCart();
@@ -23,7 +24,7 @@ const Menu = async () => {
     <div>
       <nav className="hidden md:flex items-center gap-2">
         <ModeToggle />
-
+<SelectedLanguage />
         <Button variant="ghost" className="relative">
           <Link href="/cart" className="flex gap-2 hover:text-primary">
             <ShoppingCart />

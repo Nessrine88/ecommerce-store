@@ -77,7 +77,7 @@ const DealCountdown = () => {
 
           <div>
             <Button className="h-11 rounded-full bg-amber-400 px-7 text-sm font-semibold text-stone-950 hover:bg-amber-300">
-              <Link href="/search">View products</Link>
+              <Link href="/en/search">View products</Link>
             </Button>
           </div>
         </div>
@@ -121,7 +121,7 @@ const DealCountdown = () => {
 
         <div>
           <Button className="h-11 rounded-full bg-amber-400 px-7 text-sm font-semibold text-stone-950 hover:bg-amber-300">
-            <Link href="/search">View products</Link>
+            <Link href="/en/search">View products</Link>
           </Button>
         </div>
       </div>

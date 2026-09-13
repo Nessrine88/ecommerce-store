@@ -6,7 +6,7 @@ const ViewAllProduct = () => {
   return (
     <div className="flex justify-center  items-center my-8">
       <Button className="px-8 py-4 text-lg font-semibold">
-        <Link href="/search">View All Products</Link>
+        <Link href="/en/search">View All Products</Link>
       </Button>
     </div>
   );

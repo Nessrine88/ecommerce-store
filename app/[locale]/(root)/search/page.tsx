@@ -103,7 +103,7 @@ const SearchPage = async (props: {
     if (r) params.rating = r;
     if (pg) params.page = pg;
 
-    return `/search?${new URLSearchParams(params).toString()}`;
+    return `/en/search?${new URLSearchParams(params).toString()}`;
   };
 
   const products = await getAllProducts({
@@ -259,7 +259,7 @@ const SearchPage = async (props: {
             )}
             {hasActiveFilters && (
               <Link
-                href="/search"
+                href="/en/search"
                 className="flex items-center gap-1 px-1 text-accent transition-colors hover:text-secondary"
               >
                 <XIcon className="size-3" />
