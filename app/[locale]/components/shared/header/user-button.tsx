@@ -9,13 +9,15 @@ import {
   DropdownMenuTrigger,
 } from "@/app/[locale]/components/ui/dropdown-menu";
 import { UserIcon } from "lucide-react";
+import { getLocale } from "next-intl/server";
 
 const UserButton = async () => {
   const session = await auth();
+  const locale = await getLocale();
 
   if (!session) {
     return (
-      <Link href="/sign-in" className={buttonVariants()}>
+      <Link href={`/${locale}/sign-in`} className={buttonVariants()}>
         <UserIcon /> Sign In
       </Link>
     );
@@ -30,7 +32,7 @@ const UserButton = async () => {
           render={
             <Button
               variant="ghost"
-              className="relative w-8 h-8 rounded-full ml-2 flex items-center justify-center bg-gray-200"
+              className="relative ml-2 flex h-8 w-8 items-center justify-center rounded-full bg-gray-200"
             >
               {firstInitial}
             </Button>
@@ -38,7 +40,7 @@ const UserButton = async () => {
         />
 
         <DropdownMenuContent
-          className="w-56 text-white backdrop-blur bg-white/30 "
+          className="w-56 bg-white/30 text-white backdrop-blur"
           align="end"
         >
           <div className="px-1.5 py-1 text-xs font-medium text-muted-foreground">
@@ -47,30 +49,34 @@ const UserButton = async () => {
                 {session.user?.name}
               </div>
             </div>
+
             <div className="flex flex-col space-y-1">
-              <div className="text-sm italic font-light mt-3 text-shadow-mauve-200 leading-none">
+              <div className="mt-3 text-sm font-light italic leading-none text-shadow-mauve-200">
                 {session.user?.email}
               </div>
             </div>
           </div>
+
           <DropdownMenuItem>
-            <Link href="/user/orders" className="w-full">
+            <Link href={`/${locale}/user/orders`} className="w-full">
               Order History
             </Link>
           </DropdownMenuItem>
-          {session?.user?.role === "admin" && (
+
+          {session.user?.role === "admin" && (
             <DropdownMenuItem>
-              <Link href="/admin/overview" className="w-full">
+              <Link href={`/${locale}/admin/overview`} className="w-full">
                 Admin
               </Link>
             </DropdownMenuItem>
           )}
+
           <DropdownMenuItem
-            className="p-0 mb-1"
+            className="mb-1 p-0"
             render={<form action={signOutUser} className="w-full" />}
           >
             <Button
-              className="w-full py-4 px-2 h-4 justify-start"
+              className="h-4 w-full justify-start px-2 py-4"
               variant="default"
               type="submit"
             >

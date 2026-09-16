@@ -1,3 +1,4 @@
+
 import ProductCard from "@/app/[locale]/components/shared/product/product-card";
 import {
   getAllCategories,
@@ -14,7 +15,6 @@ const prices = [
   { name: "$201 to $500", value: "201-500" },
   { name: "$501 to $1000", value: "501-1000" },
 ];
-
 const ratings = [4, 3, 2, 1];
 const sortOrders = ["newest", "lowest", "highest", "rating"];
 export async function generateMetadata(props: {
@@ -55,6 +55,9 @@ export async function generateMetadata(props: {
   };
 }
 const SearchPage = async (props: {
+   params: Promise<{
+    locale: string;
+  }>;
   searchParams: Promise<{
     q?: string;
     category?: string;
@@ -64,6 +67,7 @@ const SearchPage = async (props: {
     page?: string;
   }>;
 }) => {
+   const { locale } = await props.params;
   const {
     q = "all",
     category = "all",
@@ -103,7 +107,7 @@ const SearchPage = async (props: {
     if (r) params.rating = r;
     if (pg) params.page = pg;
 
-    return `/en/search?${new URLSearchParams(params).toString()}`;
+    return `/${locale}/search?${new URLSearchParams(params).toString()}`;
   };
 
   const products = await getAllProducts({
@@ -259,7 +263,7 @@ const SearchPage = async (props: {
             )}
             {hasActiveFilters && (
               <Link
-                href="/en/search"
+                href={`/${locale}/search`}
                 className="flex items-center gap-1 px-1 text-accent transition-colors hover:text-secondary"
               >
                 <XIcon className="size-3" />

@@ -1,8 +1,7 @@
-
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
@@ -31,6 +30,10 @@ const MainNav = ({
   ...props
 }: React.HTMLAttributes<HTMLElement>) => {
   const pathname = usePathname();
+  const params = useParams();
+
+  const locale = params.locale as string;
+
   const [open, setOpen] = useState(false);
 
   return (
@@ -38,25 +41,29 @@ const MainNav = ({
       {/* Desktop Navigation */}
       <nav
         className={cn(
-          "hidden items-center  space-x-4 md:flex lg:space-x-6",
+          "hidden items-center space-x-4 md:flex lg:space-x-6",
           className
         )}
         {...props}
       >
-        {links.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={cn(
-              "text-sm font-medium transition-colors hover:text-primary",
-              pathname.includes(item.href)
-                ? "underline underline-offset-8"
-                : ""
-            )}
-          >
-            {item.title}
-          </Link>
-        ))}
+        {links.map((item) => {
+          const href = `/${locale}${item.href}`;
+
+          return (
+            <Link
+              key={item.href}
+              href={href}
+              className={cn(
+                "text-sm font-medium transition-colors hover:text-primary",
+                pathname === href || pathname.startsWith(`${href}/`)
+                  ? "underline underline-offset-8"
+                  : ""
+              )}
+            >
+              {item.title}
+            </Link>
+          );
+        })}
       </nav>
 
       {/* Mobile Navigation */}
@@ -72,29 +79,33 @@ const MainNav = ({
           {open ? (
             <X className="h-5 w-5" />
           ) : (
-            <Menu className="h-5 w-5 " />
+            <Menu className="h-5 w-5" />
           )}
         </button>
 
         {/* Mobile menu */}
         {open && (
-          <div className="absolute backdrop-blur-3xl bg-bg/80 left-0 top-16 z-50 w-full border-b bg-background shadow-md">
+          <div className="absolute left-0 top-16 z-50 w-full border-b bg-bg/80 shadow-md backdrop-blur-3xl">
             <nav className="flex flex-col p-3">
-              {links.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className={cn(
-                    "rounded-md px-4 py-3 text-sm font-medium transition-colors hover:bg-muted",
-                    pathname.includes(item.href)
-                      ? "bg-muted text-primary"
-                      : ""
-                  )}
-                >
-                  {item.title}
-                </Link>
-              ))}
+              {links.map((item) => {
+                const href = `/${locale}${item.href}`;
+
+                return (
+                  <Link
+                    key={item.href}
+                    href={href}
+                    onClick={() => setOpen(false)}
+                    className={cn(
+                      "rounded-md px-4 py-3 text-sm font-medium transition-colors hover:bg-muted",
+                      pathname === href || pathname.startsWith(`${href}/`)
+                        ? "bg-muted text-primary"
+                        : ""
+                    )}
+                  >
+                    {item.title}
+                  </Link>
+                );
+              })}
             </nav>
           </div>
         )}
@@ -104,4 +115,3 @@ const MainNav = ({
 };
 
 export default MainNav;
-
