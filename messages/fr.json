@@ -1,6 +1,45 @@
 {
   "Homepage": {
     "newestProducts": "Nouveaux produits",
-    "viewAllProducts": "Voir tous les produits"
+    "viewAllProducts": "Voir tous les produits",
+    "dealCountdown": {
+      "loading": "Chargement du compte à rebours…",
+      "ended": {
+        "title": "L'offre est terminée",
+        "description": "Cette offre n'est plus disponible. Découvrez nos dernières promotions !",
+        "button": "Voir les produits"
+      },
+      "active": {
+        "endsAt": "Se termine le 20 septembre",
+        "title": "Offre du mois",
+        "description": "Préparez-vous à une expérience d'achat inédite. Chaque commande inclut des avantages et des offres exclusifs, faisant de ce mois une célébration de bons plans exceptionnels.",
+        "button": "Voir les produits",
+        "timer": {
+          "days": "Jours",
+          "hours": "Heures",
+          "minutes": "Minutes",
+          "seconds": "Secondes"
+        }
+      },
+      "imageAlt": "Promotion à la une"
+    },
+    "iconBoxes": {
+      "freeShipping": {
+        "title": "Livraison gratuite",
+        "description": "Livraison gratuite pour les commandes de plus de 100 $"
+      },
+      "moneyBack": {
+        "title": "Garantie satisfait ou remboursé",
+        "description": "Dans les 30 jours suivant l'achat"
+      },
+      "flexiblePayment": {
+        "title": "Paiement flexible",
+        "description": "Payez par carte bancaire, PayPal ou à la livraison"
+      },
+      "support": {
+        "title": "Assistance 24/7",
+        "description": "Obtenez de l'aide à tout moment"
+      }
+    }
   }
 }

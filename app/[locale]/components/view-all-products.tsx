@@ -2,11 +2,12 @@ import React from "react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 
-const ViewAllProduct = () => {
+const ViewAllProduct = ({t}:any) => {
+  
   return (
     <div className="flex justify-center  items-center my-8">
       <Button className="px-8 py-4 text-lg font-semibold">
-        <Link href="/en/search">View All Products</Link>
+        <Link href="/en/search">{t("viewAllProducts") }</Link>
       </Button>
     </div>
   );

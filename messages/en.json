@@ -1,6 +1,45 @@
 {
   "Homepage": {
     "newestProducts": "Newest Products",
-    "viewAllProducts": "View All Products"
+    "viewAllProducts": "View All Products",
+    "dealCountdown": {
+      "loading": "Loading countdown…",
+      "ended": {
+        "title": "Deal has ended",
+        "description": "This deal is no longer available. Check out our latest promotions!",
+        "button": "View products"
+      },
+      "active": {
+        "endsAt": "Ends September 20",
+        "title": "Deal of the month",
+        "description": "Get ready for a shopping experience like never before. Every purchase comes with exclusive perks and offers, making this month a celebration of savvy choices and amazing deals.",
+        "button": "View products",
+        "timer": {
+          "days": "Days",
+          "hours": "Hours",
+          "minutes": "Minutes",
+          "seconds": "Seconds"
+        }
+      },
+      "imageAlt": "Featured promotion"
+    },
+    "iconBoxes": {
+      "freeShipping": {
+        "title": "Free Shipping",
+        "description": "Free shipping on orders above $100"
+      },
+      "moneyBack": {
+        "title": "Money Back Guarantee",
+        "description": "Within 30 days of purchase"
+      },
+      "flexiblePayment": {
+        "title": "Flexible Payment",
+        "description": "Pay with credit card, PayPal or COD"
+      },
+      "support": {
+        "title": "24/7 Support",
+        "description": "Get support at any time"
+      }
+    }
   }
 }

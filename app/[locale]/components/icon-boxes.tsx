@@ -1,42 +1,64 @@
+
+"use client";
+
 import React from "react";
 import { Card, CardContent } from "./ui/card";
-import { DollarSign, Headset, ShoppingBag, WalletCards } from "lucide-react";
+import {
+  DollarSign,
+  Headset,
+  ShoppingBag,
+  WalletCards,
+} from "lucide-react";
+import { useTranslations } from "next-intl";
 import DealCountdown from "./deal-countdown";
 
 const IconBoxes = () => {
+  const t = useTranslations("Homepage.iconBoxes");
+
   return (
     <div>
       <DealCountdown />
+
       <Card>
-        <CardContent className="grid md:grid-cols-4 gap-4 p-4">
+        <CardContent className="grid gap-4 p-4 md:grid-cols-4">
           <div className="space-y-2">
             <ShoppingBag />
-            <div className="text-sm font-bold">Free Shipping</div>
+            <div className="text-sm font-bold">
+              {t("freeShipping.title")}
+            </div>
             <div className="text-sm text-accent">
-              Free shipping on orders above $100
+              {t("freeShipping.description")}
             </div>
           </div>
 
           <div className="space-y-2">
             <DollarSign />
-            <div className="text-sm font-bold">Money Back Guarantee</div>
+            <div className="text-sm font-bold">
+              {t("moneyBack.title")}
+            </div>
             <div className="text-sm text-accent">
-              Within 30 days of purchase
+              {t("moneyBack.description")}
             </div>
           </div>
 
           <div className="space-y-2">
             <WalletCards />
-            <div className="text-sm font-bold">Flexible Payment</div>
+            <div className="text-sm font-bold">
+              {t("flexiblePayment.title")}
+            </div>
             <div className="text-sm text-accent">
-              Pay with credit card, PayPal or COD
+              {t("flexiblePayment.description")}
             </div>
           </div>
 
           <div className="space-y-2">
             <Headset />
-            <div className="text-sm font-bold">24/7 Support</div>
-            <div className="text-sm text-accent">Get support at any time</div>
+            <div className="text-sm font-bold">
+              {t("support.title")}
+            </div>
+            <div className="text-sm text-accent">
+              {t("support.description")}
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -44,4 +66,4 @@ const IconBoxes = () => {
   );
 };
 
-export default IconBoxes;
+export default IconBoxes

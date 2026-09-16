@@ -51,7 +51,7 @@ const t = await getTranslations('Homepage')
         </section>
 
         <section className="flex justify-center">
-          <ViewAllProduct />
+          <ViewAllProduct t={t} />
         </section>
 
         <section className=" pb-4">
