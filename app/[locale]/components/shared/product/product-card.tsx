@@ -19,7 +19,7 @@ const ProductCard = ({ product }: { product: Product }) => {
   }, []);
 
   return (
-    <Card className="border border-accent">
+    <Card className="border border-accent w-full ">
       <CardHeader>
         <Link href={`/${language}/product/${product.slug}`}>
           <div className="h-64 overflow-hidden rounded-sm border border-accent">

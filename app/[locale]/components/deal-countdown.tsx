@@ -112,7 +112,7 @@ const DealCountdown = () => {
   }
 
   return (
-    <section className="mx-auto my-20 grid max-w-6xl grid-cols-1 items-center gap-10 overflow-hidden rounded-3xl bg-bg px-6 py-12 sm:px-10 md:grid-cols-2 md:gap-16 md:py-16">
+    <section className="mx-auto my-20 grid max-w-7xl grid-cols-1 items-center gap-10 overflow-hidden rounded-3xl bg-bg px-6 py-12 sm:px-10 md:grid-cols-2 md:gap-16 md:py-16">
       <div className="flex flex-col gap-6">
         <div>
           <p className="text-sm font-medium tracking-wide text-amber-400">
