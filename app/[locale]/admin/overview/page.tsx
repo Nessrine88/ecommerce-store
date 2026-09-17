@@ -27,12 +27,12 @@ const AdminOverviewPage = async () => {
   const summary = await getOrderSummary();
 
   return (
-    <div className="space-y-2 mt-20">
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="space-y-6 pt-20">
+      <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className="flex w-full flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-            <BadgeDollarSign />
+            <BadgeDollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -44,7 +44,7 @@ const AdminOverviewPage = async () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Sales</CardTitle>
-            <CreditCard />
+            <CreditCard className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -56,7 +56,7 @@ const AdminOverviewPage = async () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Customers</CardTitle>
-            <Users />
+            <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -68,7 +68,7 @@ const AdminOverviewPage = async () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Products</CardTitle>
-            <Barcode />
+            <Barcode className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -78,8 +78,8 @@ const AdminOverviewPage = async () => {
         </Card>
       </div>
 
-      <div className="grid gap-4 grid-cols-1 md:grid-cols-7 mt-5">
-        <Card className="col-span-4 ">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-7">
+        <Card className="md:col-span-4">
           <CardHeader>
             <CardTitle>Overview</CardTitle>
           </CardHeader>
@@ -88,11 +88,11 @@ const AdminOverviewPage = async () => {
           </CardContent>
         </Card>
 
-        <Card className="col-span-3 ">
+        <Card className="md:col-span-3">
           <CardHeader>
             <CardTitle>Recent Sales</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import Menu from "@/app/[locale]/components/shared/header/menu";
 import MainNav from "./main-nav";
 import AdminSearch from "./admin-search";
+import '@/app/[locale]/globals.css'
 
 export default function AdminLayout({
   children,
