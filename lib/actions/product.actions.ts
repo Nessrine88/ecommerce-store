@@ -1,47 +1,144 @@
 "use server";
 
 import { db } from "@/app/db";
-import { products } from "@/app/db/schema";
-import { and, asc, count, desc, eq, gte, ilike, lte, SQL } from "drizzle-orm";
+import {
+  products,
+  productTranslations,
+} from "@/app/db/schema";
+import {
+  and,
+  asc,
+  count,
+  desc,
+  eq,
+  gte,
+  ilike,
+  lte,
+  SQL,
+} from "drizzle-orm";
 import { PAGE_SIZE } from "../constants";
-import { convertToPlainObject, formatError } from "../utils";
-import { insertProductSchema, updateProductsSchema } from "../validators";
+import {
+  convertToPlainObject,
+  formatError,
+} from "../utils";
+import {
+  insertProductSchema,
+  updateProductsSchema,
+} from "../validators";
 import { revalidatePath } from "next/cache";
 import z from "zod";
-import { id } from "zod/v4/locales";
 
 // Get latest products
-export async function getLatestProducts() {
+export async function getLatestProducts(
+  locale: string
+) {
   const latestProducts = await db
-    .select()
+    .select({
+      product: products,
+      translation: productTranslations,
+    })
     .from(products)
+    .leftJoin(
+      productTranslations,
+      and(
+        eq(
+          productTranslations.productId,
+          products.id
+        ),
+        eq(
+          productTranslations.locale,
+          locale
+        )
+      )
+    )
     .orderBy(desc(products.createdAt))
     .limit(4);
 
-  return latestProducts.map((product) => ({
-    ...product,
-    price: product.price.toString(),
-    rating: Number(product.rating),
-  }));
+  return latestProducts.map(
+    ({ product, translation }) => ({
+      ...product,
+
+      name:
+        translation?.name ??
+        product.name,
+
+      description:
+        translation?.description ??
+        product.description,
+
+      images: product.images ?? [],
+
+      brand: product.brand ?? "",
+
+      price: product.price.toString(),
+
+      rating: Number(
+        product.rating ?? 0
+      ),
+    })
+  );
 }
 
 // Get single product by slug
-export async function getProductBySlug(slug: string) {
-  const [product] = await db
-    .select()
+export async function getProductBySlug(
+  slug: string,
+  locale: string
+) {
+  const [result] = await db
+    .select({
+      product: products,
+      translation: productTranslations,
+    })
     .from(products)
-    .where(eq(products.slug, slug))
-    .limit(4);
+    .leftJoin(
+      productTranslations,
+      and(
+        eq(
+          productTranslations.productId,
+          products.id
+        ),
+        eq(
+          productTranslations.locale,
+          locale
+        )
+      )
+    )
+    .where(
+      eq(products.slug, slug)
+    )
+    .limit(1);
 
-  if (!product) return null;
+  if (!result) {
+    return null;
+  }
 
   return {
-    ...product,
-    price: product.price.toString(),
-    rating: Number(product.rating),
+    ...result.product,
+
+    name:
+      result.translation?.name ??
+      result.product.name,
+
+    description:
+      result.translation?.description ??
+      result.product.description,
+
+    images:
+      result.product.images ?? [],
+
+    brand:
+      result.product.brand ?? "",
+
+    price:
+      result.product.price.toString(),
+
+    rating: Number(
+      result.product.rating ?? 0
+    ),
   };
 }
 
+// Get all products
 export async function getAllProducts({
   query,
   limit = PAGE_SIZE,
@@ -50,6 +147,7 @@ export async function getAllProducts({
   price,
   rating,
   sort,
+  locale,
 }: {
   query?: string;
   limit?: number;
@@ -58,44 +156,90 @@ export async function getAllProducts({
   price?: string;
   rating?: string;
   sort?: string;
+  locale: string;
 }) {
-  const conditions: (SQL | undefined)[] = [];
+  const conditions: (SQL | undefined)[] =
+    [];
 
-  // Query filter (case-insensitive search on name)
+  // Search in translated product name
   if (query && query !== "all") {
-    conditions.push(ilike(products.name, `%${query}%`));
+    conditions.push(
+      ilike(
+        productTranslations.name,
+        `%${query}%`
+      )
+    );
   }
 
   // Category filter
-  if (category && category !== "all") {
-    conditions.push(eq(products.category, category));
+  if (
+    category &&
+    category !== "all"
+  ) {
+    conditions.push(
+      eq(
+        products.category,
+        category
+      )
+    );
   }
 
-  // Price filter (expects "min-max", e.g. "10-50")
-  if (price && price !== "all") {
-    const [minStr, maxStr] = price.split("-");
+  // Price filter
+  if (
+    price &&
+    price !== "all"
+  ) {
+    const [
+      minStr,
+      maxStr,
+    ] = price.split("-");
+
     const min = Number(minStr);
     const max = Number(maxStr);
 
     if (!isNaN(min)) {
-      conditions.push(gte(products.price, min.toString()));
+      conditions.push(
+        gte(
+          products.price,
+          min.toString()
+        )
+      );
     }
+
     if (!isNaN(max)) {
-      conditions.push(lte(products.price, max.toString()));
+      conditions.push(
+        lte(
+          products.price,
+          max.toString()
+        )
+      );
     }
   }
 
   // Rating filter
-  if (rating && rating !== "all") {
-    const ratingNum = Number(rating);
+  if (
+    rating &&
+    rating !== "all"
+  ) {
+    const ratingNum =
+      Number(rating);
+
     if (!isNaN(ratingNum)) {
-      conditions.push(gte(products.rating, ratingNum.toString()));
+      conditions.push(
+        gte(
+          products.rating,
+          ratingNum.toString()
+        )
+      );
     }
   }
 
-  const filters = conditions.length > 0 ? and(...conditions) : undefined;
+  const filters =
+    conditions.length > 0
+      ? and(...conditions)
+      : undefined;
 
-  // Sort order
+  // Sort
   const orderBy =
     sort === "lowest"
       ? asc(products.price)
@@ -103,156 +247,367 @@ export async function getAllProducts({
         ? desc(products.price)
         : sort === "rating"
           ? desc(products.rating)
-          : sort === "newest"
-            ? desc(products.createdAt)
-            : desc(products.createdAt); // default sort
+          : desc(
+              products.createdAt
+            );
 
-  const [data, [{ dataCount }]] = await Promise.all([
-    db.query.products.findMany({
-      where: filters,
-      orderBy,
-      limit,
-      offset: (page - 1) * limit,
-    }),
+  const [
+    data,
+    [{ dataCount }],
+  ] = await Promise.all([
+    // Products
+    db
+      .select({
+        product: products,
+        translation:
+          productTranslations,
+      })
+      .from(products)
+      .innerJoin(
+        productTranslations,
+        and(
+          eq(
+            productTranslations.productId,
+            products.id
+          ),
+          eq(
+            productTranslations.locale,
+            locale
+          )
+        )
+      )
+      .where(filters)
+      .orderBy(orderBy)
+      .limit(limit)
+      .offset(
+        (page - 1) * limit
+      ),
 
-    db.select({ dataCount: count() }).from(products).where(filters),
+    // Count
+    db
+      .select({
+        dataCount: count(),
+      })
+      .from(products)
+      .innerJoin(
+        productTranslations,
+        and(
+          eq(
+            productTranslations.productId,
+            products.id
+          ),
+          eq(
+            productTranslations.locale,
+            locale
+          )
+        )
+      )
+      .where(filters),
   ]);
 
   return {
-    data,
-    totalPages: Math.ceil(dataCount / limit),
+    data: data.map(
+      ({
+        product,
+        translation,
+      }) => ({
+        ...product,
+
+        // Localized fields
+        name: translation.name,
+
+        description:
+          translation.description,
+
+        // Normalize DB values
+        images:
+          product.images ?? [],
+
+        brand:
+          product.brand ?? "",
+
+        price:
+          product.price.toString(),
+
+        rating: Number(
+          product.rating ?? 0
+        ),
+      })
+    ),
+
+    totalPages: Math.ceil(
+      dataCount / limit
+    ),
   };
 }
-export async function deleteProduct(id: string) {
+
+// Delete product
+export async function deleteProduct(
+  id: string
+) {
   try {
-    const product = await db.query.products.findFirst({
-      where: eq(products.id, id),
-    });
+    const product =
+      await db.query.products.findFirst({
+        where: eq(
+          products.id,
+          id
+        ),
+      });
 
     if (!product) {
-      throw new Error("Product not found");
+      throw new Error(
+        "Product not found"
+      );
     }
 
-    await db.delete(products).where(eq(products.id, id));
+    await db
+      .delete(products)
+      .where(
+        eq(products.id, id)
+      );
 
     return {
       success: true,
-      message: "Product deleted successfully",
+      message:
+        "Product deleted successfully",
     };
   } catch (error) {
     return {
       success: false,
-      message: formatError(error),
+      message:
+        formatError(error),
     };
   }
 }
 
-//Create a prodcut
-
-export async function createProduct(data: z.infer<typeof insertProductSchema>) {
+// Create product
+export async function createProduct(
+  data: z.infer<
+    typeof insertProductSchema
+  >
+) {
   try {
-    const product = insertProductSchema.parse(data);
+    const product =
+      insertProductSchema.parse(
+        data
+      );
+
     const productToInsert = {
       ...product,
-      images: product.images ?? [],
+      images:
+        product.images ?? [],
     };
-    const result = await db
+
+    await db
       .insert(products)
       .values(productToInsert)
       .returning();
-    revalidatePath("/admin/products");
+
+    revalidatePath(
+      "/admin/products"
+    );
 
     return {
       success: true,
-      message: "Product created successfully",
+      message:
+        "Product created successfully",
     };
   } catch (error) {
-    console.error("FULL ERROR:", error);
+    console.error(
+      "FULL ERROR:",
+      error
+    );
 
     if (error instanceof Error) {
-      console.error("ERROR NAME:", error.name);
-      console.error("ERROR MESSAGE:", error.message);
-      console.error("ERROR STACK:", error.stack);
+      console.error(
+        "ERROR NAME:",
+        error.name
+      );
+
+      console.error(
+        "ERROR MESSAGE:",
+        error.message
+      );
+
+      console.error(
+        "ERROR STACK:",
+        error.stack
+      );
 
       if ("cause" in error) {
-        console.error("ERROR CAUSE:", error.cause);
+        console.error(
+          "ERROR CAUSE:",
+          error.cause
+        );
       }
     }
 
     return {
       success: false,
       message:
-        error instanceof Error ? error.message : "Failed to create product",
+        error instanceof Error
+          ? error.message
+          : "Failed to create product",
     };
   }
 }
 
-//Update a prodcut
-
+// Update product
 export async function updateProduct(
-  data: z.infer<typeof updateProductsSchema>,
+  data: z.infer<
+    typeof updateProductsSchema
+  >
 ) {
   try {
-    const product = updateProductsSchema.parse(data);
-    const { id, ...updateData } = product;
+    const product =
+      updateProductsSchema.parse(
+        data
+      );
+
+    const {
+      id,
+      ...updateData
+    } = product;
 
     const updated = await db
       .update(products)
       .set(updateData)
-      .where(eq(products.id, id))
+      .where(
+        eq(products.id, id)
+      )
       .returning();
 
     if (updated.length === 0) {
-      throw new Error("Product not found or update failed");
+      throw new Error(
+        "Product not found or update failed"
+      );
     }
 
-    revalidatePath("/admin/products");
-    revalidatePath(`/admin/products/${id}`);
+    revalidatePath(
+      "/admin/products"
+    );
+
+    revalidatePath(
+      `/admin/products/${id}`
+    );
 
     return {
       success: true,
-      message: "Product updated successfully",
+      message:
+        "Product updated successfully",
       data: updated[0],
     };
   } catch (error) {
-    console.error("updateProduct error:", error);
+    console.error(
+      "updateProduct error:",
+      error
+    );
+
     return {
       success: false,
-      message: formatError(error),
+      message:
+        formatError(error),
     };
   }
 }
 
-//get single product by it's ID
+// Get single product by ID
+export async function getProductById(
+  productId: string
+) {
+  const data =
+    await db.query.products.findFirst({
+      where: eq(
+        products.id,
+        productId
+      ),
+    });
 
-export async function getProductById(productId: string) {
-  const data = await db.query.products.findFirst({
-    where: eq(products.id, productId),
-  });
-  return convertToPlainObject(data);
+  return convertToPlainObject(
+    data
+  );
 }
 
-//Get all categories
-
+// Get all categories
 export async function getAllCategories() {
   const data = await db
     .select({
-      category: products.category,
-      count: count(products.id),
+      category:
+        products.category,
+      count: count(
+        products.id
+      ),
     })
     .from(products)
-    .groupBy(products.category);
+    .groupBy(
+      products.category
+    );
 
   return data;
 }
 
 // Get featured products
-export async function getFeaturedProducts() {
-  const data = await db.query.products.findMany({
-    where: eq(products.isFeatured, true),
-    orderBy: [desc(products.createdAt)],
-    limit: 4,
-  });
+export async function getFeaturedProducts(
+  locale: string
+) {
+  const data = await db
+    .select({
+      product: products,
+      translation:
+        productTranslations,
+    })
+    .from(products)
+    .leftJoin(
+      productTranslations,
+      and(
+        eq(
+          productTranslations.productId,
+          products.id
+        ),
+        eq(
+          productTranslations.locale,
+          locale
+        )
+      )
+    )
+    .where(
+      eq(
+        products.isFeatured,
+        true
+      )
+    )
+    .orderBy(
+      desc(products.createdAt)
+    )
+    .limit(4);
 
-  return convertToPlainObject(data);
+  return data.map(
+    ({
+      product,
+      translation,
+    }) => ({
+      ...product,
+
+      name:
+        translation?.name ??
+        product.name,
+
+      description:
+        translation?.description ??
+        product.description,
+
+      images:
+        product.images ?? [],
+
+      brand:
+        product.brand ?? "",
+
+      price:
+        product.price.toString(),
+
+      rating: Number(
+        product.rating ?? 0
+      ),
+    })
+  );
 }

@@ -9,52 +9,52 @@ import {
 import IconBoxes from "@/app/[locale]/components/icon-boxes";
 import { getTranslations } from "next-intl/server";
 
-const Page = async () => {
-  const latestProducts = await getLatestProducts();
-  const featuredProducts = await getFeaturedProducts();
+const Page = async ({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) => {
+  const { locale } = await params;
 
-  const normalizedLatestProducts = latestProducts.map((product) => ({
-    ...product,
-    images: product.images ?? [],
-    brand: product.brand ?? "",
-    rating:
-      typeof product.rating === "number"
-        ? product.rating
-        : Number(product.rating ?? 0),
-  }));
+  // Get localized products
+  const latestProducts =
+    await getLatestProducts(locale);
 
-  const normalizedFeaturedProducts = featuredProducts.map((product) => ({
-    ...product,
-    images: product.images ?? [],
-    brand: product.brand ?? "",
-    rating:
-      typeof product.rating === "number"
-        ? product.rating
-        : Number(product.rating ?? 0),
-  }));
-const t = await getTranslations('Homepage')
+  const featuredProducts =
+    await getFeaturedProducts(locale);
+
+  const t = await getTranslations(
+    "Homepage"
+  );
+
   return (
-    <div className=" text-text">
-      <div className="mx-auto max-w-7xl space-y-8  py-6 sm:py-8 md:space-y-12 md:py-10">
-        {normalizedFeaturedProducts.length > 0 && (
+    <div className="text-text">
+      <div className="mx-auto max-w-7xl space-y-8 py-6 sm:py-8 md:space-y-12 md:py-10">
+        {/* Featured products */}
+        {featuredProducts.length > 0 && (
           <section>
-            <ProductCarousel data={normalizedFeaturedProducts} />
+            <ProductCarousel
+              data={featuredProducts}
+            />
           </section>
         )}
 
+        {/* Latest products */}
         <section>
           <ProductList
             title={t("newestProducts")}
-            data={normalizedLatestProducts}
+            data={latestProducts}
             limit={5}
           />
         </section>
 
+        {/* View all products */}
         <section className="flex justify-center">
           <ViewAllProduct />
         </section>
 
-        <section className=" pb-4">
+        {/* Features */}
+        <section className="pb-4">
           <IconBoxes />
         </section>
       </div>

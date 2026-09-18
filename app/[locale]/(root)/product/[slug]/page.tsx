@@ -16,11 +16,11 @@ import ReviewList from "./review-list";
 const ProductDetailsPage = async ({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string ;locale: string  }>;
 }) => {
-  const { slug } = await params;
+  const {locale, slug } = await params;
 
-  const product = await getProductBySlug(slug);
+  const product = await getProductBySlug(slug, locale);
   const session = await auth();
   const userId = session?.user?.id;
 

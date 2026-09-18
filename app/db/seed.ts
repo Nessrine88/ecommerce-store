@@ -1,4 +1,3 @@
-
 import "dotenv/config";
 
 import { db } from "./index";
@@ -29,7 +28,7 @@ async function main() {
       slug: products.slug,
     });
 
-  // Create translations using the generated product IDs
+  // Create translations from the translations object
   const translations = insertedProducts.flatMap((product) => {
     const sourceProduct = sampleData.products.find(
       (p) => p.slug === product.slug
@@ -41,26 +40,14 @@ async function main() {
       );
     }
 
-    return [
-      {
+    return Object.entries(sourceProduct.translations).map(
+      ([locale, translation]) => ({
         productId: product.id,
-        locale: "en",
-        name: sourceProduct.name,
-        description: sourceProduct.description,
-      },
-      {
-        productId: product.id,
-        locale: "fr",
-        name: sourceProduct.name,
-        description: sourceProduct.description,
-      },
-      {
-        productId: product.id,
-        locale: "ar",
-        name: sourceProduct.name,
-        description: sourceProduct.description,
-      },
-    ];
+        locale,
+        name: translation.name,
+        description: translation.description,
+      })
+    );
   });
 
   // Insert translations
@@ -77,4 +64,3 @@ main().catch((error) => {
 
   process.exit(1);
 });
-

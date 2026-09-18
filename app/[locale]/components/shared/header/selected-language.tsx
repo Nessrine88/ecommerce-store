@@ -1,26 +1,29 @@
-'use client'
+"use client";
 
-import { usePathname, useRouter  } from "@/navigation";
-import { useParams } from "next/navigation";
-import React, { useState } from "react";
-import { json } from "zod";
+import { usePathname, useRouter } from "@/navigation";
+import { useLocale } from "next-intl";
 
 const SelectedLanguage = () => {
-  const params = useParams();
+  const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
- 
 
-  const getSelectedValue = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newLocale = e.target.value
-     localStorage.setItem("language",newLocale)
-    const newPathname = pathname.replace(/^\/[^/]+/, `/${newLocale}`);
-    router.replace(newPathname)
+  const getSelectedValue = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const newLocale = e.target.value;
+
+    router.replace(pathname, { locale: newLocale });
   };
 
   return (
     <div>
-      <select name="language" id="language" onChange={getSelectedValue} value={params.locale as string}>
+      <select
+        name="language"
+        id="language"
+        onChange={getSelectedValue}
+        value={locale}
+      >
         <option value="en">en</option>
         <option value="fr">fr</option>
         <option value="ar">ar</option>
