@@ -11,7 +11,7 @@ import {
 import { Product } from "@/types";
 import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/navigation";
 import { ArrowRight, Sparkles } from "lucide-react";
 
 const ProductCarousel = ({ data }: { data: Product[] }) => {

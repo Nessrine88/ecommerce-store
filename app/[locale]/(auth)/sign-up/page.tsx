@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/app/[locale]/components/ui/card";
-import Link from "next/link";
+import { Link } from "@/navigation";
 import Image from "next/image";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";

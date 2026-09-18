@@ -7,7 +7,7 @@ import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import CheckoutSteps from "@/app/[locale]/components/shared/checkout-steps";
 import { Card, CardContent } from "@/app/[locale]/components/ui/card";
-import Link from "next/link";
+import { Link } from "@/navigation";
 import { Button } from "@/app/[locale]/components/ui/button";
 import {
   Table,
@@ -49,7 +49,7 @@ const PlaceOrderPage = async () => {
   const userAddress = user.address as ShippingAddress;
 
   return (
-    <main className=" w-full px-3 sm:px-6 lg:px-8">
+    <main className=" w-full px-3 sm:px-6 lg:px-8 text-accent">
       <div className="mx-auto flex w-full max-w-7xl flex-col items-center">
         {/* Checkout steps */}
         <div className="w-full overflow-x-auto py-4 sm:py-6">

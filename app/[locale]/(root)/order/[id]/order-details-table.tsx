@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/app/[locale]/components/ui/table";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/navigation";
 import {
   updateOrderToPaidCOD,
   deliverOrder,

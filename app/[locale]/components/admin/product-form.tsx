@@ -4,7 +4,7 @@ import { productDefaultValues } from "@/lib/constants";
 import { insertProductSchema, updateProductsSchema } from "@/lib/validators";
 import { Product } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/navigation";
 import { ControllerRenderProps, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";

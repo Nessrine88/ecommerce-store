@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/app/[locale]/components/ui/button";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/navigation";
 import { Minus, Plus, Loader } from "lucide-react";
 import { Cart, CartItem } from "@/types";
 import { addItemToCart, removeItemFromCart } from "@/lib/actions/cart.actions";

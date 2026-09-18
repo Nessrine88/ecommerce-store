@@ -5,7 +5,7 @@ import { ShippingAddress } from "@/types";
 import { shippingAddressSchema } from "@/lib/validators";
 import { shippingAddressDefaultValues } from "@/lib/constants";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";

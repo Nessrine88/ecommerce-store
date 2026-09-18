@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
-import { useParams, usePathname } from "next/navigation";
+import { Link } from "@/navigation";
+import {  usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
@@ -30,9 +30,7 @@ const MainNav = ({
   ...props
 }: React.HTMLAttributes<HTMLElement>) => {
   const pathname = usePathname();
-  const params = useParams();
 
-  const locale = params.locale as string;
 
   const [open, setOpen] = useState(false);
 
@@ -47,7 +45,7 @@ const MainNav = ({
         {...props}
       >
         {links.map((item) => {
-          const href = `/${locale}${item.href}`;
+          const href = `/${item.href}`;
 
           return (
             <Link
@@ -88,7 +86,7 @@ const MainNav = ({
           <div className="absolute left-0 top-16 z-50 w-full border-b bg-bg/80 shadow-md backdrop-blur-3xl">
             <nav className="flex flex-col p-3">
               {links.map((item) => {
-                const href = `/${locale}${item.href}`;
+                const href = `/${item.href}`;
 
                 return (
                   <Link

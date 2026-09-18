@@ -12,7 +12,7 @@ import { getOrderSummary } from "@/lib/actions/order.actions";
 import { formatCurrency, formatDateTime, formatNumber } from "@/lib/utils";
 import { BadgeDollarSign, Barcode, CreditCard, Users } from "lucide-react";
 import { Metadata } from "next";
-import Link from "next/link";
+import { Link } from "@/navigation";
 import Charts from "./chart";
 
 export const metadata: Metadata = {

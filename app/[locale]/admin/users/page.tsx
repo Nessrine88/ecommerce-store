@@ -10,7 +10,7 @@ import {
 import { Metadata } from "next";
 import { formatId } from "@/lib/utils";
 import { Button } from "@/app/[locale]/components/ui/button";
-import Link from "next/link";
+import { Link } from "@/navigation";
 import Pagination from "@/app/[locale]/components/shared/pagination";
 import { Badge } from "@/app/[locale]/components/ui/badge";
 import DeleteDialog from "@/app/[locale]/components/shared/delete-dialog";

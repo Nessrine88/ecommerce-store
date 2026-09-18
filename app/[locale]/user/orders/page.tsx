@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { deleteOrder, getMyOrders } from "@/lib/actions/order.actions";
 import { formatCurrency, formatDateTime, formatId } from "@/lib/utils";
-import Link from "next/link";
+import { Link } from "@/navigation";
 
 import {
   Table,

@@ -10,7 +10,7 @@ import {
 import { getAllCategories } from "@/lib/actions/product.actions";
 import { cn } from "@/lib/utils";
 import { MenuIcon } from "lucide-react";
-import Link from "next/link";
+import { Link } from "@/navigation";
 
 const CategoryDrawer = async () => {
   const categories = await getAllCategories();

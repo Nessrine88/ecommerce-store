@@ -1,6 +1,7 @@
 'use client'
 
-import { useParams, usePathname, useRouter  } from "next/navigation";
+import { usePathname, useRouter  } from "@/navigation";
+import { useParams } from "next/navigation";
 import React, { useState } from "react";
 import { json } from "zod";
 

@@ -2,7 +2,7 @@
 import { Button } from "@/app/[locale]/components/ui/button";
 import ModeToggle from "./mode-toggle";
 import { EllipsisVertical, ShoppingCart } from "lucide-react";
-import Link from "next/link";
+import { Link } from "@/navigation";
 import {
   Sheet,
   SheetContent,
@@ -24,9 +24,9 @@ const Menu = async () => {
     <div>
       <nav className="hidden md:flex items-center gap-2">
         <ModeToggle />
-<SelectedLanguage />
+        <SelectedLanguage />
         <Button variant="ghost" className="relative">
-          <Link href="/cart" className="flex gap-2 hover:text-primary">
+          <Link href={`/cart`} className="flex gap-2 hover:text-primary">
             <ShoppingCart />
             Cart
             {cartCount > 0 && (
@@ -51,7 +51,7 @@ const Menu = async () => {
             <ModeToggle />
 
             <Button variant="ghost" className="relative">
-              <Link href="/cart" className="flex gap-2 hover:text-primary">
+              <Link href={`/cart`} className="flex gap-2 hover:text-primary">
                 <ShoppingCart />
                 Cart
                 {cartCount > 0 && (

@@ -1,6 +1,6 @@
 import Menu from "./menu";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/navigation";
 import CategoryDrawer from "./category-drawer";
 import Search from "./search";
 

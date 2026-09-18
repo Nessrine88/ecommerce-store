@@ -5,7 +5,7 @@ import {
   getAllProducts,
 } from "@/lib/actions/product.actions";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
+import { Link } from "@/navigation";
 import { XIcon } from "lucide-react";
 
 const prices = [
@@ -55,9 +55,7 @@ export async function generateMetadata(props: {
   };
 }
 const SearchPage = async (props: {
-   params: Promise<{
-    locale: string;
-  }>;
+   
   searchParams: Promise<{
     q?: string;
     category?: string;
@@ -67,7 +65,6 @@ const SearchPage = async (props: {
     page?: string;
   }>;
 }) => {
-   const { locale } = await props.params;
   const {
     q = "all",
     category = "all",
@@ -107,7 +104,7 @@ const SearchPage = async (props: {
     if (r) params.rating = r;
     if (pg) params.page = pg;
 
-    return `/${locale}/search?${new URLSearchParams(params).toString()}`;
+    return `/search?${new URLSearchParams(params).toString()}`;
   };
 
   const products = await getAllProducts({
@@ -263,7 +260,7 @@ const SearchPage = async (props: {
             )}
             {hasActiveFilters && (
               <Link
-                href={`/${locale}/search`}
+                href={` /search`}
                 className="flex items-center gap-1 px-1 text-accent transition-colors hover:text-secondary"
               >
                 <XIcon className="size-3" />

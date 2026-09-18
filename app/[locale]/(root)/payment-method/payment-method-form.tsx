@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/navigation";
 import { toast } from "sonner";
 import { useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";

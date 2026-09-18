@@ -1,7 +1,7 @@
 "use client";
 
 import { Reviews } from "@/types";
-import Link from "next/link";
+import { Link } from "@/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { Star } from "lucide-react";
 import ReviewForm from "./review-form";

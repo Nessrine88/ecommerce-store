@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/navigation";
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { Button, Input } from "@base-ui/react";

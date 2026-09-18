@@ -3,10 +3,9 @@
 
 import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import Link from "next/link";
+import { Link } from "@/navigation";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { useParams } from "next/navigation";
 
 // Static target date
 const TARGET_DATE = new Date("2026-09-20T00:00:00");
@@ -75,9 +74,7 @@ const DealCountdown = () => {
     time.hours === 0 &&
     time.minutes === 0 &&
     time.seconds === 0;
- const params = useParams();
-
-  const locale = params.locale as string;
+ 
   if (hasEnded) {
     return (
       <section className="mx-auto my-20 grid max-w-6xl grid-cols-1 items-center gap-10 overflow-hidden rounded-3xl bg-bg py-12 md:grid-cols-2 md:gap-16 md:py-16">
@@ -94,7 +91,7 @@ const DealCountdown = () => {
 
           <div>
             <Button className="h-11 rounded-full bg-amber-400 px-7 text-sm font-semibold text-stone-950 hover:bg-amber-300">
-              <Link href={`/${locale}/search`}>{t("ended.button")}</Link>
+              <Link href={`/search`}>{t("ended.button")}</Link>
             </Button>
           </div>
         </div>
@@ -143,7 +140,7 @@ const DealCountdown = () => {
 
         <div>
           <Button className="h-11 rounded-full bg-amber-400 px-7 text-sm font-semibold text-stone-950 hover:bg-amber-300">
-            <Link href={`/${locale}/search`}>{t("active.button")}</Link>
+            <Link href={`/search`}>{t("active.button")}</Link>
           </Button>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { signOutUser } from "@/lib/actions/user.actions";
 import { Button, buttonVariants } from "@/app/[locale]/components/ui/button";
-import Link from "next/link";
+import { Link } from "@/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,15 +9,13 @@ import {
   DropdownMenuTrigger,
 } from "@/app/[locale]/components/ui/dropdown-menu";
 import { UserIcon } from "lucide-react";
-import { getLocale } from "next-intl/server";
 
 const UserButton = async () => {
   const session = await auth();
-  const locale = await getLocale();
 
   if (!session) {
     return (
-      <Link href={`/${locale}/sign-in`} className={buttonVariants()}>
+      <Link href={`/sign-in`} className={buttonVariants()}>
         <UserIcon /> Sign In
       </Link>
     );
@@ -58,14 +56,14 @@ const UserButton = async () => {
           </div>
 
           <DropdownMenuItem>
-            <Link href={`/${locale}/user/orders`} className="w-full">
+            <Link href={`/user/orders`} className="w-full">
               Order History
             </Link>
           </DropdownMenuItem>
 
           {session.user?.role === "admin" && (
             <DropdownMenuItem>
-              <Link href={`/${locale}/admin/overview`} className="w-full">
+              <Link href={`/admin/overview`} className="w-full">
                 Admin
               </Link>
             </DropdownMenuItem>

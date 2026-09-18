@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/navigation";
 import { Check, Loader } from "lucide-react";
 import { Button } from "@/app/[locale]/components/ui/button";
 import { createOrder } from "@/lib/actions/order.actions";

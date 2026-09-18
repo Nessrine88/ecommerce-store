@@ -1,6 +1,6 @@
 import Stripe from "stripe";
 import { notFound } from "next/navigation";
-import Link from "next/link";
+import { Link } from "@/navigation";
 import { Button } from "@/app/[locale]/components/ui/button";
 import { getOrderById } from "@/lib/actions/order.actions";
 

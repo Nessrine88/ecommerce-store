@@ -1,20 +1,18 @@
 "use client";
 
 import { Input } from "@/app/[locale]/components/ui/input";
-import { useParams, usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const AdminSearch = () => {
   const pathname = usePathname();
-  const params = useParams();
 
-  const locale = params.locale as string;
 
   const formActionUrl = pathname.includes("/admin/orders")
-    ? `/${locale}/admin/orders`
+    ? `/admin/orders`
     : pathname.includes("/admin/users")
-      ? `/${locale}/admin/users`
-      : `/${locale}/admin/products`;
+      ? `/admin/users`
+      : `/admin/products`;
 
   const searchParams = useSearchParams();
 

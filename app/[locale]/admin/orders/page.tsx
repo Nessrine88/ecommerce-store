@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/app/[locale]/components/ui/table";
 import { formatCurrency, formatDateTime, formatId } from "@/lib/utils";
-import Link from "next/link";
+import { Link } from "@/navigation";
 import Pagination from "@/app/[locale]/components/shared/pagination";
 import { Button } from "@/app/[locale]/components/ui/button";
 import DeleteDialog from "@/app/[locale]/components/shared/delete-dialog";

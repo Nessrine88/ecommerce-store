@@ -3,25 +3,18 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader } from "@/app/[locale]/components/ui/card";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/navigation";
 import ProductPrice from "./product-price";
 import { Product } from "@/types";
 
 const ProductCard = ({ product }: { product: Product }) => {
-  const [language, setLanguage] = useState("en");
 
-  useEffect(() => {
-    const savedLanguage = localStorage.getItem("language");
 
-    if (savedLanguage) {
-      setLanguage(savedLanguage);
-    }
-  }, []);
 
   return (
     <Card className="border border-accent w-full ">
       <CardHeader>
-        <Link href={`/${language}/product/${product.slug}`}>
+        <Link href={`/product/${product.slug}`}>
           <div className="h-64 overflow-hidden rounded-sm border border-accent">
             <Image
               src={product.images[0]}
@@ -37,7 +30,7 @@ const ProductCard = ({ product }: { product: Product }) => {
       <CardContent className="grid gap-4 p-4">
         <div>{product.brand}</div>
 
-        <Link href={`/${language}/product/${product.slug}`}>
+        <Link href={`/product/${product.slug}`}>
           <h2 className="text-sm font-medium">
             {product.name}
           </h2>

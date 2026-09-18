@@ -1,17 +1,17 @@
-
 import { APP_NAME } from "@/lib/constants";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/navigation";
 import Menu from "@/app/[locale]/components/shared/header/menu";
 import MainNav from "./main-nav";
 import AdminSearch from "./admin-search";
-import '@/app/[locale]/globals.css'
 
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }>) {
+
   return (
     <div className="flex min-h-screen w-full flex-col bg-bg text-accent dark:bg-black">
 
@@ -19,8 +19,8 @@ export default function AdminLayout({
       <header className="relative w-full border-b">
         <div className="w-full">
           <div className="flex h-16 w-full items-center gap-2 px-3 sm:gap-4 sm:px-6 lg:px-8">
-      {/* Logo */}
-            <Link href="/" className="shrink-0">
+            {/* Logo */}
+            <Link href={`/`} className="shrink-0">
               <Image
                 src="/logo.svg"
                 height={48}
@@ -31,9 +31,6 @@ export default function AdminLayout({
             </Link>
             {/* Mobile hamburger */}
             <MainNav />
-
-      
-
 
             {/* Right side */}
             <div className="ml-auto flex min-w-0 items-center gap-2 sm:gap-4">

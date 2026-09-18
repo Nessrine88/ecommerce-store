@@ -2,7 +2,7 @@
 
 import { UpdateUserSchema } from "@/lib/validators";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/navigation";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import {

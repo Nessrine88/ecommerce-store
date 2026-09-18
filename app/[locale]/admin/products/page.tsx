@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/navigation";
 import { deleteProduct, getAllProducts } from "@/lib/actions/product.actions";
 import { formatCurrency, formatId } from "@/lib/utils";
 import { Button } from "@/app/[locale]/components/ui/button";
