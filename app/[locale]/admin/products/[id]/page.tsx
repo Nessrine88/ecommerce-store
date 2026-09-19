@@ -1,6 +1,7 @@
 import ProductForm from "@/app/[locale]/components/admin/product-form";
 import { getProductById } from "@/lib/actions/product.actions";
 import { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 export const metadata: Metadata = {
   title: "Update Product",
@@ -11,6 +12,7 @@ const AdminProductPage = async (props: { params: Promise<{ id: string }> }) => {
   if (!product) {
     return notFound();
   }
+  const t = getTranslations();
   return (
     <div className="space-y-8 max-w-5xl mx-auto">
       <h1 className="text-bold">Update Product</h1>

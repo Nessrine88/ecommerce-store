@@ -3,16 +3,16 @@
     "newestProducts": "أحدث المنتجات",
     "viewAllProducts": "عرض جميع المنتجات",
     "dealCountdown": {
-      "loading": "جارٍ تحميل العداد التنازلي…",
+      "loading": "جارٍ تحميل العد التنازلي…",
       "ended": {
         "title": "انتهى العرض",
-        "description": "لم يعد هذا العرض متاحًا. تفقد أحدث عروضنا الترويجية!",
+        "description": "لم يعد هذا العرض متاحًا. اكتشف أحدث عروضنا الترويجية!",
         "button": "عرض المنتجات"
       },
       "active": {
         "endsAt": "ينتهي في 20 سبتمبر",
         "title": "عرض الشهر",
-        "description": "استعد لتجربة تسوق فريدة من نوعها. يأتي كل طلب مع مزايا وعروض حصرية، لتجعل من هذا الشهر فرصة رائعة للاستفادة من أفضل الصفقات.",
+        "description": "استعد لتجربة تسوق لا مثيل لها. مع كل عملية شراء، ستحصل على مزايا وعروض حصرية، مما يجعل هذا الشهر احتفالًا بالاختيارات الذكية والصفقات الرائعة.",
         "button": "عرض المنتجات",
         "timer": {
           "days": "أيام",
@@ -21,7 +21,7 @@
           "seconds": "ثوانٍ"
         }
       },
-      "imageAlt": "عرض مميز"
+      "imageAlt": "عرض ترويجي مميز"
     },
     "iconBoxes": {
       "freeShipping": {
@@ -40,6 +40,89 @@
         "title": "دعم على مدار الساعة",
         "description": "احصل على الدعم في أي وقت"
       }
+    }
+  },
+
+  "ProductPage": {
+    "description": "الوصف",
+    "price": "السعر",
+    "status": "الحالة",
+    "stock": "متوفر في المخزون",
+    "notStock": "غير متوفر في المخزون",
+    "review": "تقييم",
+    "reviews": "تقييمات",
+
+    "details": {
+      "details": "تفاصيل المنتج",
+      "reviews": "التقييمات",
+      "customerReviews": "آراء العملاء",
+      "noReviews": "لا توجد تقييمات بعد",
+      "writeAReview": "اكتب تقييمًا",
+      "showImage": "عرض الصورة {index}",
+      "thumbnail": "الصورة المصغرة {index}",
+      "loadingReviews": "جارٍ تحميل التقييمات...", "please": "يرجى", "signIn": "تسجيل الدخول", "toWriteReview": "لكتابة تقييم", "anonymous": "مجهول"
+    },
+"reviewForm": {
+  "trigger": "اكتب تقييمًا",
+  "title": "اكتب تقييمًا",
+  "description": "شارك رأيك مع العملاء الآخرين",
+  "titleLabel": "العنوان",
+  "titlePlaceholder": "أدخل العنوان",
+  "descriptionLabel": "الوصف",
+  "descriptionPlaceholder": "أدخل الوصف",
+  "ratingLabel": "التقييم",
+  "ratingPlaceholder": "اختر تقييمًا",
+  "submit": "إرسال",
+  "submitting": "جارٍ الإرسال...",
+  "success": "تم إرسال التقييم بنجاح"
+},
+    "sideCard": {
+      "price": "السعر",
+      "status": "الحالة",
+      "stock": "متوفر في المخزون",
+      "notStock": "غير متوفر في المخزون",
+      "add": "أضف إلى السلة"
+    }
+  },
+
+  "SearchPage": {
+    "searchProducts": "البحث عن المنتجات",
+    "query": "البحث",
+    "category": "الفئة",
+    "price": "السعر",
+    "rating": "التقييم",
+    "any": "الكل",
+    "clear": "مسح",
+    "sortBy": "ترتيب حسب",
+    "noProducts": "لم يتم العثور على منتجات",
+    "priceRange": "من {min} إلى {max} دولار",
+    "ratingAndUp": "{rating} نجوم فأكثر",
+    "starsAndUp": "نجوم فأكثر",
+
+    "filters": {
+      "category": "الفئة",
+      "price": "السعر",
+      "rating": "التقييم"
+    },
+
+    "activeFilters": {
+      "query": "البحث",
+      "category": "الفئة",
+      "price": "السعر",
+      "rating": "التقييم"
+    },
+
+    "sort": {
+      "newest": "الأحدث",
+      "lowest": "السعر: من الأقل إلى الأعلى",
+      "highest": "السعر: من الأعلى إلى الأقل",
+      "rating": "الأعلى تقييمًا"
+    },
+
+    "pagination": {
+      "previous": "السابق",
+      "next": "التالي",
+      "page": "الصفحة {current} من {total}"
     }
   }
 }

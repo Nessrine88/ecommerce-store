@@ -1,33 +1,47 @@
+
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { Star } from "lucide-react";
-import ProdductImages from "@/app/[locale]/components/shared/product/product-images";
+
+import ProductImages from "@/app/[locale]/components/shared/product/product-images";
 import ProductPrice from "@/app/[locale]/components/shared/product/product-price";
+import AddToCart from "@/app/[locale]/components/shared/product/add-to-cart";
+
 import { Badge } from "@/app/[locale]/components/ui/badge";
 import { Card, CardContent } from "@/app/[locale]/components/ui/card";
 import { Separator } from "@/app/[locale]/components/ui/separator";
 
 import { getProductBySlug } from "@/lib/actions/product.actions";
-import { Button } from "@base-ui/react";
-import AddToCart from "@/app/[locale]/components/shared/product/add-to-cart";
 import { getMyCart } from "@/lib/actions/cart.actions";
-import { carts } from "@/app/db/schema";
 import { auth } from "@/auth";
+
 import ReviewList from "./review-list";
+
 const ProductDetailsPage = async ({
   params,
 }: {
-  params: Promise<{ slug: string ;locale: string  }>;
+  params: Promise<{ slug: string; locale: string }>;
 }) => {
-  const {locale, slug } = await params;
+  const { locale, slug } = await params;
+
+  const t = await getTranslations({
+    locale,
+    namespace: "ProductPage",
+  });
 
   const product = await getProductBySlug(slug, locale);
+
+  if (!product) {
+    notFound();
+  }
+
   const session = await auth();
   const userId = session?.user?.id;
 
-  if (!product) notFound();
-
   const inStock = product.stock > 0;
+
   const cart = await getMyCart();
+
   const normalizedCart = cart
     ? {
         ...cart,
@@ -41,14 +55,15 @@ const ProductDetailsPage = async ({
         }[],
       }
     : undefined;
+
   return (
-    <div className="flex flex-col max-w-7xl mx-auto">
+    <div className="mx-auto flex max-w-7xl flex-col">
       <section className="min-h-screen py-10 text-accent">
-        <div className="mx-auto grid  grid-cols-1 gap-10 px-4 md:grid-cols-12">
+        <div className="mx-auto grid grid-cols-1 gap-10 px-4 md:grid-cols-12">
           {/* Product Image */}
           <div className="md:col-span-5">
             <div className="md:sticky md:top-24">
-              <ProdductImages images={product.images ?? []} />
+              <ProductImages images={product.images ?? []} />
             </div>
           </div>
 
@@ -65,6 +80,7 @@ const ProductDetailsPage = async ({
                 </h1>
               </div>
 
+              {/* Rating */}
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <div className="flex items-center gap-0.5">
                   {Array.from({ length: 5 }).map((_, i) => (
@@ -78,12 +94,16 @@ const ProductDetailsPage = async ({
                     />
                   ))}
                 </div>
+
                 <span>
                   {Number(product.rating)} · {product.numReviews}{" "}
-                  {product.numReviews === 1 ? "review" : "reviews"}
+                  {product.numReviews === 1
+                    ? t("review")
+                    : t("reviews")}
                 </span>
               </div>
 
+              {/* Product Price */}
               <ProductPrice
                 value={Number(product.price)}
                 className="w-fit rounded-full bg-green-100 px-3 py-1.5 text-sm font-medium text-green-700"
@@ -91,10 +111,12 @@ const ProductDetailsPage = async ({
 
               <Separator />
 
+              {/* Description */}
               <div>
                 <h2 className="mb-2 text-sm font-semibold text-foreground">
-                  Description
+                  {t("description")}
                 </h2>
+
                 <p className="leading-relaxed text-muted-foreground">
                   {product.description}
                 </p>
@@ -107,24 +129,36 @@ const ProductDetailsPage = async ({
             <div className="md:sticky md:top-24">
               <Card>
                 <CardContent className="space-y-5 p-5">
+                  {/* Price */}
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Price</span>
+                    <span className="text-sm text-muted-foreground">
+                      {t("price")}
+                    </span>
+
                     <ProductPrice
                       value={Number(product.price)}
                       className="text-lg font-semibold"
                     />
                   </div>
 
+                  {/* Status */}
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">
-                      Status
+                      {t("status")}
                     </span>
+
                     {inStock ? (
-                      <Badge variant="outline">In Stock</Badge>
+                      <Badge variant="outline">
+                        {t("stock")}
+                      </Badge>
                     ) : (
-                      <Badge variant="destructive">Out of Stock</Badge>
+                      <Badge variant="destructive">
+                        {t("notStock")}
+                      </Badge>
                     )}
                   </div>
+
+                  {/* Add to Cart */}
                   <div className="pt-2">
                     {inStock ? (
                       <AddToCart
@@ -139,9 +173,13 @@ const ProductDetailsPage = async ({
                         }}
                       />
                     ) : (
-                      <Button className="w-full" disabled>
-                        Out of Stock
-                      </Button>
+                      <button
+                        type="button"
+                        className="w-full rounded-md bg-muted px-4 py-2 text-sm font-medium text-muted-foreground"
+                        disabled
+                      >
+                        {t("notStock")}
+                      </button>
                     )}
                   </div>
                 </CardContent>
@@ -150,8 +188,13 @@ const ProductDetailsPage = async ({
           </div>
         </div>
       </section>
-      <section className=" w-full h-full  text-accent">
-        <h2 className="font-bold"> Custmer Reviews </h2>
+
+      {/* Customer Reviews */}
+      <section className="h-full w-full py-8 text-accent">
+        <h2 className="font-bold">
+           {t("details.customerReviews")}
+        </h2>
+
         <ReviewList
           userId={userId || ""}
           productId={product.id}
@@ -163,3 +206,4 @@ const ProductDetailsPage = async ({
 };
 
 export default ProductDetailsPage;
+

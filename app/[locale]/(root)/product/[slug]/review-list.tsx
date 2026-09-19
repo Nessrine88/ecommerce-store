@@ -1,13 +1,20 @@
+
 "use client";
 
 import { Reviews } from "@/types";
 import { Link } from "@/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { Star } from "lucide-react";
+import { useTranslations } from "next-intl";
+
 import ReviewForm from "./review-form";
 import { getReviews } from "@/lib/actions/review.action";
 import { formatDateTime } from "@/lib/utils";
-import { Card, CardHeader, CardTitle } from "@/app/[locale]/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+} from "@/app/[locale]/components/ui/card";
 
 const ReviewList = ({
   userId,
@@ -18,12 +25,16 @@ const ReviewList = ({
   productId: string;
   productSlug: string;
 }) => {
+  const t = useTranslations("ProductPage.details");
+
   const [reviews, setReviews] = useState<Reviews[]>([]);
   const [loading, setLoading] = useState(true);
 
   const loadReviews = useCallback(async () => {
     setLoading(true);
+
     const res = await getReviews({ productId });
+
     setReviews(res.data);
     setLoading(false);
   }, [productId]);
@@ -38,10 +49,17 @@ const ReviewList = ({
 
   return (
     <div className="space-y-4">
-      {loading && reviews.length === 0 && <div>Loading reviews...</div>}
+      {/* Loading */}
+      {loading && reviews.length === 0 && (
+        <div>{t("loadingReviews")}</div>
+      )}
 
-      {!loading && reviews.length === 0 && <div>No reviews yet</div>}
+      {/* Empty state */}
+      {!loading && reviews.length === 0 && (
+        <div>{t("noReviews")}</div>
+      )}
 
+      {/* Review form / Sign in */}
       {userId ? (
         <ReviewForm
           userId={userId}
@@ -50,22 +68,29 @@ const ReviewList = ({
         />
       ) : (
         <div>
-          Please{" "}
+          {t("please")}{" "}
           <Link
             className="px-2 font-bold text-sky-500"
             href={`/sign-in?callbackUrl=/product/${productSlug}`}
           >
-            sign in
-          </Link>
-          to write a review
+            {t("signIn")}
+          </Link>{" "}
+          {t("toWriteReview")}
         </div>
       )}
 
+      {/* Reviews */}
       <div className="flex flex-col gap-3">
         {reviews.map((review) => (
-          <Card key={review.id} className="rounded-lg border p-4 my-5">
+          <Card
+            key={review.id}
+            className="my-5 rounded-lg border p-4"
+          >
             <CardHeader className="flex items-center justify-between">
-              <CardTitle className="font-semibold">{review.title}</CardTitle>
+              <CardTitle className="font-semibold">
+                {review.title}
+              </CardTitle>
+
               <div className="flex items-center gap-0.5">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star
@@ -80,12 +105,20 @@ const ReviewList = ({
               </div>
             </CardHeader>
 
-            <p className="mt-2 text-sm text-muted">{review.description}</p>
+            <p className="mt-2 text-sm text-muted">
+              {review.description}
+            </p>
 
             <div className="mt-3 flex items-center gap-2 text-xs text-muted">
-              <span>{review.user?.name ?? "Anonymous"}</span>
+              <span>
+                {review.user?.name ?? t("anonymous")}
+              </span>
+
               <span>·</span>
-              <span>{formatDateTime(review.createdAt).datetime}</span>
+
+              <span>
+                {formatDateTime(review.createdAt).datetime}
+              </span>
             </div>
           </Card>
         ))}
@@ -95,3 +128,4 @@ const ReviewList = ({
 };
 
 export default ReviewList;
+

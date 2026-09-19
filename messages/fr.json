@@ -5,14 +5,14 @@
     "dealCountdown": {
       "loading": "Chargement du compte à rebours…",
       "ended": {
-        "title": "L'offre est terminée",
+        "title": "Offre terminée",
         "description": "Cette offre n'est plus disponible. Découvrez nos dernières promotions !",
         "button": "Voir les produits"
       },
       "active": {
         "endsAt": "Se termine le 20 septembre",
         "title": "Offre du mois",
-        "description": "Préparez-vous à une expérience d'achat inédite. Chaque commande inclut des avantages et des offres exclusifs, faisant de ce mois une célébration de bons plans exceptionnels.",
+        "description": "Préparez-vous à vivre une expérience d'achat inégalée. Avec chaque achat, profitez d'avantages et d'offres exclusifs, faisant de ce mois une célébration des choix intelligents et des excellentes affaires.",
         "button": "Voir les produits",
         "timer": {
           "days": "Jours",
@@ -21,7 +21,7 @@
           "seconds": "Secondes"
         }
       },
-      "imageAlt": "Promotion à la une"
+      "imageAlt": "Offre promotionnelle en vedette"
     },
     "iconBoxes": {
       "freeShipping": {
@@ -34,12 +34,95 @@
       },
       "flexiblePayment": {
         "title": "Paiement flexible",
-        "description": "Payez par carte bancaire, PayPal ou à la livraison"
+        "description": "Payez par carte de crédit, PayPal ou paiement à la livraison"
       },
       "support": {
         "title": "Assistance 24/7",
         "description": "Obtenez de l'aide à tout moment"
       }
+    }
+  },
+
+  "ProductPage": {
+    "description": "Description",
+    "price": "Prix",
+    "status": "Statut",
+    "stock": "En stock",
+    "notStock": "Rupture de stock",
+    "review": "avis",
+    "reviews": "avis",
+
+    "details": {
+      "details": "Détails du produit",
+      "reviews": "Avis",
+      "customerReviews": "Avis des clients",
+      "noReviews": "Aucun avis pour le moment",
+      "writeAReview": "Écrire un avis",
+      "showImage": "Afficher l'image {index}",
+      "thumbnail": "Miniature {index}",
+      "loadingReviews": "Chargement des avis...", "please": "Veuillez", "signIn": "vous connecter", "toWriteReview": "pour écrire un avis", "anonymous": "Anonyme"
+    },
+"reviewForm": {
+  "trigger": "Écrire un avis",
+  "title": "Écrire un avis",
+  "description": "Partagez votre avis avec les autres clients",
+  "titleLabel": "Titre",
+  "titlePlaceholder": "Saisissez un titre",
+  "descriptionLabel": "Description",
+  "descriptionPlaceholder": "Saisissez une description",
+  "ratingLabel": "Note",
+  "ratingPlaceholder": "Sélectionnez une note",
+  "submit": "Envoyer",
+  "submitting": "Envoi en cours...",
+  "success": "Avis envoyé avec succès"
+},
+    "sideCard": {
+      "price": "Prix",
+      "status": "Statut",
+      "stock": "En stock",
+      "notStock": "Rupture de stock",
+      "add": "Ajouter au panier"
+    }
+  },
+
+  "SearchPage": {
+    "searchProducts": "Rechercher des produits",
+    "query": "Recherche",
+    "category": "Catégorie",
+    "price": "Prix",
+    "rating": "Note",
+    "any": "Tous",
+    "clear": "Effacer",
+    "sortBy": "Trier par",
+    "noProducts": "Aucun produit trouvé",
+    "priceRange": "De {min} à {max} $",
+    "ratingAndUp": "{rating} étoiles et plus",
+    "starsAndUp": "étoiles et plus",
+
+    "filters": {
+      "category": "Catégorie",
+      "price": "Prix",
+      "rating": "Note"
+    },
+
+    "activeFilters": {
+      "query": "Recherche",
+      "category": "Catégorie",
+      "price": "Prix",
+      "rating": "Note"
+    },
+
+    "sort": {
+      "newest": "Plus récent",
+      "lowest": "Prix : du plus bas au plus élevé",
+      "highest": "Prix : du plus élevé au plus bas",
+      "rating": "Mieux notés"
+    },
+
+    "pagination": {
+      "previous": "Précédent",
+      "next": "Suivant",
+      "page": "Page {current} sur {total}"
     }
   }
 }

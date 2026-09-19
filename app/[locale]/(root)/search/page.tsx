@@ -1,3 +1,4 @@
+
 import ProductCard from "@/app/[locale]/components/shared/product/product-card";
 import {
   getAllCategories,
@@ -5,21 +6,25 @@ import {
 } from "@/lib/actions/product.actions";
 import { cn } from "@/lib/utils";
 import { Link } from "@/navigation";
+import { getTranslations } from "next-intl/server";
 import { XIcon } from "lucide-react";
 
 const prices = [
-  { name: "$1 to $50", value: "1-50" },
-  { name: "$51 to $100", value: "51-100" },
-  { name: "$101 to $200", value: "101-200" },
-  { name: "$201 to $500", value: "201-500" },
-  { name: "$501 to $1000", value: "501-1000" },
+  { value: "1-50", min: 1, max: 50 },
+  { value: "51-100", min: 51, max: 100 },
+  { value: "101-200", min: 101, max: 200 },
+  { value: "201-500", min: 201, max: 500 },
+  { value: "501-1000", min: 501, max: 1000 },
 ];
 
 const ratings = [4, 3, 2, 1];
 
-const sortOrders = ["newest", "lowest", "highest", "rating"];
+const sortOrders = ["newest", "lowest", "highest", "rating"] as const;
 
 export async function generateMetadata(props: {
+  params: Promise<{
+    locale: string;
+  }>;
   searchParams: Promise<{
     q?: string;
     category?: string;
@@ -27,6 +32,13 @@ export async function generateMetadata(props: {
     rating?: string;
   }>;
 }) {
+  const { locale } = await props.params;
+
+  const t = await getTranslations({
+    locale,
+    namespace: "SearchPage",
+  });
+
   const {
     q = "all",
     category = "all",
@@ -34,23 +46,10 @@ export async function generateMetadata(props: {
     rating = "all",
   } = await props.searchParams;
 
-  const isQuerySet =
-    q && q !== "all" && q.trim() !== "";
-
-  const isCategorySet =
-    category &&
-    category !== "all" &&
-    category.trim() !== "";
-
-  const isPriceSet =
-    price &&
-    price !== "all" &&
-    price.trim() !== "";
-
-  const isRatingSet =
-    rating &&
-    rating !== "all" &&
-    rating.trim() !== "";
+  const isQuerySet = q !== "all" && q.trim() !== "";
+  const isCategorySet = category !== "all" && category.trim() !== "";
+  const isPriceSet = price !== "all" && price.trim() !== "";
+  const isRatingSet = rating !== "all" && rating.trim() !== "";
 
   if (
     isQuerySet ||
@@ -58,17 +57,20 @@ export async function generateMetadata(props: {
     isPriceSet ||
     isRatingSet
   ) {
+    const parts = [
+      isQuerySet ? `${t("query")}: ${q}` : "",
+      isCategorySet ? `${t("category")}: ${category}` : "",
+      isPriceSet ? `${t("price")}: ${price}` : "",
+      isRatingSet ? `${t("rating")}: ${rating}` : "",
+    ].filter(Boolean);
+
     return {
-      title: `Search ${isQuerySet ? q : ""}${
-        isCategorySet ? `: Category ${category}` : ""
-      }${isPriceSet ? `: Price ${price}` : ""}${
-        isRatingSet ? `: Rating ${rating}` : ""
-      }`.trim(),
+      title: parts.join(" | "),
     };
   }
 
   return {
-    title: "Search Products",
+    title: t("searchProducts"),
   };
 }
 
@@ -86,6 +88,11 @@ const SearchPage = async (props: {
   }>;
 }) => {
   const { locale } = await props.params;
+
+  const t = await getTranslations({
+    locale,
+    namespace: "SearchPage",
+  });
 
   const {
     q = "all",
@@ -190,7 +197,7 @@ const SearchPage = async (props: {
         {/* Categories */}
         <div>
           <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-secondary">
-            Category
+            {t("filters.category")}
           </h3>
 
           <ul className="flex flex-wrap gap-1 md:block md:space-y-0.5">
@@ -200,12 +207,9 @@ const SearchPage = async (props: {
                   c: "all",
                   pg: "1",
                 })}
-                active={
-                  category === "all" ||
-                  category === ""
-                }
+                active={category === "all" || category === ""}
               >
-                Any
+                {t("any")}
               </FilterLink>
             </li>
 
@@ -230,7 +234,7 @@ const SearchPage = async (props: {
         {/* Price */}
         <div>
           <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-secondary">
-            Price
+            {t("filters.price")}
           </h3>
 
           <ul className="flex flex-wrap gap-1 md:block md:space-y-0.5">
@@ -242,7 +246,7 @@ const SearchPage = async (props: {
                 })}
                 active={price === "all"}
               >
-                Any
+                {t("any")}
               </FilterLink>
             </li>
 
@@ -255,7 +259,10 @@ const SearchPage = async (props: {
                   })}
                   active={price === p.value}
                 >
-                  {p.name}
+                  {t("priceRange", {
+                    min: p.min,
+                    max: p.max,
+                  })}
                 </FilterLink>
               </li>
             ))}
@@ -267,7 +274,7 @@ const SearchPage = async (props: {
         {/* Rating */}
         <div>
           <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-secondary">
-            Rating
+            {t("filters.rating")}
           </h3>
 
           <ul className="flex flex-wrap gap-1 md:block md:space-y-0.5">
@@ -279,7 +286,7 @@ const SearchPage = async (props: {
                 })}
                 active={rating === "all"}
               >
-                Any
+                {t("any")}
               </FilterLink>
             </li>
 
@@ -292,7 +299,9 @@ const SearchPage = async (props: {
                   })}
                   active={rating === String(r)}
                 >
-                  {r} stars & up
+                  {t("ratingAndUp", {
+                    rating: r,
+                  })}
                 </FilterLink>
               </li>
             ))}
@@ -308,25 +317,26 @@ const SearchPage = async (props: {
           <div className="flex flex-wrap items-center gap-2 text-sm text-muted">
             {q !== "all" && q !== "" && (
               <span className="rounded-full bg-card px-3 py-1 text-text">
-                Query: {q}
+                {t("activeFilters.query")}: {q}
               </span>
             )}
 
             {category !== "all" && category !== "" && (
               <span className="rounded-full bg-card px-3 py-1 text-text">
-                Category: {category}
+                {t("activeFilters.category")}: {category}
               </span>
             )}
 
             {price !== "all" && price !== "" && (
               <span className="rounded-full bg-card px-3 py-1 text-text">
-                Price: {price}
+                {t("activeFilters.price")}: {price}
               </span>
             )}
 
             {rating !== "all" && rating !== "" && (
               <span className="rounded-full bg-card px-3 py-1 text-text">
-                Rating: {rating} stars & up
+                {t("activeFilters.rating")}: {rating}{" "}
+                {t("starsAndUp")}
               </span>
             )}
 
@@ -336,7 +346,7 @@ const SearchPage = async (props: {
                 className="flex items-center gap-1 px-1 text-accent transition-colors hover:text-secondary"
               >
                 <XIcon className="size-3" />
-                Clear
+                {t("clear")}
               </Link>
             )}
           </div>
@@ -344,7 +354,7 @@ const SearchPage = async (props: {
           {/* Sort */}
           <div className="flex flex-wrap items-center gap-1 text-sm">
             <span className="text-muted">
-              Sort by:
+              {t("sortBy")}:
             </span>
 
             {sortOrders.map((s) => (
@@ -361,7 +371,7 @@ const SearchPage = async (props: {
                     : "text-muted hover:text-text"
                 )}
               >
-                {s}
+                {t(`sort.${s}`)}
               </Link>
             ))}
           </div>
@@ -371,7 +381,7 @@ const SearchPage = async (props: {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
           {products.data.length === 0 && (
             <div className="flex min-h-[200px] items-center justify-center rounded-lg border border-dashed border-primary/30 text-muted sm:col-span-2 md:col-span-3">
-              No products found
+              {t("noProducts")}
             </div>
           )}
 
@@ -398,12 +408,15 @@ const SearchPage = async (props: {
                 })}
                 className="rounded-md border border-primary/30 px-3 py-2 text-sm text-muted transition-colors hover:bg-card-hover hover:text-text"
               >
-                Previous
+                {t("pagination.previous")}
               </Link>
             )}
 
             <span className="rounded-md bg-card px-3 py-2 text-sm font-semibold text-text">
-              Page {currentPage} of {products.totalPages}
+              {t("pagination.page", {
+                current: currentPage,
+                total: products.totalPages,
+              })}
             </span>
 
             {currentPage < products.totalPages && (
@@ -413,7 +426,7 @@ const SearchPage = async (props: {
                 })}
                 className="rounded-md border border-primary/30 px-3 py-2 text-sm text-muted transition-colors hover:bg-card-hover hover:text-text"
               >
-                Next
+                {t("pagination.next")}
               </Link>
             )}
           </div>

@@ -1,6 +1,5 @@
-"use cleint";
+"use client";
 
-import { AlertDialogTitle } from "@/app/[locale]/components/ui/alert-dialog";
 import { Button } from "@/app/[locale]/components/ui/button";
 import {
   Dialog,
@@ -9,6 +8,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/app/[locale]/components/ui/dialog";
 import {
   Form,
@@ -35,6 +35,7 @@ import { reviewFormDefaultValues } from "@/lib/constants";
 import { insertReviewSchema } from "@/lib/validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { StarIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -49,12 +50,15 @@ const ReviewForm = ({
   productId: string;
   onReviewSubmitted: () => void;
 }) => {
+  const t = useTranslations("ProductPage.reviewForm");
+
   const [open, setOpen] = useState(false);
   const form = useForm<z.infer<typeof insertReviewSchema>>({
     resolver: zodResolver(insertReviewSchema),
     defaultValues: reviewFormDefaultValues,
   });
-  //Open form handler
+
+  // Open form handler
   const handleOpenForm = async () => {
     form.setValue("productId", productId);
     form.setValue("userId", userId);
@@ -68,8 +72,7 @@ const ReviewForm = ({
     setOpen(true);
   };
 
-  //Submit form handler
-
+  // Submit form handler
   const onSubmit: SubmitHandler<z.infer<typeof insertReviewSchema>> = async (
     values,
   ) => {
@@ -78,34 +81,37 @@ const ReviewForm = ({
       toast.error(res.message);
       return;
     }
-    toast.success("Review submitted successfully");
+    toast.success(t("success"));
     setOpen(false);
     onReviewSubmitted();
   };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <Button onClick={handleOpenForm} variant="default">
-        Write a review
-      </Button>
-      <DialogContent className="sm:max-w-[425px] border border-accent ">
+      <DialogTrigger
+        render={<Button variant="default">{t("trigger")}</Button>}
+        onClick={handleOpenForm}
+      />
+      <DialogContent className="sm:max-w-[425px] border border-accent">
         <Form {...form}>
           <form method="post" onSubmit={form.handleSubmit(onSubmit)}>
             <DialogHeader>
-              <DialogTitle className="text-accent ">Write a review</DialogTitle>
-              <DialogDescription className={"text-accent"}>
-                Share your thoughts with other customers
+              <DialogTitle className="text-accent">{t("title")}</DialogTitle>
+              <DialogDescription className="text-accent">
+                {t("description")}
               </DialogDescription>
             </DialogHeader>
-            <div className="grid gap-4 py-4 text-accent ">
+            <div className="grid gap-4 py-4 text-accent">
               <FormField
                 control={form.control}
                 name="title"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Title</FormLabel>
+                    <FormLabel>{t("titleLabel")}</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter title" {...field} />
+                      <Input placeholder={t("titlePlaceholder")} {...field} />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -115,19 +121,24 @@ const ReviewForm = ({
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Description</FormLabel>
+                    <FormLabel>{t("descriptionLabel")}</FormLabel>
                     <FormControl>
-                      <Textarea placeholder="Enter Description" {...field} />
+                      <Textarea
+                        placeholder={t("descriptionPlaceholder")}
+                        {...field}
+                      />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="rating"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Rating</FormLabel>
+                    <FormLabel>{t("ratingLabel")}</FormLabel>
 
                     <Select
                       onValueChange={(value) => field.onChange(Number(value))}
@@ -135,7 +146,7 @@ const ReviewForm = ({
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select a rating" />
+                          <SelectValue placeholder={t("ratingPlaceholder")} />
                         </SelectTrigger>
                       </FormControl>
 
@@ -162,7 +173,7 @@ const ReviewForm = ({
                 className="w-full"
                 disabled={form.formState.isSubmitting}
               >
-                {form.formState.isSubmitting ? "Submitting..." : "Submit"}
+                {form.formState.isSubmitting ? t("submitting") : t("submit")}
               </Button>
             </DialogFooter>
           </form>
