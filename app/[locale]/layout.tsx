@@ -5,8 +5,7 @@ import { APP_NAME } from "@/lib/constants";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
 import { NextIntlClientProvider } from "next-intl"
-import { getMessages } from 'next-intl/server';
-
+import { getMessages, getLocale } from 'next-intl/server';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,27 +21,33 @@ export const metadata: Metadata = {
   title: `${APP_NAME}`,
   description: "An Ecommerce platforme that sells plants",
 };
+
+const rtlLocales = ["ar", "he", "fa", "ur"];
+
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const messages = await getMessages();
+  const locale = await getLocale();
+  const dir = rtlLocales.includes(locale) ? "rtl" : "ltr";
 
-  const messages = await getMessages()
   return (
     <NextIntlClientProvider messages={messages}>
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-      suppressHydrationWarning
-    >
-      <body className="min-h-full flex flex-col  ">
-        <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
-          {children}
-          <Toaster richColors />
-        </ThemeProvider>
-      </body>
-    </html>
+      <html
+        lang={locale}
+        dir={dir}
+        className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+        suppressHydrationWarning
+      >
+        <body className="min-h-full flex flex-col">
+          <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
+            {children}
+            <Toaster richColors />
+          </ThemeProvider>
+        </body>
+      </html>
     </NextIntlClientProvider>
   );
 }
