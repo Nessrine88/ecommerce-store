@@ -124,5 +124,29 @@
       "next": "Suivant",
       "page": "Page {current} sur {total}"
     }
-  }
+  },
+  "Menu": {
+    "cart": "Panier",
+    "menuTitle": "Menu"
+  },
+  "UserButton": {
+  "signIn": "Se Connecter",
+  "orderHistory": "Historique des Commandes",
+  "admin": "Admin",
+  "signOut": "Se Déconnecter"
+},
+"Categories": {
+  "Indoor Plants": "Plantes d'Intérieur",
+  "Flowering Plants": "Plantes à Fleurs",
+  "Succulents": "Plantes Succulentes",
+  "Indoor Trees": "Arbres d'Intérieur",
+  "Tropical Plants": "Plantes Tropicales"
+},
+"Categories": {
+  "Indoor Plants": "نباتات داخلية",
+  "Flowering Plants": "نباتات مزهرة",
+  "Succulents": "نباتات عصارية",
+  "Indoor Trees": "أشجار داخلية",
+  "Tropical Plants": "نباتات استوائية"
+}
 }

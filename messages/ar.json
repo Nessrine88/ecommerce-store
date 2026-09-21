@@ -124,5 +124,15 @@
       "next": "التالي",
       "page": "الصفحة {current} من {total}"
     }
-  }
+  },
+  "Menu": {
+    "cart": "السلة",
+    "menuTitle": "القائمة"
+  },
+  "UserButton": {
+  "signIn": "تسجيل الدخول",
+  "orderHistory": "سجل الطلبات",
+  "admin": "الإدارة",
+  "signOut": "تسجيل الخروج"
+}
 }

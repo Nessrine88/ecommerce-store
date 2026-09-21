@@ -125,6 +125,23 @@
       "next": "Next",
       "page": "Page {current} of {total}"
     }
-  }
+  },
+  "Menu": {
+  "cart": "Cart",
+  "menuTitle": "Menu"
+},
+"UserButton": {
+  "signIn": "Sign In",
+  "orderHistory": "Order History",
+  "admin": "Admin",
+  "signOut": "Sign Out"
+},
+"Categories": {
+  "Indoor Plants": "Indoor Plants",
+  "Flowering Plants": "Flowering Plants",
+  "Succulents": "Succulents",
+  "Indoor Trees": "Indoor Trees",
+  "Tropical Plants": "Tropical Plants"
+}
 }
 
