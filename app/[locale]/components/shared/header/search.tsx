@@ -9,12 +9,14 @@ import {
 } from "@/app/[locale]/components/ui/select";
 import { getAllCategories } from "@/lib/actions/product.actions";
 import { SearchIcon } from "lucide-react";
+import { getLocale } from "next-intl/server";
 
 const Search = async () => {
-  const categories = await getAllCategories();
+  const locale = await getLocale();
+  const categories = await getAllCategories(locale);
 
   return (
-    <form action="/en/search" method="GET">
+    <form action={`/${locale}/search`} method="GET">
       <div className="flex w-full md:max-w-7xl max-w-sm items-center space-x-2">
         <Select name="category" defaultValue="all">
           <SelectTrigger className="w-[180px]">
@@ -26,7 +28,7 @@ const Search = async () => {
             </SelectItem>
             {categories.map((x) => (
               <SelectItem key={x.category} value={x.category}>
-                {x.category}
+                {x.name}
               </SelectItem>
             ))}
           </SelectContent>

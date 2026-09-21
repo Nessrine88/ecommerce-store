@@ -121,7 +121,7 @@ const AdminProductsPage = async (props: {
                   </TableCell>
 
                   <TableCell>
-                    {product.category}
+                    {product.categoryId}
                   </TableCell>
 
                   <TableCell>

@@ -154,13 +154,13 @@ const ProductForm = ({
           {/* Category */}
           <FormField
             control={form.control}
-            name="category"
+            name="categoryId"
             render={({
               field,
             }: {
               field: ControllerRenderProps<
                 z.infer<typeof insertProductSchema>,
-                "category"
+                "categoryId"
               >;
             }) => (
               <FormItem className="w-full">

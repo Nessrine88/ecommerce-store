@@ -105,7 +105,7 @@ const SearchPage = async (props: {
 
   const currentPage = Math.max(Number(page) || 1, 1);
 
-  const categories = await getAllCategories();
+  const categories = await getAllCategories(locale);
 
   const getFilterUrl = ({
     c,
