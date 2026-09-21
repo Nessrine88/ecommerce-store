@@ -16,11 +16,54 @@ const sampleData = {
     },
   ],
 
+  categories: [
+    {
+      slug: "indoor-plants",
+      translations: {
+        en: "Indoor Plants",
+        fr: "Plantes d'Intérieur",
+        ar: "نباتات داخلية",
+      },
+    },
+    {
+      slug: "flowering-plants",
+      translations: {
+        en: "Flowering Plants",
+        fr: "Plantes à Fleurs",
+        ar: "نباتات مزهرة",
+      },
+    },
+    {
+      slug: "succulents",
+      translations: {
+        en: "Succulents",
+        fr: "Plantes Succulentes",
+        ar: "نباتات عصارية",
+      },
+    },
+    {
+      slug: "indoor-trees",
+      translations: {
+        en: "Indoor Trees",
+        fr: "Arbres d'Intérieur",
+        ar: "أشجار داخلية",
+      },
+    },
+    {
+      slug: "tropical-plants",
+      translations: {
+        en: "Tropical Plants",
+        fr: "Plantes Tropicales",
+        ar: "نباتات استوائية",
+      },
+    },
+  ],
+
   products: [
     {
       name: "Monstera Deliciosa",
       slug: "monstera-deliciosa",
-      category: "Indoor Plants",
+      categorySlug: "indoor-plants",
       description:
         "A beautiful tropical houseplant with large, distinctive split leaves. Perfect for bright indoor spaces.",
       images: [
@@ -57,7 +100,7 @@ const sampleData = {
     {
       name: "Snake Plant",
       slug: "snake-plant",
-      category: "Indoor Plants",
+      categorySlug: "indoor-plants",
       description:
         "A hardy, low-maintenance indoor plant known for its tall leaves and air-purifying qualities.",
       images: [
@@ -94,7 +137,7 @@ const sampleData = {
     {
       name: "Peace Lily",
       slug: "peace-lily",
-      category: "Flowering Plants",
+      categorySlug: "flowering-plants",
       description:
         "An elegant indoor plant with dark green foliage and beautiful white flowers.",
       images: [
@@ -131,7 +174,7 @@ const sampleData = {
     {
       name: "Aloe Vera",
       slug: "aloe-vera",
-      category: "Succulents",
+      categorySlug: "succulents",
       description:
         "A popular succulent with thick green leaves. Easy to grow and ideal for sunny indoor spaces.",
       images: [
@@ -168,7 +211,7 @@ const sampleData = {
     {
       name: "Fiddle Leaf Fig",
       slug: "fiddle-leaf-fig",
-      category: "Indoor Trees",
+      categorySlug: "indoor-trees",
       description:
         "A stylish indoor tree with large glossy leaves that adds a modern tropical feel to your home.",
       images: [
@@ -203,11 +246,9 @@ const sampleData = {
     },
 
     {
-      // NOTE: could not independently verify a ZZ-plant-specific Unsplash photo
-      // within this session — see the message below the code for details.
       name: "ZZ Plant",
       slug: "zz-plant",
-      category: "Indoor Plants",
+      categorySlug: "indoor-plants",
       description:
         "A resilient houseplant with glossy green leaves that requires very little maintenance.",
       images: [
@@ -242,11 +283,9 @@ const sampleData = {
     },
 
     {
-      // NOTE: could not independently verify a Calathea-specific Unsplash photo
-      // within this session — see the message below the code for details.
       name: "Calathea Orbifolia",
       slug: "calathea-orbifolia",
-      category: "Tropical Plants",
+      categorySlug: "tropical-plants",
       description:
         "A stunning tropical plant featuring large rounded leaves with elegant silver-green stripes.",
       images: [
@@ -281,11 +320,9 @@ const sampleData = {
     },
 
     {
-      // NOTE: could not independently verify a String-of-Pearls-specific Unsplash
-      // photo within this session — see the message below the code for details.
       name: "String of Pearls",
       slug: "string-of-pearls",
-      category: "Succulents",
+      categorySlug: "succulents",
       description:
         "A unique trailing succulent with small pearl-shaped leaves, perfect for hanging planters.",
       images: [
@@ -320,11 +357,9 @@ const sampleData = {
     },
 
     {
-      // NOTE: could not independently verify a rubber-plant-specific Unsplash
-      // photo within this session — see the message below the code for details.
       name: "Rubber Plant",
       slug: "rubber-plant",
-      category: "Indoor Trees",
+      categorySlug: "indoor-trees",
       description:
         "A classic houseplant with large dark green leaves and an attractive upright growth habit.",
       images: [
@@ -361,7 +396,7 @@ const sampleData = {
     {
       name: "Lavender Plant",
       slug: "lavender-plant",
-      category: "Flowering Plants",
+      categorySlug: "flowering-plants",
       description:
         "A fragrant flowering plant with beautiful purple blooms and a calming natural aroma.",
       images: [
@@ -396,11 +431,9 @@ const sampleData = {
     },
 
     {
-      // NOTE: could not independently verify a pothos-specific Unsplash photo
-      // within this session — see the message below the code for details.
       name: "Pothos",
       slug: "pothos",
-      category: "Indoor Plants",
+      categorySlug: "indoor-plants",
       description:
         "A fast-growing trailing plant with heart-shaped leaves. Excellent for beginners.",
       images: [
@@ -435,11 +468,9 @@ const sampleData = {
     },
 
     {
-      // NOTE: could not independently verify a bird-of-paradise-specific
-      // Unsplash photo within this session — see the message below the code.
       name: "Bird of Paradise",
       slug: "bird-of-paradise",
-      category: "Tropical Plants",
+      categorySlug: "tropical-plants",
       description:
         "A dramatic tropical plant with large upright leaves that creates a striking statement indoors.",
       images: [

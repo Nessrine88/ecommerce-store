@@ -4,6 +4,8 @@ import { db } from "@/app/db";
 import {
   products,
   productTranslations,
+  categories,
+  categoryTranslations,
 } from "@/app/db/schema";
 import {
   and,
@@ -171,14 +173,15 @@ export async function getAllProducts({
     );
   }
 
-  // Category filter
+  // Category filter — category is now the category's slug,
+  // so we filter by joining through categories.slug
   if (
     category &&
     category !== "all"
   ) {
     conditions.push(
       eq(
-        products.category,
+        categories.slug,
         category
       )
     );
@@ -276,6 +279,13 @@ export async function getAllProducts({
           )
         )
       )
+      .leftJoin(
+        categories,
+        eq(
+          products.categoryId,
+          categories.id
+        )
+      )
       .where(filters)
       .orderBy(orderBy)
       .limit(limit)
@@ -300,6 +310,13 @@ export async function getAllProducts({
             productTranslations.locale,
             locale
           )
+        )
+      )
+      .leftJoin(
+        categories,
+        eq(
+          products.categoryId,
+          categories.id
         )
       )
       .where(filters),
@@ -382,9 +399,7 @@ export async function deleteProduct(
 
 // Create product
 export async function createProduct(
-  data: z.infer<
-    typeof insertProductSchema
-  >
+  data: z.infer<typeof insertProductSchema>
 ) {
   try {
     const product =
@@ -454,9 +469,7 @@ export async function createProduct(
 
 // Update product
 export async function updateProduct(
-  data: z.infer<
-    typeof updateProductsSchema
-  >
+  data: z.infer<typeof updateProductsSchema>
 ) {
   try {
     const product =
@@ -528,22 +541,48 @@ export async function getProductById(
   );
 }
 
-// Get all categories
-export async function getAllCategories() {
+// Get all categories (with translated names for the given locale)
+export async function getAllCategories(
+  locale: string
+) {
   const data = await db
     .select({
-      category:
-        products.category,
-      count: count(
-        products.id
-      ),
+      slug: categories.slug,
+      name: categoryTranslations.name,
+      count: count(products.id),
     })
-    .from(products)
+    .from(categories)
+    .leftJoin(
+      categoryTranslations,
+      and(
+        eq(
+          categoryTranslations.categoryId,
+          categories.id
+        ),
+        eq(
+          categoryTranslations.locale,
+          locale
+        )
+      )
+    )
+    .leftJoin(
+      products,
+      eq(
+        products.categoryId,
+        categories.id
+      )
+    )
     .groupBy(
-      products.category
+      categories.id,
+      categories.slug,
+      categoryTranslations.name
     );
 
-  return data;
+  return data.map((row) => ({
+    category: row.slug,
+    name: row.name ?? row.slug,
+    count: row.count,
+  }));
 }
 
 // Get featured products

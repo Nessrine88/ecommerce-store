@@ -12,7 +12,50 @@ import {
   json,
   unique,
 } from "drizzle-orm/pg-core";
-import { title } from "process";
+
+// =====================
+// Category
+// =====================
+
+export const categories = pgTable(
+  "Category",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+
+    slug: text("slug").notNull(), // stable key, e.g. "indoor-plants"
+
+    createdAt: timestamp("createdAt", { precision: 6 })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => ({
+    slugIndex: uniqueIndex("category_slug_idx").on(table.slug),
+  }),
+);
+
+// =====================
+// Category Translations
+// =====================
+
+export const categoryTranslations = pgTable(
+  "CategoryTranslation",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+
+    categoryId: uuid("categoryId")
+      .notNull()
+      .references(() => categories.id, { onDelete: "cascade" }),
+
+    locale: text("locale").notNull(),
+
+    name: text("name").notNull(),
+  },
+  (table) => ({
+    categoryLocaleIndex: uniqueIndex(
+      "category_translation_category_locale_idx",
+    ).on(table.categoryId, table.locale),
+  }),
+);
 
 // =====================
 // Product
@@ -27,7 +70,9 @@ export const products = pgTable(
 
     slug: text("slug").notNull(),
 
-    category: text("category").notNull(),
+    categoryId: uuid("categoryId")
+      .notNull()
+      .references(() => categories.id),
 
     images: text("images").array(),
 
@@ -63,7 +108,6 @@ export const products = pgTable(
     slugIndex: uniqueIndex("product_slug_idx").on(table.slug),
   }),
 );
-
 
 // =====================
 // Product Translations
@@ -369,6 +413,35 @@ export const reviews = pgTable("Review", {
   createdAt: timestamp("createdAt").notNull().defaultNow(),
 });
 
+// =====================
+// Relations
+// =====================
+
+export const categoriesRelations = relations(categories, ({ many }) => ({
+  products: many(products),
+  translations: many(categoryTranslations),
+}));
+
+export const categoryTranslationsRelations = relations(
+  categoryTranslations,
+  ({ one }) => ({
+    category: one(categories, {
+      fields: [categoryTranslations.categoryId],
+      references: [categories.id],
+    }),
+  }),
+);
+
+export const productTranslationsRelations = relations(
+  productTranslations,
+  ({ one }) => ({
+    product: one(products, {
+      fields: [productTranslations.productId],
+      references: [products.id],
+    }),
+  }),
+);
+
 export const reviewsRelations = relations(reviews, ({ one }) => ({
   product: one(products, {
     fields: [reviews.productId],
@@ -379,6 +452,7 @@ export const reviewsRelations = relations(reviews, ({ one }) => ({
     references: [users.id],
   }),
 }));
+
 export const usersRelations = relations(users, ({ many }) => ({
   orders: many(orders),
   carts: many(carts),
@@ -408,7 +482,12 @@ export const orderItemsRelations = relations(orderItems, ({ one }) => ({
   }),
 }));
 
-export const productsRelations = relations(products, ({ many }) => ({
+export const productsRelations = relations(products, ({ one, many }) => ({
+  category: one(categories, {
+    fields: [products.categoryId],
+    references: [categories.id],
+  }),
+  translations: many(productTranslations),
   orderItems: many(orderItems),
   reviews: many(reviews),
 }));
