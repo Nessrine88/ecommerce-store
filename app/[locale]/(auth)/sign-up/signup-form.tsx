@@ -16,7 +16,7 @@ function SignUpButton() {
     <Button
       type="submit"
       disabled={pending}
-      className="w-full rounded-lg bg-primary py-3 font-medium text-white transition hover:bg-accent"
+      className="w-full rounded-lg bg-primary py-3 font-medium text-accent transition hover:bg-accent"
     >
       {pending ? "Submitting..." : "Sign Up"}
     </Button>
