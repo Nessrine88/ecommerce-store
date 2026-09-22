@@ -148,5 +148,14 @@
   "Succulents": "نباتات عصارية",
   "Indoor Trees": "أشجار داخلية",
   "Tropical Plants": "نباتات استوائية"
-}
+},
+"Search": {
+  "all": "Tous",
+  "placeholder": "Rechercher..."
+},
+  "productCarousel": {
+    "badge": "Collection Vedette",
+    "defaultDescription": "Rapprochez-vous de la nature avec une flore d'intérieur fraîche et sélectionnée avec soin pour votre espace de vie.",
+    "cta": "Achetez maintenant"
+  }
 }

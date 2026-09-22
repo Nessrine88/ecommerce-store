@@ -13,8 +13,10 @@ import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
 import { Link } from "@/navigation";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 const ProductCarousel = ({ data }: { data: Product[] }) => {
+  const t = useTranslations("productCarousel");
   return (
     <Carousel
       className="w-full max-w-7xl mx-auto px-2 sm:px-4"
@@ -76,7 +78,7 @@ const ProductCarousel = ({ data }: { data: Product[] }) => {
                       {/* Pill Badge */}
                       <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-400/20 border border-emerald-400/40 backdrop-blur-md text-emerald-300 text-xs font-semibold uppercase tracking-wider">
                         <Sparkles className="w-3.5 h-3.5" />
-                        Featured Collection
+                        {t("badge")}
                       </div>
 
                       {/* Product Headline */}
@@ -99,8 +101,7 @@ const ProductCarousel = ({ data }: { data: Product[] }) => {
                         )}
 
                         <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-emerald-400 text-zinc-950 text-xs sm:text-sm font-bold shadow-lg transition-all duration-300 group-hover:bg-emerald-300 group-hover:gap-3">
-                          Shop Now
-                          <ArrowRight className="w-4 h-4" />
+                          {t("cta")}
                         </span>
                       </div>
                     </div>

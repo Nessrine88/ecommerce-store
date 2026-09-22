@@ -142,6 +142,17 @@
   "Succulents": "Succulents",
   "Indoor Trees": "Indoor Trees",
   "Tropical Plants": "Tropical Plants"
-}
+},
+"Search": {
+  "all": "Tous",
+  "placeholder": "Rechercher..."
+},
+
+  "productCarousel": {
+    "badge": "Featured Collection",
+    "defaultDescription": "Bring nature closer with fresh, hand-picked indoor flora tailored to your living space.",
+    "cta": "Shop Now"
+  }
+
 }
 

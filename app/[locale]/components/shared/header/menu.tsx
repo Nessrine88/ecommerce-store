@@ -13,9 +13,11 @@ import {
 import UserButton from "./user-button";
 import { getMyCart } from "@/lib/actions/cart.actions";
 import SelectedLanguage from "./selected-language";
+import { getTranslations } from "next-intl/server";
 
 const Menu = async () => {
   const cart = await getMyCart();
+  const t = await getTranslations("Menu");
   const cartCount = Array.isArray(cart?.items)
     ? cart.items.reduce((acc, item) => acc + item.qty, 0)
     : 0;
@@ -28,7 +30,7 @@ const Menu = async () => {
         <Button variant="ghost" className="relative">
           <Link href={`/cart`} className="flex gap-2 hover:text-primary">
             <ShoppingCart />
-            Cart
+            {t("cart")}
             {cartCount > 0 && (
               <span className="absolute -end-2 -top-2 rounded-full bg-primary text-primary-foreground text-xs px-2 py-0.5">
                 {cartCount}
@@ -46,14 +48,14 @@ const Menu = async () => {
             <EllipsisVertical />
           </SheetTrigger>
           <SheetContent className="flex flex-col items-start text-accent p-10 gap-2">
-            <SheetTitle>Menu</SheetTitle>
+            <SheetTitle>{t("menuTitle")}</SheetTitle>
 
             <ModeToggle />
 
             <Button variant="ghost" className="relative">
               <Link href={`/cart`} className="flex gap-2 hover:text-primary">
                 <ShoppingCart />
-                Cart
+                {t("cart")}
                 {cartCount > 0 && (
                   <span className="absolute -end-2 -top-2 rounded-full bg-primary text-primary-foreground text-xs px-2 py-0.5">
                     {cartCount}
