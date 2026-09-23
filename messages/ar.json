@@ -12,7 +12,7 @@
       "active": {
         "endsAt": "ينتهي في 20 سبتمبر",
         "title": "عرض الشهر",
-        "description": "استعد لتجربة تسوق لا مثيل لها. مع كل عملية شراء، ستحصل على مزايا وعروض حصرية، مما يجعل هذا الشهر احتفالًا بالاختيارات الذكية والصفقات الرائعة.",
+        "description": "استعد لتجربة تسوق لا مثيل لها. مع كل عملية شراء، ستستمتع بمزايا وعروض حصرية، مما يجعل هذا الشهر احتفالًا بالخيارات الذكية والصفقات الرائعة.",
         "button": "عرض المنتجات",
         "timer": {
           "days": "أيام",
@@ -26,15 +26,15 @@
     "iconBoxes": {
       "freeShipping": {
         "title": "شحن مجاني",
-        "description": "شحن مجاني للطلبات التي تزيد قيمتها عن 100 دولار"
+        "description": "شحن مجاني للطلبات التي تزيد عن 100 دولار"
       },
       "moneyBack": {
         "title": "ضمان استرداد الأموال",
-        "description": "خلال 30 يومًا من تاريخ الشراء"
+        "description": "خلال 30 يومًا من الشراء"
       },
       "flexiblePayment": {
         "title": "دفع مرن",
-        "description": "ادفع باستخدام البطاقة الائتمانية أو PayPal أو الدفع عند الاستلام"
+        "description": "ادفع بالبطاقة الائتمانية أو PayPal أو الدفع عند الاستلام"
       },
       "support": {
         "title": "دعم على مدار الساعة",
@@ -47,8 +47,8 @@
     "description": "الوصف",
     "price": "السعر",
     "status": "الحالة",
-    "stock": "متوفر في المخزون",
-    "notStock": "غير متوفر في المخزون",
+    "stock": "متوفر",
+    "notStock": "غير متوفر",
     "review": "تقييم",
     "reviews": "تقييمات",
 
@@ -59,35 +59,43 @@
       "noReviews": "لا توجد تقييمات بعد",
       "writeAReview": "اكتب تقييمًا",
       "showImage": "عرض الصورة {index}",
-      "thumbnail": "الصورة المصغرة {index}",
-      "loadingReviews": "جارٍ تحميل التقييمات...", "please": "يرجى", "signIn": "تسجيل الدخول", "toWriteReview": "لكتابة تقييم", "anonymous": "مجهول"
+      "thumbnail": "صورة مصغرة {index}",
+      "loadingReviews": "جارٍ تحميل التقييمات...",
+      "please": "يرجى",
+      "signIn": "تسجيل الدخول",
+      "toWriteReview": "لكتابة تقييم",
+      "anonymous": "مجهول"
     },
-"reviewForm": {
-  "trigger": "اكتب تقييمًا",
-  "title": "اكتب تقييمًا",
-  "description": "شارك رأيك مع العملاء الآخرين",
-  "titleLabel": "العنوان",
-  "titlePlaceholder": "أدخل العنوان",
-  "descriptionLabel": "الوصف",
-  "descriptionPlaceholder": "أدخل الوصف",
-  "ratingLabel": "التقييم",
-  "ratingPlaceholder": "اختر تقييمًا",
-  "submit": "إرسال",
-  "submitting": "جارٍ الإرسال...",
-  "success": "تم إرسال التقييم بنجاح"
-},
+    "reviewForm": {
+      "trigger": "اكتب تقييمًا",
+      "title": "اكتب تقييمًا",
+      "description": "شارك رأيك مع العملاء الآخرين",
+      "titleLabel": "العنوان",
+      "titlePlaceholder": "أدخل العنوان",
+      "descriptionLabel": "الوصف",
+      "descriptionPlaceholder": "أدخل الوصف",
+      "ratingLabel": "التقييم",
+      "ratingPlaceholder": "اختر تقييمًا",
+      "submit": "إرسال",
+      "submitting": "جارٍ الإرسال...",
+      "success": "تم إرسال التقييم بنجاح"
+    },
+
     "sideCard": {
-      "price": "السعر",
-      "status": "الحالة",
-      "stock": "متوفر في المخزون",
-      "notStock": "غير متوفر في المخزون",
-      "add": "أضف إلى السلة"
-    }
+  "price": "السعر",
+  "status": "الحالة",
+  "stock": "متوفر",
+  "notStock": "غير متوفر",
+  "add": "أضف إلى السلة",
+  "addedToCart": "تمت إضافة {name} إلى السلة!",
+  "removedFromCart": "تمت إزالة {name} من السلة!",
+  "goToCart": "الذهاب إلى السلة"
+}
   },
 
   "SearchPage": {
     "searchProducts": "البحث عن المنتجات",
-    "query": "البحث",
+    "query": "بحث",
     "category": "الفئة",
     "price": "السعر",
     "rating": "التقييم",
@@ -95,7 +103,7 @@
     "clear": "مسح",
     "sortBy": "ترتيب حسب",
     "noProducts": "لم يتم العثور على منتجات",
-    "priceRange": "من {min} إلى {max} دولار",
+    "priceRange": "من {min}$ إلى {max}$",
     "ratingAndUp": "{rating} نجوم فأكثر",
     "starsAndUp": "نجوم فأكثر",
 
@@ -106,7 +114,7 @@
     },
 
     "activeFilters": {
-      "query": "البحث",
+      "query": "بحث",
       "category": "الفئة",
       "price": "السعر",
       "rating": "التقييم"
@@ -122,24 +130,36 @@
     "pagination": {
       "previous": "السابق",
       "next": "التالي",
-      "page": "الصفحة {current} من {total}"
+      "page": "صفحة {current} من {total}"
     }
   },
+
   "Menu": {
     "cart": "السلة",
     "menuTitle": "القائمة"
   },
+
   "UserButton": {
-  "signIn": "تسجيل الدخول",
-  "orderHistory": "سجل الطلبات",
-  "admin": "الإدارة",
-  "signOut": "تسجيل الخروج"
-},
-"Search": {
-  "all": "الكل",
-  "placeholder": "بحث..."
-},
-"productCarousel": {
+    "signIn": "تسجيل الدخول",
+    "orderHistory": "سجل الطلبات",
+    "admin": "الإدارة",
+    "signOut": "تسجيل الخروج"
+  },
+
+  "Categories": {
+    "Indoor Plants": "نباتات داخلية",
+    "Flowering Plants": "نباتات مزهرة",
+    "Succulents": "نباتات عصارية",
+    "Indoor Trees": "أشجار داخلية",
+    "Tropical Plants": "نباتات استوائية"
+  },
+
+  "Search": {
+    "all": "الكل",
+    "placeholder": "ابحث..."
+  },
+
+  "productCarousel": {
     "badge": "تشكيلة مميزة",
     "defaultDescription": "قرّب الطبيعة من منزلك مع نباتات داخلية طازجة ومختارة بعناية تناسب مساحة معيشتك.",
     "cta": "تسوق الآن"

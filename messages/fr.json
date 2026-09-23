@@ -1,19 +1,19 @@
 {
   "Homepage": {
-    "newestProducts": "Nouveaux produits",
-    "viewAllProducts": "Voir tous les produits",
+    "newestProducts": "Nouveaux Produits",
+    "viewAllProducts": "Voir Tous les Produits",
     "dealCountdown": {
       "loading": "Chargement du compte à rebours…",
       "ended": {
-        "title": "Offre terminée",
+        "title": "Offre Terminée",
         "description": "Cette offre n'est plus disponible. Découvrez nos dernières promotions !",
-        "button": "Voir les produits"
+        "button": "Voir les Produits"
       },
       "active": {
         "endsAt": "Se termine le 20 septembre",
-        "title": "Offre du mois",
-        "description": "Préparez-vous à vivre une expérience d'achat inégalée. Avec chaque achat, profitez d'avantages et d'offres exclusifs, faisant de ce mois une célébration des choix intelligents et des excellentes affaires.",
-        "button": "Voir les produits",
+        "title": "Offre du Mois",
+        "description": "Préparez-vous pour une expérience d'achat inégalée. À chaque achat, profitez d'avantages et d'offres exclusifs, faisant de ce mois une célébration de choix judicieux et de bonnes affaires.",
+        "button": "Voir les Produits",
         "timer": {
           "days": "Jours",
           "hours": "Heures",
@@ -25,19 +25,19 @@
     },
     "iconBoxes": {
       "freeShipping": {
-        "title": "Livraison gratuite",
+        "title": "Livraison Gratuite",
         "description": "Livraison gratuite pour les commandes de plus de 100 $"
       },
       "moneyBack": {
-        "title": "Garantie satisfait ou remboursé",
+        "title": "Garantie de Remboursement",
         "description": "Dans les 30 jours suivant l'achat"
       },
       "flexiblePayment": {
-        "title": "Paiement flexible",
-        "description": "Payez par carte de crédit, PayPal ou paiement à la livraison"
+        "title": "Paiement Flexible",
+        "description": "Payez par carte de crédit, PayPal ou en espèces à la livraison"
       },
       "support": {
-        "title": "Assistance 24/7",
+        "title": "Support 24/7",
         "description": "Obtenez de l'aide à tout moment"
       }
     }
@@ -47,55 +47,63 @@
     "description": "Description",
     "price": "Prix",
     "status": "Statut",
-    "stock": "En stock",
-    "notStock": "Rupture de stock",
+    "stock": "En Stock",
+    "notStock": "Rupture de Stock",
     "review": "avis",
     "reviews": "avis",
 
     "details": {
-      "details": "Détails du produit",
+      "details": "Détails du Produit",
       "reviews": "Avis",
-      "customerReviews": "Avis des clients",
+      "customerReviews": "Avis Clients",
       "noReviews": "Aucun avis pour le moment",
-      "writeAReview": "Écrire un avis",
+      "writeAReview": "Écrire un Avis",
       "showImage": "Afficher l'image {index}",
       "thumbnail": "Miniature {index}",
-      "loadingReviews": "Chargement des avis...", "please": "Veuillez", "signIn": "vous connecter", "toWriteReview": "pour écrire un avis", "anonymous": "Anonyme"
+      "loadingReviews": "Chargement des avis...",
+      "please": "Veuillez",
+      "signIn": "vous connecter",
+      "toWriteReview": "pour écrire un avis",
+      "anonymous": "Anonyme"
     },
-"reviewForm": {
-  "trigger": "Écrire un avis",
-  "title": "Écrire un avis",
-  "description": "Partagez votre avis avec les autres clients",
-  "titleLabel": "Titre",
-  "titlePlaceholder": "Saisissez un titre",
-  "descriptionLabel": "Description",
-  "descriptionPlaceholder": "Saisissez une description",
-  "ratingLabel": "Note",
-  "ratingPlaceholder": "Sélectionnez une note",
-  "submit": "Envoyer",
-  "submitting": "Envoi en cours...",
-  "success": "Avis envoyé avec succès"
-},
+    "reviewForm": {
+      "trigger": "Écrire un avis",
+      "title": "Écrire un avis",
+      "description": "Partagez votre avis avec les autres clients",
+      "titleLabel": "Titre",
+      "titlePlaceholder": "Entrez un titre",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Entrez une description",
+      "ratingLabel": "Note",
+      "ratingPlaceholder": "Sélectionnez une note",
+      "submit": "Soumettre",
+      "submitting": "Envoi en cours...",
+      "success": "Avis envoyé avec succès"
+    },
+
     "sideCard": {
-      "price": "Prix",
-      "status": "Statut",
-      "stock": "En stock",
-      "notStock": "Rupture de stock",
-      "add": "Ajouter au panier"
-    }
+  "price": "Prix",
+  "status": "Statut",
+  "stock": "En Stock",
+  "notStock": "Rupture de Stock",
+  "add": "Ajouter au Panier",
+  "addedToCart": "{name} ajouté au panier !",
+  "removedFromCart": "{name} retiré du panier !",
+  "goToCart": "Aller au Panier"
+}
   },
 
   "SearchPage": {
-    "searchProducts": "Rechercher des produits",
+    "searchProducts": "Rechercher des Produits",
     "query": "Recherche",
     "category": "Catégorie",
     "price": "Prix",
     "rating": "Note",
-    "any": "Tous",
+    "any": "Toutes",
     "clear": "Effacer",
-    "sortBy": "Trier par",
+    "sortBy": "Trier Par",
     "noProducts": "Aucun produit trouvé",
-    "priceRange": "De {min} à {max} $",
+    "priceRange": "{min} $ à {max} $",
     "ratingAndUp": "{rating} étoiles et plus",
     "starsAndUp": "étoiles et plus",
 
@@ -113,10 +121,10 @@
     },
 
     "sort": {
-      "newest": "Plus récent",
-      "lowest": "Prix : du plus bas au plus élevé",
-      "highest": "Prix : du plus élevé au plus bas",
-      "rating": "Mieux notés"
+      "newest": "Plus Récents",
+      "lowest": "Prix : Croissant",
+      "highest": "Prix : Décroissant",
+      "rating": "Mieux Notés"
     },
 
     "pagination": {
@@ -125,34 +133,32 @@
       "page": "Page {current} sur {total}"
     }
   },
+
   "Menu": {
     "cart": "Panier",
     "menuTitle": "Menu"
   },
+
   "UserButton": {
-  "signIn": "Se Connecter",
-  "orderHistory": "Historique des Commandes",
-  "admin": "Admin",
-  "signOut": "Se Déconnecter"
-},
-"Categories": {
-  "Indoor Plants": "Plantes d'Intérieur",
-  "Flowering Plants": "Plantes à Fleurs",
-  "Succulents": "Plantes Succulentes",
-  "Indoor Trees": "Arbres d'Intérieur",
-  "Tropical Plants": "Plantes Tropicales"
-},
-"Categories": {
-  "Indoor Plants": "نباتات داخلية",
-  "Flowering Plants": "نباتات مزهرة",
-  "Succulents": "نباتات عصارية",
-  "Indoor Trees": "أشجار داخلية",
-  "Tropical Plants": "نباتات استوائية"
-},
-"Search": {
-  "all": "Tous",
-  "placeholder": "Rechercher..."
-},
+    "signIn": "Se Connecter",
+    "orderHistory": "Historique des Commandes",
+    "admin": "Administration",
+    "signOut": "Se Déconnecter"
+  },
+
+  "Categories": {
+    "Indoor Plants": "Plantes d'Intérieur",
+    "Flowering Plants": "Plantes à Fleurs",
+    "Succulents": "Succulentes",
+    "Indoor Trees": "Arbres d'Intérieur",
+    "Tropical Plants": "Plantes Tropicales"
+  },
+
+  "Search": {
+    "all": "Tous",
+    "placeholder": "Rechercher..."
+  },
+
   "productCarousel": {
     "badge": "Collection Vedette",
     "defaultDescription": "Rapprochez-vous de la nature avec une flore d'intérieur fraîche et sélectionnée avec soin pour votre espace de vie.",

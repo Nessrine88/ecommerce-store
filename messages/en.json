@@ -1,4 +1,3 @@
-
 {
   "Homepage": {
     "newestProducts": "Newest Products",
@@ -60,30 +59,38 @@
       "noReviews": "No reviews yet",
       "writeAReview": "Write a Review",
       "showImage": "Show image {index}",
-      "thumbnail": "Thumbnail {index}", "loadingReviews": "Loading reviews...", "please": "Please", "signIn": "sign in", "toWriteReview": "to write a review", "anonymous": "Anonymous"
+      "thumbnail": "Thumbnail {index}",
+      "loadingReviews": "Loading reviews...",
+      "please": "Please",
+      "signIn": "sign in",
+      "toWriteReview": "to write a review",
+      "anonymous": "Anonymous"
     },
     "reviewForm": {
-  "trigger": "Write a review",
-  "title": "Write a review",
-  "description": "Share your thoughts with other customers",
-  "titleLabel": "Title",
-  "titlePlaceholder": "Enter title",
-  "descriptionLabel": "Description",
-  "descriptionPlaceholder": "Enter description",
-  "ratingLabel": "Rating",
-  "ratingPlaceholder": "Select a rating",
-  "submit": "Submit",
-  "submitting": "Submitting...",
-  "success": "Review submitted successfully"
-},
+      "trigger": "Write a review",
+      "title": "Write a review",
+      "description": "Share your thoughts with other customers",
+      "titleLabel": "Title",
+      "titlePlaceholder": "Enter title",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Enter description",
+      "ratingLabel": "Rating",
+      "ratingPlaceholder": "Select a rating",
+      "submit": "Submit",
+      "submitting": "Submitting...",
+      "success": "Review submitted successfully"
+    },
 
     "sideCard": {
-      "price": "Price",
-      "status": "Status",
-      "stock": "In Stock",
-      "notStock": "Out of Stock",
-      "add": "Add to Cart"
-    }
+  "price": "Price",
+  "status": "Status",
+  "stock": "In Stock",
+  "notStock": "Out of Stock",
+  "add": "Add to Cart",
+  "addedToCart": "{name} added to cart!",
+  "removedFromCart": "{name} removed from cart!",
+  "goToCart": "Go to Cart"
+}
   },
 
   "SearchPage": {
@@ -126,33 +133,35 @@
       "page": "Page {current} of {total}"
     }
   },
+
   "Menu": {
-  "cart": "Cart",
-  "menuTitle": "Menu"
-},
-"UserButton": {
-  "signIn": "Sign In",
-  "orderHistory": "Order History",
-  "admin": "Admin",
-  "signOut": "Sign Out"
-},
-"Categories": {
-  "Indoor Plants": "Indoor Plants",
-  "Flowering Plants": "Flowering Plants",
-  "Succulents": "Succulents",
-  "Indoor Trees": "Indoor Trees",
-  "Tropical Plants": "Tropical Plants"
-},
-"Search": {
-  "all": "Tous",
-  "placeholder": "Rechercher..."
-},
+    "cart": "Cart",
+    "menuTitle": "Menu"
+  },
+
+  "UserButton": {
+    "signIn": "Sign In",
+    "orderHistory": "Order History",
+    "admin": "Admin",
+    "signOut": "Sign Out"
+  },
+
+  "Categories": {
+    "Indoor Plants": "Indoor Plants",
+    "Flowering Plants": "Flowering Plants",
+    "Succulents": "Succulents",
+    "Indoor Trees": "Indoor Trees",
+    "Tropical Plants": "Tropical Plants"
+  },
+
+  "Search": {
+    "all": "All",
+    "placeholder": "Search..."
+  },
 
   "productCarousel": {
     "badge": "Featured Collection",
     "defaultDescription": "Bring nature closer with fresh, hand-picked indoor flora tailored to your living space.",
     "cta": "Shop Now"
   }
-
 }
-

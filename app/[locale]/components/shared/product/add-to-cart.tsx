@@ -7,10 +7,12 @@ import { Cart, CartItem } from "@/types";
 import { addItemToCart, removeItemFromCart } from "@/lib/actions/cart.actions";
 import { toast } from "sonner";
 import { useTransition } from "react";
+import { useTranslations } from "next-intl";
 
 const AddToCart = ({ cart, item }: { cart?: Cart; item: CartItem }) => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const t = useTranslations("ProductPage.sideCard");
 
   const handleAddToCart = async () => {
     startTransition(async () => {
@@ -21,9 +23,9 @@ const AddToCart = ({ cart, item }: { cart?: Cart; item: CartItem }) => {
         return;
       }
 
-      toast.success(`${item.name} added to cart!`, {
+      toast.success(t("addedToCart", { name: item.name }), {
         action: {
-          label: "Go to Cart",
+          label: t("goToCart"),
           onClick: () => router.push("/cart"),
         },
       });
@@ -42,9 +44,9 @@ const AddToCart = ({ cart, item }: { cart?: Cart; item: CartItem }) => {
         return;
       }
 
-      toast.success(`${item.name} removed from cart!`, {
+      toast.success(t("removedFromCart", { name: item.name }), {
         action: {
-          label: "Go to Cart",
+          label: t("goToCart"),
           onClick: () => router.push("/cart"),
         },
       });
@@ -99,7 +101,7 @@ const AddToCart = ({ cart, item }: { cart?: Cart; item: CartItem }) => {
       ) : (
         <Plus className="h-4 w-4" />
       )}
-      Add To Cart
+      {t("add")}
     </Button>
   );
 };

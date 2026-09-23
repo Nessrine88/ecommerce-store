@@ -71,9 +71,7 @@ const ProductDetailsPage = async ({
           <div className="md:col-span-4">
             <div className="flex flex-col gap-6">
               <div>
-                <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                  {product.brand} · {product.categoryId}
-                </p>
+                
 
                 <h1 className="mt-2 text-3xl font-semibold tracking-tight text-foreground">
                   {product.name}
