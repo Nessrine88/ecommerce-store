@@ -2,16 +2,17 @@
 
 import { Link } from "@/navigation";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import React from "react";
 
 const links = [
   {
-    title: "Profile",
+    key: "profile",
     href: "/user/profile",
   },
   {
-    title: "Orders",
+    key: "orders",
     href: "/user/orders",
   },
 ];
@@ -21,6 +22,7 @@ const MainNav = ({
   ...props
 }: React.HTMLAttributes<HTMLElement>) => {
   const pathname = usePathname();
+  const t = useTranslations("UserNav");
 
   return (
     <nav
@@ -30,13 +32,15 @@ const MainNav = ({
       {links.map((item) => (
         <Link
           key={item.href}
-          href={`/${item.href}`}
+          href={item.href}
           className={cn(
             "text-sm font-medium transition-colors hover:text-primary",
-            pathname.includes(item.href) ? "underline underline-offset-8" : "",
+            pathname.includes(item.href)
+              ? "underline underline-offset-8"
+              : "",
           )}
         >
-          {item.title}
+          {t(item.key)}
         </Link>
       ))}
     </nav>

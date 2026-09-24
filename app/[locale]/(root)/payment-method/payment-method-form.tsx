@@ -6,10 +6,14 @@ import { useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
+import { useTranslations } from "next-intl";
 
 import { paymentMethodSchema } from "@/lib/validators";
 import CheckoutSteps from "@/app/[locale]/components/shared/checkout-steps";
-import { DEFAULT_PAYMENT_METHOD, PAYMENT_METHODS } from "@/lib/constants";
+import {
+  DEFAULT_PAYMENT_METHOD,
+  PAYMENT_METHODS,
+} from "@/lib/constants";
 import { updateUserPaymentMethod } from "@/lib/actions/user.actions";
 
 import { Button } from "@/app/[locale]/components/ui/button";
@@ -20,7 +24,12 @@ import {
   FormItem,
   FormLabel,
 } from "@/app/[locale]/components/ui/form";
-import { RadioGroup, RadioGroupItem } from "@/app/[locale]/components/ui/radio-group";
+
+import {
+  RadioGroup,
+  RadioGroupItem,
+} from "@/app/[locale]/components/ui/radio-group";
+
 import { Loader } from "lucide-react";
 
 const PaymentMethodForm = ({
@@ -28,6 +37,8 @@ const PaymentMethodForm = ({
 }: {
   preferredPaymentMethod: string | null;
 }) => {
+  const t = useTranslations("PaymentMethod");
+
   const router = useRouter();
 
   const form = useForm<z.infer<typeof paymentMethodSchema>>({
@@ -39,7 +50,9 @@ const PaymentMethodForm = ({
 
   const [isPending, startTransition] = useTransition();
 
-  const onSubmit = (values: z.infer<typeof paymentMethodSchema>) => {
+  const onSubmit = (
+    values: z.infer<typeof paymentMethodSchema>,
+  ) => {
     startTransition(async () => {
       const res = await updateUserPaymentMethod(values);
 
@@ -52,13 +65,30 @@ const PaymentMethodForm = ({
     });
   };
 
+  const getPaymentMethodLabel = (method: string) => {
+    switch (method) {
+      case "Stripe":
+        return t("stripe");
+
+      case "CashOnDelivery":
+        return t("cashOnDelivery");
+
+      default:
+        return method;
+    }
+  };
+
   return (
-    <div className="mb-10 flex flex-col items-center mt-6 px-4 text-accent sm:mt-10 sm:px-6">
+    <div className="mt-6 mb-10 flex flex-col items-center px-4 text-accent sm:mt-10 sm:px-6">
       <CheckoutSteps current={2} />
-      <div className="w-full max-w-md mx-auto space-y-4">
-        <h1 className="h2-bold mt-4">Payment Method</h1>
+
+      <div className="mx-auto w-full max-w-md space-y-4">
+        <h1 className="h2-bold mt-4">
+          {t("title")}
+        </h1>
+
         <p className="text-sm text-muted-foreground">
-          Please select your preferred payment method
+          {t("description")}
         </p>
 
         <Form {...form}>
@@ -86,8 +116,9 @@ const PaymentMethodForm = ({
                           <FormControl>
                             <RadioGroupItem value={method} />
                           </FormControl>
+
                           <FormLabel className="font-normal">
-                            {method}
+                            {getPaymentMethodLabel(method)}
                           </FormLabel>
                         </FormItem>
                       ))}
@@ -97,11 +128,15 @@ const PaymentMethodForm = ({
               )}
             />
 
-            <Button type="submit" disabled={isPending} className="w-full sm:w-auto">
+            <Button
+              type="submit"
+              disabled={isPending}
+              className="w-full sm:w-auto"
+            >
               {isPending ? (
-                <Loader className="w-4 h-4 animate-spin" />
+                <Loader className="h-4 w-4 animate-spin" />
               ) : (
-                "Continue"
+                t("continue")
               )}
             </Button>
           </form>

@@ -5,12 +5,17 @@ import { useRouter } from "@/navigation";
 import { Check, Loader } from "lucide-react";
 import { Button } from "@/app/[locale]/components/ui/button";
 import { createOrder } from "@/lib/actions/order.actions";
+import { useTranslations } from "next-intl";
 
 const PlaceOrderForm = () => {
+  const t = useTranslations("PlaceOrder");
+
   const router = useRouter();
   const [pending, setPending] = useState(false);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    event: React.FormEvent<HTMLFormElement>,
+  ) => {
     event.preventDefault();
 
     if (pending) return; // Prevent duplicate submissions
@@ -19,10 +24,15 @@ const PlaceOrderForm = () => {
 
     try {
       const res = await createOrder();
+
       if (res.redirectTo) {
         router.push(res.redirectTo);
       } else {
-        console.error("Order failed:", res.message ?? "(no message)", res);
+        console.error(
+          "Order failed:",
+          res.message ?? "(no message)",
+          res,
+        );
       }
     } catch (err) {
       console.error("createOrder threw:", err);
@@ -32,14 +42,21 @@ const PlaceOrderForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full mb-10">
-      <Button type="submit" disabled={pending} className="w-full">
+    <form onSubmit={handleSubmit} className="mb-10 w-full">
+      <Button
+        type="submit"
+        disabled={pending}
+        className="w-full"
+      >
         {pending ? (
-          <Loader className="w-4 h-4 animate-spin" />
+          <Loader className="h-4 w-4 animate-spin" />
         ) : (
-          <Check className="w-4 h-4" />
-        )}{" "}
-        Place order
+          <Check className="h-4 w-4" />
+        )}
+
+        {" "}
+
+        {t("placeOrder")}
       </Button>
     </form>
   );

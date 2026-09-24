@@ -1,6 +1,10 @@
 import { auth } from "@/auth";
-import { deleteOrder, getAllOrders } from "@/lib/actions/order.actions";
+import {
+  deleteOrder,
+  getAllOrders,
+} from "@/lib/actions/order.actions";
 import { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import {
   Table,
   TableBody,
@@ -9,7 +13,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/app/[locale]/components/ui/table";
-import { formatCurrency, formatDateTime, formatId } from "@/lib/utils";
+import {
+  formatCurrency,
+  formatDateTime,
+  formatId,
+} from "@/lib/utils";
 import { Link } from "@/navigation";
 import Pagination from "@/app/[locale]/components/shared/pagination";
 import { Button } from "@/app/[locale]/components/ui/button";
@@ -18,86 +26,111 @@ import DeleteDialog from "@/app/[locale]/components/shared/delete-dialog";
 export const metadata: Metadata = {
   title: "Admin Orders",
 };
+
 const AdminOrdersPage = async (props: {
   searchParams: Promise<{ page: string; query: string }>;
 }) => {
-  const { page = "1", query: searchText } = await props.searchParams;
+  const { page = "1", query: searchText } =
+    await props.searchParams;
+
   const session = await auth();
+
   if (session?.user?.role !== "admin") {
-    throw new Error("User is not authorized ");
+    throw new Error("User is not authorized");
   }
+
+  const t = await getTranslations("AdminOrders");
 
   const orders = await getAllOrders({
     page: Number(page),
-
     query: searchText,
   });
 
   return (
     <div className="space-y-2 mb-10">
       <div className="flex items-center gap-3">
-        <h1 className="font-bold">Orders</h1>
+        <h1 className="font-bold">{t("title")}</h1>
+
         {searchText && (
           <div>
-            Filtered by
+            {t("filteredBy")}{" "}
             <i>&quot;{searchText}&quot;</i>{" "}
             <Link href="/admin/orders">
               <Button variant="outline" size="sm">
-                Remove Filter
+                {t("removeFilter")}
               </Button>
             </Link>
           </div>
         )}
       </div>
+
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>ID</TableHead>
-              <TableHead>DATE</TableHead>
-              <TableHead>BUYER</TableHead>
-              <TableHead>TOTAL</TableHead>
-              <TableHead>PAID</TableHead>
-              <TableHead>DELIVERED</TableHead>
-              <TableHead>ACTIONS</TableHead>
+              <TableHead>{t("id")}</TableHead>
+              <TableHead>{t("date")}</TableHead>
+              <TableHead>{t("buyer")}</TableHead>
+              <TableHead>{t("total")}</TableHead>
+              <TableHead>{t("paid")}</TableHead>
+              <TableHead>{t("delivered")}</TableHead>
+              <TableHead>{t("actions")}</TableHead>
             </TableRow>
           </TableHeader>
+
           <TableBody>
             {orders.data.map((order) => (
               <TableRow key={order.id}>
                 <TableCell>{formatId(order.id)}</TableCell>
+
                 <TableCell>
                   {formatDateTime(order.createdAt).datetime}
                 </TableCell>
-                <TableCell>{order.user?.name} </TableCell>
-                <TableCell>{formatCurrency(order.totalPrice)} </TableCell>
+
                 <TableCell>
-                  {order.isDelivered && order.deliveredAt
-                    ? formatDateTime(order.deliveredAt).datetime
-                    : "Not Paid"}{" "}
+                  {order.user?.name}
                 </TableCell>
+
+                <TableCell>
+                  {formatCurrency(order.totalPrice)}
+                </TableCell>
+
+                {/* Paid */}
                 <TableCell>
                   {order.isPaid && order.paidAt
                     ? formatDateTime(order.paidAt).datetime
-                    : "Not Delivered"}{" "}
+                    : t("notPaid")}
                 </TableCell>
+
+                {/* Delivered */}
+                <TableCell>
+                  {order.isDelivered && order.deliveredAt
+                    ? formatDateTime(order.deliveredAt).datetime
+                    : t("notDelivered")}
+                </TableCell>
+
                 <TableCell className="space-x-2 flex items-center">
                   <Link href={`/order/${order.id}`}>
                     <Button variant="outline" size="sm">
-                      Details
+                      {t("details")}
                     </Button>
                   </Link>
+
                   <div className="bg-red-700 rounded-sm">
-                    <DeleteDialog id={order.id} action={deleteOrder} />
+                    <DeleteDialog
+                      id={order.id}
+                      action={deleteOrder}
+                    />
                   </div>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
+
         {orders.totalPages >= 1 && (
           <Pagination
-            page={Number(page) || 100}
+            page={Number(page) || 1}
             totalPages={orders.totalPages}
           />
         )}

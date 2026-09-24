@@ -9,21 +9,29 @@ import { useRouter } from "@/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useTranslations } from "next-intl";
+
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/app/[locale]/components/ui/form";
+
 import { Input } from "@/app/[locale]/components/ui/input";
 import { Button } from "@/app/[locale]/components/ui/button";
 import { ArrowRight, Loader } from "lucide-react";
 import { updateUserAddress } from "@/lib/actions/user.actions";
 
-const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
+const ShippingAddressForm = ({
+  address,
+}: {
+  address: ShippingAddress;
+}) => {
+  const t = useTranslations("ShippingAddress");
+
   const router = useRouter();
 
   const form = useForm<z.infer<typeof shippingAddressSchema>>({
@@ -33,7 +41,9 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
 
   const [isPending, startTransition] = useTransition();
 
-  const onSubmit = (values: z.infer<typeof shippingAddressSchema>) => {
+  const onSubmit = (
+    values: z.infer<typeof shippingAddressSchema>,
+  ) => {
     startTransition(async () => {
       const res = await updateUserAddress(values);
 
@@ -47,75 +57,111 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto space-y-4 px-4 text-accent my-5 sm:px-6">
-      <h1 className="h2-bold mt-4">Shipping Address</h1>
+    <div className="my-5 mx-auto max-w-2xl space-y-4 px-4 text-accent sm:px-6">
+      <h1 className="h2-bold mt-4">
+        {t("title")}
+      </h1>
+
       <p className="text-sm text-muted-foreground">
-        Please enter an address to ship to
+        {t("description")}
       </p>
+
       <Form {...form}>
         <form
           method="post"
           className="space-y-4"
           onSubmit={form.handleSubmit(onSubmit)}
         >
-          <div className="flex flex-col md:flex-row gap-5">
+          {/* Full Name */}
+          <div className="flex flex-col gap-5 md:flex-row">
             <FormField
               control={form.control}
               name="fullName"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>Full Name</FormLabel>
+                  <FormLabel>
+                    {t("fullName")}
+                  </FormLabel>
+
                   <FormControl>
-                    <Input placeholder="Enter full name" {...field} />
+                    <Input
+                      placeholder={t("fullNamePlaceholder")}
+                      {...field}
+                    />
                   </FormControl>
+
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
 
-          <div className="flex flex-col md:flex-row gap-5">
+          {/* Address */}
+          <div className="flex flex-col gap-5 md:flex-row">
             <FormField
               control={form.control}
               name="streetAddress"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>Address</FormLabel>
+                  <FormLabel>
+                    {t("address")}
+                  </FormLabel>
+
                   <FormControl>
-                    <Input placeholder="Enter address" {...field} />
+                    <Input
+                      placeholder={t("addressPlaceholder")}
+                      {...field}
+                    />
                   </FormControl>
+
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
 
-          <div className="flex flex-col md:flex-row gap-5">
+          {/* City */}
+          <div className="flex flex-col gap-5 md:flex-row">
             <FormField
               control={form.control}
               name="city"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>City</FormLabel>
+                  <FormLabel>
+                    {t("city")}
+                  </FormLabel>
+
                   <FormControl>
-                    <Input placeholder="Enter city" {...field} />
+                    <Input
+                      placeholder={t("cityPlaceholder")}
+                      {...field}
+                    />
                   </FormControl>
+
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
 
-          <div className="flex flex-col md:flex-row gap-5">
+          {/* Country + Postal Code */}
+          <div className="flex flex-col gap-5 md:flex-row">
             <FormField
               control={form.control}
               name="country"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>Country</FormLabel>
+                  <FormLabel>
+                    {t("country")}
+                  </FormLabel>
+
                   <FormControl>
-                    <Input placeholder="Enter country" {...field} />
+                    <Input
+                      placeholder={t("countryPlaceholder")}
+                      {...field}
+                    />
                   </FormControl>
+
                   <FormMessage />
                 </FormItem>
               )}
@@ -126,24 +172,39 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
               name="postalCode"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>Postal Code</FormLabel>
+                  <FormLabel>
+                    {t("postalCode")}
+                  </FormLabel>
+
                   <FormControl>
-                    <Input placeholder="Enter postal code" {...field} />
+                    <Input
+                      placeholder={t("postalCodePlaceholder")}
+                      {...field}
+                    />
                   </FormControl>
+
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
 
+          {/* Continue */}
           <div className="flex gap-2">
-            <Button type="submit" disabled={isPending} className="w-full sm:w-auto">
+            <Button
+              type="submit"
+              disabled={isPending}
+              className="w-full sm:w-auto"
+            >
               {isPending ? (
-                <Loader className="w-4 h-4 animate-spin" />
+                <Loader className="h-4 w-4 animate-spin" />
               ) : (
-                <ArrowRight className="w-4 h-4" />
-              )}{" "}
-              Continue
+                <ArrowRight className="h-4 w-4" />
+              )}
+
+              {" "}
+
+              {t("continue")}
             </Button>
           </div>
         </form>

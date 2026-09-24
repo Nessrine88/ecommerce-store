@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { Metadata } from "next";
 import {
   Card,
@@ -11,39 +12,66 @@ import Image from "next/image";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import SignUpForm from "./signup-form";
-export const metadata: Metadata = {
-  title: "Sign Up",
-};
+
+export async function generateMetadata(props: {
+  params: Promise<{
+    locale: string;
+  }>;
+}): Promise<Metadata> {
+  const { locale } = await props.params;
+
+  const t = await getTranslations({
+    locale,
+    namespace: "SignUpPage",
+  });
+
+  return {
+    title: t("title"),
+  };
+}
+
 const SignUpPage = async (props: {
+  params: Promise<{
+    locale: string;
+  }>;
   searchParams: Promise<{
-    callbackUrl: string;
+    callbackUrl?: string;
   }>;
 }) => {
   const { callbackUrl } = await props.searchParams;
+
+  const t = await getTranslations("SignUpPage");
+
   const session = await auth();
+
   if (session) {
     return redirect(callbackUrl || "/");
   }
+
   return (
-    <div className="w-full max-w-md m-auto p-5 text-accent">
+    <div className="m-auto w-full max-w-md p-5 text-accent">
       <Card>
         <CardHeader className="space-y-4">
-          <Link href="/" className=" flex-center ">
+          <Link href="/" className="flex-center">
             <Image
               src="/logo.svg"
               width={500}
               height={500}
-              alt="Logo image"
-              className="rounded-full border border-accent w-28 h-auto mx-auto "
+              alt={t("logoAlt")}
+              className="mx-auto h-auto w-28 rounded-full border border-accent"
             />
           </Link>
         </CardHeader>
-        <CardTitle className="text-center">Create an account</CardTitle>
+
+        <CardTitle className="text-center">
+          {t("createAccount")}
+        </CardTitle>
+
         <CardDescription className="text-center">
-          Enter your informations below to sign up
+          {t("description")}
         </CardDescription>
+
         <CardContent className="space-y-4">
-          {/*Form here*/}
           <SignUpForm />
         </CardContent>
       </Card>

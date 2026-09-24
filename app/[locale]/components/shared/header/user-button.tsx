@@ -9,14 +9,16 @@ import {
   DropdownMenuTrigger,
 } from "@/app/[locale]/components/ui/dropdown-menu";
 import { UserIcon } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 
 const UserButton = async () => {
   const session = await auth();
+  const t = await getTranslations("UserButton");
 
   if (!session) {
     return (
       <Link href={`/sign-in`} className={buttonVariants()}>
-        <UserIcon /> Sign In
+        <UserIcon /> {t("signIn")}
       </Link>
     );
   }
@@ -57,14 +59,14 @@ const UserButton = async () => {
 
           <DropdownMenuItem>
             <Link href={`/user/orders`} className="w-full">
-              Order History
+              {t("orderHistory")}
             </Link>
           </DropdownMenuItem>
 
           {session.user?.role === "admin" && (
             <DropdownMenuItem>
               <Link href={`/admin/overview`} className="w-full">
-                Admin
+                {t("admin")}
               </Link>
             </DropdownMenuItem>
           )}
@@ -78,7 +80,7 @@ const UserButton = async () => {
               variant="default"
               type="submit"
             >
-              Sign Out
+              {t("signOut")}
             </Button>
           </DropdownMenuItem>
         </DropdownMenuContent>

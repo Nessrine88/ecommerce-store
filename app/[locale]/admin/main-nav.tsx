@@ -1,26 +1,27 @@
 "use client";
 
 import { Link } from "@/navigation";
-import {  usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
 
 const links = [
   {
-    title: "Overview",
+    key: "overview",
     href: "/admin/overview",
   },
   {
-    title: "Products",
+    key: "products",
     href: "/admin/products",
   },
   {
-    title: "Orders",
+    key: "orders",
     href: "/admin/orders",
   },
   {
-    title: "Users",
+    key: "users",
     href: "/admin/users",
   },
 ];
@@ -30,7 +31,7 @@ const MainNav = ({
   ...props
 }: React.HTMLAttributes<HTMLElement>) => {
   const pathname = usePathname();
-
+  const t = useTranslations("AdminNav");
 
   const [open, setOpen] = useState(false);
 
@@ -40,25 +41,25 @@ const MainNav = ({
       <nav
         className={cn(
           "hidden items-center space-x-4 md:flex lg:space-x-6",
-          className
+          className,
         )}
         {...props}
       >
         {links.map((item) => {
-          const href = `/${item.href}`;
+          const href = item.href;
 
           return (
             <Link
-              key={item.href}
+              key={item.key}
               href={href}
               className={cn(
                 "text-sm font-medium transition-colors hover:text-primary",
                 pathname === href || pathname.startsWith(`${href}/`)
                   ? "underline underline-offset-8"
-                  : ""
+                  : "",
               )}
             >
-              {item.title}
+              {t(item.key)}
             </Link>
           );
         })}
@@ -71,7 +72,7 @@ const MainNav = ({
           type="button"
           onClick={() => setOpen(!open)}
           className="flex h-10 w-10 items-center justify-center rounded-md hover:bg-muted"
-          aria-label="Toggle navigation"
+          aria-label={t("toggleNavigation")}
           aria-expanded={open}
         >
           {open ? (
@@ -86,21 +87,21 @@ const MainNav = ({
           <div className="absolute left-0 top-16 z-50 w-full border-b bg-bg/80 shadow-md backdrop-blur-3xl">
             <nav className="flex flex-col p-3">
               {links.map((item) => {
-                const href = `/${item.href}`;
+                const href = item.href;
 
                 return (
                   <Link
-                    key={item.href}
+                    key={item.key}
                     href={href}
                     onClick={() => setOpen(false)}
                     className={cn(
                       "rounded-md px-4 py-3 text-sm font-medium transition-colors hover:bg-muted",
                       pathname === href || pathname.startsWith(`${href}/`)
                         ? "bg-muted text-primary"
-                        : ""
+                        : "",
                     )}
                   >
-                    {item.title}
+                    {t(item.key)}
                   </Link>
                 );
               })}

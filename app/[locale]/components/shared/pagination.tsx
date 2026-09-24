@@ -1,5 +1,7 @@
 "use client";
-import { useRouter} from "@/navigation";
+
+import { useTranslations } from "next-intl";
+import { useRouter } from "@/navigation";
 import { useSearchParams } from "next/navigation";
 import { Button } from "../ui/button";
 import { formUrlQuery } from "@/lib/utils";
@@ -10,29 +12,36 @@ type PaginationProps = {
   urlParamName?: string;
 };
 
-const Pagination = ({ page, totalPages, urlParamName }: PaginationProps) => {
+const Pagination = ({
+  page,
+  totalPages,
+  urlParamName,
+}: PaginationProps) => {
+  const t = useTranslations("Pagination");
+
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const currentPage = Number(page) || 2;
-  const total = Number(totalPages) || 10;
+  const currentPage = Number(page) || 1;
+  const total = Number(totalPages) || 1;
 
   const handleClick = (btnType: string) => {
-    const pageValue = btnType === "next" ? currentPage + 1 : currentPage - 1;
+    const pageValue =
+      btnType === "next"
+        ? currentPage + 1
+        : currentPage - 1;
+
     const newUrl = formUrlQuery({
       params: searchParams.toString(),
       key: urlParamName || "page",
       value: pageValue.toString(),
     });
-    router.push(newUrl);
-    const params = new URLSearchParams(searchParams.toString());
-    params.set(urlParamName || "page", String(pageValue));
 
-    router.push(`?${params.toString()}`);
+    router.push(newUrl);
   };
 
   return (
-    <div className="flex gap-2 mt-5">
+    <div className="mt-5 flex gap-2">
       <Button
         size="lg"
         variant="outline"
@@ -40,8 +49,9 @@ const Pagination = ({ page, totalPages, urlParamName }: PaginationProps) => {
         disabled={currentPage <= 1}
         onClick={() => handleClick("prev")}
       >
-        Previous
+        {t("previous")}
       </Button>
+
       <Button
         size="lg"
         variant="outline"
@@ -49,7 +59,7 @@ const Pagination = ({ page, totalPages, urlParamName }: PaginationProps) => {
         disabled={currentPage >= total}
         onClick={() => handleClick("next")}
       >
-        Next
+        {t("next")}
       </Button>
     </div>
   );

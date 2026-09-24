@@ -1,9 +1,18 @@
 "use client";
+
 import { useRouter } from "@/navigation";
 import { toast } from "sonner";
 import { useTransition } from "react";
-import { addItemToCart, removeItemFromCart } from "@/lib/actions/cart.actions";
-import { ArrowRight, Loader, Minus, Plus } from "lucide-react";
+import { useTranslations } from "next-intl";
+import {
+  addItemToCart,
+  removeItemFromCart,
+} from "@/lib/actions/cart.actions";
+import {
+  Loader,
+  Minus,
+  Plus,
+} from "lucide-react";
 import { Link } from "@/navigation";
 import Image from "next/image";
 import { Cart } from "@/types";
@@ -17,19 +26,24 @@ import {
 } from "@/app/[locale]/components/ui/table";
 import { Button } from "@base-ui/react";
 import { formatCurrency } from "@/lib/utils";
-import { Card, CardContent } from "@/app/[locale]/components/ui/card";
+import {
+  Card,
+  CardContent,
+} from "@/app/[locale]/components/ui/card";
 
 const CartTable = ({ cart }: { cart?: Cart }) => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
+  const t = useTranslations("Cart");
+
   return (
     <div className="flex-1 max-w-7xl mx-auto text-accent px-4 sm:px-0">
       {!cart || cart.items.length === 0 ? (
         <div className="text-accent py-10 text-center sm:text-left">
-          Cart is empty.{" "}
-          <Link className="underline" href={"/"}>
-            Go Shopping
+          {t("empty")}{" "}
+          <Link className="underline" href="/">
+            {t("goShopping")}
           </Link>
         </div>
       ) : (
@@ -41,11 +55,20 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="text-center">Name</TableHead>
-                    <TableHead className="text-center">Quantity</TableHead>
-                    <TableHead className="text-right">Price</TableHead>
+                    <TableHead className="text-center">
+                      {t("name")}
+                    </TableHead>
+
+                    <TableHead className="text-center">
+                      {t("quantity")}
+                    </TableHead>
+
+                    <TableHead className="text-right">
+                      {t("price")}
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
+
                 <TableBody>
                   {cart.items.map((item) => (
                     <TableRow key={item.slug}>
@@ -61,9 +84,13 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                             height={50}
                             className="shrink-0"
                           />
-                          <span className="px-2 line-clamp-2">{item.name}</span>
+
+                          <span className="px-2 line-clamp-2">
+                            {item.name}
+                          </span>
                         </Link>
                       </TableCell>
+
                       <TableCell>
                         <div className="flex items-center justify-center gap-2">
                           <Button
@@ -71,10 +98,12 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                             type="button"
                             onClick={() =>
                               startTransition(async () => {
-                                const res = await removeItemFromCart(item.productId);
+                                const res = await removeItemFromCart(
+                                  item.productId,
+                                );
+
                                 if (!res.success) {
                                   toast.error(res.message);
-                                  return;
                                 }
                               })
                             }
@@ -85,7 +114,11 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                               <Minus className="w-4 h-4" />
                             )}
                           </Button>
-                          <span className="w-6 text-center">{item.qty}</span>
+
+                          <span className="w-6 text-center">
+                            {item.qty}
+                          </span>
+
                           <Button
                             disabled={isPending}
                             type="button"
@@ -95,9 +128,9 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                                   ...item,
                                   qty: 1,
                                 });
+
                                 if (!res.success) {
                                   toast.error(res.message);
-                                  return;
                                 }
                               })
                             }
@@ -110,6 +143,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                           </Button>
                         </div>
                       </TableCell>
+
                       <TableCell className="text-right whitespace-nowrap">
                         {formatCurrency(item.price)}
                       </TableCell>
@@ -126,7 +160,10 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                   key={item.slug}
                   className="flex items-center gap-3 border rounded-md p-3"
                 >
-                  <Link href={`/product/${item.slug}`} className="shrink-0">
+                  <Link
+                    href={`/product/${item.slug}`}
+                    className="shrink-0"
+                  >
                     <Image
                       src={item.image}
                       alt={item.name}
@@ -143,6 +180,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                     >
                       {item.name}
                     </Link>
+
                     <div className="text-sm text-muted-foreground mt-1">
                       {formatCurrency(item.price)}
                     </div>
@@ -153,10 +191,12 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                         type="button"
                         onClick={() =>
                           startTransition(async () => {
-                            const res = await removeItemFromCart(item.productId);
+                            const res = await removeItemFromCart(
+                              item.productId,
+                            );
+
                             if (!res.success) {
                               toast.error(res.message);
-                              return;
                             }
                           })
                         }
@@ -167,7 +207,11 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                           <Minus className="w-4 h-4" />
                         )}
                       </Button>
-                      <span className="w-6 text-center">{item.qty}</span>
+
+                      <span className="w-6 text-center">
+                        {item.qty}
+                      </span>
+
                       <Button
                         disabled={isPending}
                         type="button"
@@ -177,9 +221,9 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                               ...item,
                               qty: 1,
                             });
+
                             if (!res.success) {
                               toast.error(res.message);
-                              return;
                             }
                           })
                         }
@@ -201,8 +245,14 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
           <Card className="md:sticky md:top-20 h-fit">
             <CardContent className="p-4">
               <div className="text-sm sm:text-base">
-                Subtotal ({cart.items.reduce((a, c) => a + c.qty, 0)})
+                {t("subtotal")} (
+                {cart.items.reduce(
+                  (total, item) => total + item.qty,
+                  0,
+                )}
+                )
               </div>
+
               <div className="text-lg sm:text-xl font-semibold mt-1">
                 {formatCurrency(cart.itemsPrice)}
               </div>
@@ -211,16 +261,17 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                 disabled={isPending}
                 className="w-full mt-4"
                 onClick={() =>
-                  startTransition(() => router.push("/shipping-address"))
+                  startTransition(() => {
+                    router.push("/shipping-address");
+                  })
                 }
               >
                 {isPending ? (
                   <Loader className="h-4 w-4 animate-spin mx-auto" />
                 ) : (
                   <div className="flex items-center justify-center gap-2 border px-2 py-2 cursor-pointer w-full">
-                    <ArrowRight className="w-4 h-4 font-bold" />
                     <span className="text-sm sm:text-base">
-                      PROCEED TO CHECKOUT
+                      {t("proceedToCheckout")}
                     </span>
                   </div>
                 )}

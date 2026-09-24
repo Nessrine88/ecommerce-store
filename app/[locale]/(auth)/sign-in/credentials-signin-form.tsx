@@ -4,12 +4,15 @@ import { Link } from "@/navigation";
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { Button, Input } from "@base-ui/react";
+import { useTranslations } from "next-intl";
 
 import { Label } from "@/app/[locale]/components/ui/label";
 import { signInDefaultValues } from "@/lib/constants";
 import { signInWithCredentials } from "@/lib/actions/user.actions";
 import { useSearchParams } from "next/navigation";
+
 function SignInButton() {
+  const t = useTranslations("SignIn");
   const { pending } = useFormStatus();
 
   return (
@@ -18,23 +21,39 @@ function SignInButton() {
       disabled={pending}
       className="w-full rounded-lg bg-primary py-3 font-medium text-white transition hover:bg-accent"
     >
-      {pending ? "Signing In..." : "Sign In"}
+      {pending ? t("signingIn") : t("signIn")}
     </Button>
   );
 }
 
 export default function CredentialsSignInForm() {
-  const [data, action] = useActionState(signInWithCredentials, {
-    success: false,
-    message: "",
-  });
+  const t = useTranslations("SignIn");
+
+  const [data, action] = useActionState(
+    signInWithCredentials,
+    {
+      success: false,
+      message: "",
+    }
+  );
+
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("/callbackUrl") || "/";
+
+  const callbackUrl =
+    searchParams.get("callbackUrl") || "/";
+
   return (
     <form action={action} className="space-y-6">
-      <input type="hidden" name="callbackUrl" value="callbackUrl" />
+      <input
+        type="hidden"
+        name="callbackUrl"
+        value={callbackUrl}
+      />
+
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="email">
+          {t("email")}
+        </Label>
 
         <Input
           id="email"
@@ -49,7 +68,9 @@ export default function CredentialsSignInForm() {
 
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <Label htmlFor="password">Password</Label>
+          <Label htmlFor="password">
+            {t("password")}
+          </Label>
         </div>
 
         <Input
@@ -66,18 +87,18 @@ export default function CredentialsSignInForm() {
       <SignInButton />
 
       {data && !data.success && (
-        <p className="text-center text-sm text-white rounded-4xl w-fit mx-auto px-5 py-2 ">
+        <p className="mx-auto w-fit rounded-4xl px-5 py-2 text-center text-sm text-white">
           {data.message}
         </p>
       )}
 
       <p className="text-center text-sm text-gray-500">
-        Don't have an account?{" "}
+        {t("noAccount")}{" "}
         <Link
           href="/sign-up"
           className="font-medium text-secondary hover:underline"
         >
-          Create one
+          {t("createOne")}
         </Link>
       </p>
     </form>

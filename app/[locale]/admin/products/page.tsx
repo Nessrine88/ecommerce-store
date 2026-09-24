@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/navigation";
 import {
   deleteProduct,
@@ -37,6 +38,8 @@ const AdminProductsPage = async (props: {
   const searchText = searchParams.query || "";
   const category = searchParams.category || "";
 
+  const t = await getTranslations("AdminProducts");
+
   const products = await getAllProducts({
     query: searchText,
     page,
@@ -49,12 +52,12 @@ const AdminProductsPage = async (props: {
       <div>
         <div className="flex items-center gap-3">
           <h1 className="font-bold">
-            Products
+            {t("title")}
           </h1>
 
           {searchText && (
             <div>
-              Filtered by{" "}
+              {t("filteredBy")}{" "}
               <i>
                 &quot;{searchText}&quot;
               </i>{" "}
@@ -63,7 +66,7 @@ const AdminProductsPage = async (props: {
                   variant="outline"
                   size="sm"
                 >
-                  Remove Filter
+                  {t("removeFilter")}
                 </Button>
               </Link>
             </div>
@@ -75,85 +78,86 @@ const AdminProductsPage = async (props: {
           className="my-5"
         >
           <Link href="/admin/products/create">
-            Create Product
+            {t("createProduct")}
           </Link>
         </Button>
 
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>ID</TableHead>
-              <TableHead>NAME</TableHead>
+              <TableHead>{t("id")}</TableHead>
+              <TableHead>{t("name")}</TableHead>
+
               <TableHead className="text-right">
-                PRICE
+                {t("price")}
               </TableHead>
+
               <TableHead>
-                CATEGORY
+                {t("category")}
               </TableHead>
-              <TableHead>STOCK</TableHead>
-              <TableHead>RATING</TableHead>
+
+              <TableHead>
+                {t("stock")}
+              </TableHead>
+
+              <TableHead>
+                {t("rating")}
+              </TableHead>
+
               <TableHead className="w-[100px]">
-                ACTIONS
+                {t("actions")}
               </TableHead>
             </TableRow>
           </TableHeader>
 
           <TableBody>
-            {products.data.map(
-              (product) => (
-                <TableRow
-                  key={product.id}
-                >
-                  <TableCell>
-                    {formatId(
-                      product.id
-                    )}
-                  </TableCell>
+            {products.data.map((product) => (
+              <TableRow key={product.id}>
+                <TableCell>
+                  {formatId(product.id)}
+                </TableCell>
 
-                  <TableCell>
-                    {product.name}
-                  </TableCell>
+                <TableCell>
+                  {product.name}
+                </TableCell>
 
-                  <TableCell className="text-right">
-                    {formatCurrency(
-                      product.price
-                    )}
-                  </TableCell>
+                <TableCell className="text-right">
+                  {formatCurrency(product.price)}
+                </TableCell>
 
-                  <TableCell>
-                    {product.categoryId}
-                  </TableCell>
+                <TableCell>
+                  {product.categoryId}
+                </TableCell>
 
-                  <TableCell>
-                    {product.stock}
-                  </TableCell>
+                <TableCell>
+                  {product.stock}
+                </TableCell>
 
-                  <TableCell>
-                    {product.rating}
-                  </TableCell>
+                <TableCell>
+                  {product.rating}
+                </TableCell>
 
-                  <TableCell className="flex items-center space-x-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
+                <TableCell className="flex items-center space-x-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                  >
+                    <Link
+                      href={`/admin/products/${product.id}`}
                     >
-                      <Link
-                        href={`/admin/products/${product.id}`}
-                      >
-                        Edit
-                      </Link>
-                    </Button>
+                      {t("edit")}
+                    </Link>
+                  </Button>
 
-                    <div className="rounded-sm bg-red-700">
-                      <DeleteDialog
-                        id={product.id}
-                        action={deleteProduct}
-                      />
-                    </div>
-                  </TableCell>
-                </TableRow>
-              )
-            )}
+                  <div className="rounded-sm bg-red-700">
+                    <DeleteDialog
+                      id={product.id}
+                      action={deleteProduct}
+                    />
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </div>
@@ -161,9 +165,7 @@ const AdminProductsPage = async (props: {
       {products.totalPages > 1 && (
         <Pagination
           page={page}
-          totalPages={
-            products.totalPages
-          }
+          totalPages={products.totalPages}
         />
       )}
     </div>

@@ -139,6 +139,16 @@
     "menuTitle": "Menu"
   },
 
+  "Cart": {
+    "empty": "Le panier est vide.",
+    "goShopping": "Continuer mes achats",
+    "name": "Nom",
+    "quantity": "Quantité",
+    "price": "Prix",
+    "subtotal": "Sous-total",
+    "proceedToCheckout": "PASSER À LA CAISSE"
+  },
+
   "UserButton": {
     "signIn": "Se Connecter",
     "orderHistory": "Historique des Commandes",
@@ -163,5 +173,178 @@
     "badge": "Collection Vedette",
     "defaultDescription": "Rapprochez-vous de la nature avec une flore d'intérieur fraîche et sélectionnée avec soin pour votre espace de vie.",
     "cta": "Achetez maintenant"
+  },
+  "PlaceOrder": {
+  "title": "Passer la commande",
+  "shippingAddress": "Adresse de livraison",
+  "paymentMethod": "Mode de paiement",
+  "orderItems": "Articles de la commande",
+  "item": "Article",
+  "qty": "Qté",
+  "price": "Prix",
+  "edit": "Modifier",
+  "items": "Articles",
+  "tax": "Taxe",
+  "shipping": "Livraison",
+  "total": "Total",
+  "placeOrder": "Passer la commande"
+},
+"OrderDetails": {
+  "order": "Commande",
+  "paymentMethod": "Mode de paiement",
+  "paidAt": "Payé le {date}",
+  "notPaid": "Non payé",
+  "shippingAddress": "Adresse de livraison",
+  "deliveredAt": "Livré le {date}",
+  "notDelivered": "Non livré",
+  "orderItems": "Articles de la commande",
+  "item": "Article",
+  "quantity": "Quantité",
+  "price": "Prix",
+  "items": "Articles",
+  "tax": "Taxe",
+  "shipping": "Livraison",
+  "total": "Total",
+  "processing": "Traitement...",
+  "markAsPaid": "Marquer comme payé",
+  "markAsDelivered": "Marquer comme livré"
+},
+"ShippingAddress": {
+  "title": "Adresse de livraison",
+  "description": "Veuillez saisir une adresse de livraison",
+  "fullName": "Nom complet",
+  "fullNamePlaceholder": "Saisissez votre nom complet",
+  "address": "Adresse",
+  "addressPlaceholder": "Saisissez votre adresse",
+  "city": "Ville",
+  "cityPlaceholder": "Saisissez votre ville",
+  "country": "Pays",
+  "countryPlaceholder": "Saisissez votre pays",
+  "postalCode": "Code postal",
+  "postalCodePlaceholder": "Saisissez votre code postal",
+  "continue": "Continuer"
+},
+"PaymentMethod": {
+  "title": "Mode de paiement",
+  "description": "Veuillez sélectionner votre mode de paiement préféré",
+  "stripe": "Carte bancaire",
+  "cashOnDelivery": "Paiement à la livraison",
+  "continue": "Continuer"
+},
+"CheckoutSteps": {
+  "userLogin": "Connexion",
+  "shippingAddress": "Adresse de livraison",
+  "paymentMethod": "Mode de paiement",
+  "placeOrder": "Passer la commande"
+},
+"AdminOverview": {
+  "title": "Tableau de bord administrateur",
+  "totalRevenue": "Chiffre d'affaires total",
+  "sales": "Ventes",
+  "customers": "Clients",
+  "products": "Produits",
+  "overview": "Vue d'ensemble",
+  "recentSales": "Ventes récentes",
+  "buyer": "ACHETEUR",
+  "date": "DATE",
+  "total": "TOTAL",
+  "actions": "ACTIONS",
+  "deletedUser": "Utilisateur supprimé",
+  "details": "Détails"
+},
+"AdminNav": {
+  "overview": "Vue d'ensemble",
+  "products": "Produits",
+  "orders": "Commandes",
+  "users": "Utilisateurs",
+  "toggleNavigation": "Afficher/masquer la navigation"
+},
+"UserNav": {
+  "profile": "Profile",
+  "orders": "Orders"
+},
+"AdminOrders": {
+  "title": "Commandes",
+  "filteredBy": "Filtré par",
+  "removeFilter": "Supprimer le filtre",
+  "id": "ID",
+  "date": "DATE",
+  "buyer": "ACHETEUR",
+  "total": "TOTAL",
+  "paid": "PAYÉ",
+  "delivered": "LIVRÉ",
+  "actions": "ACTIONS",
+  "notPaid": "Non payé",
+  "notDelivered": "Non livré",
+  "details": "Détails"
+},
+"DeleteDialog": {
+  "delete": "Supprimer",
+  "deleting": "Suppression...",
+  "confirmTitle": "Êtes-vous absolument sûr ?",
+  "confirmDescription": "Cette action est irréversible",
+  "cancel": "Annuler"
+},
+"AdminProducts": {
+    "title": "Produits",
+    "filteredBy": "Filtré par",
+    "removeFilter": "Supprimer le filtre",
+    "createProduct": "Créer un produit",
+    "id": "ID",
+    "name": "NOM",
+    "price": "PRIX",
+    "category": "CATÉGORIE",
+    "stock": "STOCK",
+    "rating": "ÉVALUATION",
+    "actions": "ACTIONS",
+    "edit": "Modifier"
+  },
+  
+  "AdminUsers": {
+    "title": "Utilisateurs",
+    "filteredBy": "Filtré par",
+    "removeFilter": "Supprimer le filtre",
+    "id": "ID",
+    "name": "NOM",
+    "email": "E-MAIL",
+    "role": "RÔLE",
+    "actions": "ACTIONS",
+    "user": "Utilisateur",
+    "admin": "Administrateur",
+    "update": "Modifier"
+  },
+   "Pagination": {
+    "previous": "Précédent",
+    "next": "Suivant"
+  },
+  "SignIn": {
+    "signingIn": "Connexion...",
+    "signIn": "Se connecter",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "noAccount": "Vous n'avez pas de compte ?",
+    "createOne": "Créer un compte"
+  },
+   "SignInPage": {
+    "title": "Se connecter",
+    "description": "Connectez-vous à votre compte",
+    "logoAlt": "Logo"
+  },
+   "SignUpPage": {
+    "title": "S'inscrire",
+    "createAccount": "Créer un compte",
+    "description": "Saisissez vos informations ci-dessous pour vous inscrire",
+    "logoAlt": "Logo"
+  },
+  "SignUp": {
+    "submitting": "Inscription...",
+    "signUp": "S'inscrire",
+    "name": "Nom",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "alreadyHaveAccount": "Vous avez déjà un compte ?",
+    "signIn": "Se connecter"
   }
+
 }

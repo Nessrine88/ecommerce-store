@@ -1,4 +1,6 @@
 "use client";
+
+import { useTranslations } from "next-intl";
 import { Card, CardContent } from "@/app/[locale]/components/ui/card";
 import { Badge } from "@/app/[locale]/components/ui/badge";
 import {
@@ -31,6 +33,8 @@ const OrderDetailsTable = ({
   isAdmin: boolean;
   stripeClientSecret: string | null;
 }) => {
+  const t = useTranslations("OrderDetails");
+
   const {
     id,
     shippingAddress,
@@ -48,6 +52,7 @@ const OrderDetailsTable = ({
 
   const MarkAsPaidButton = () => {
     const [isPending, startTransition] = useTransition();
+
     return (
       <Button
         type="button"
@@ -56,17 +61,21 @@ const OrderDetailsTable = ({
         onClick={() =>
           startTransition(async () => {
             const res = await updateOrderToPaidCOD(order.id);
-            res.success ? toast.success(res.message) : toast.error(res.message);
+
+            res.success
+              ? toast.success(res.message)
+              : toast.error(res.message);
           })
         }
       >
-        {isPending ? "Processing..." : "Mark As Paid"}
+        {isPending ? t("processing") : t("markAsPaid")}
       </Button>
     );
   };
 
   const MarkAsDeliveredButton = () => {
     const [isPending, startTransition] = useTransition();
+
     return (
       <Button
         type="button"
@@ -75,59 +84,86 @@ const OrderDetailsTable = ({
         onClick={() =>
           startTransition(async () => {
             const res = await deliverOrder(order.id);
-            res.success ? toast.success(res.message) : toast.error(res.message);
+
+            res.success
+              ? toast.success(res.message)
+              : toast.error(res.message);
           })
         }
       >
-        {isPending ? "Processing..." : "Mark As Delivered"}
+        {isPending ? t("processing") : t("markAsDelivered")}
       </Button>
     );
   };
 
   return (
-    <div className="max-w-7xl mx-auto mb-10 ">
+    <div className="mx-auto mb-10 max-w-7xl">
+      {/* Order title */}
       <h1 className="py-4 text-2xl font-semibold tracking-tight">
-        Order {formatId(id)}
+        {t("order")} {formatId(id)}
       </h1>
 
       <div className="grid gap-5 md:grid-cols-3">
         <div className="col-span-2 space-y-4 overflow-x-auto">
+
           {/* Payment */}
           <Card className="rounded-xl border shadow-sm">
-            <CardContent className="p-4 space-y-3">
-              <h2 className="text-xl font-medium">Payment Method</h2>
-              <p className="text-sm text-muted-foreground">{paymentMethod}</p>
+            <CardContent className="space-y-3 p-4">
+              <h2 className="text-xl font-medium">
+                {t("paymentMethod")}
+              </h2>
+
+              <p className="text-sm text-muted-foreground">
+                {paymentMethod}
+              </p>
+
               {isPaid ? (
                 <Badge variant="secondary">
-                  Paid at {formatDateTime(paidAt!).datetime}
+                  {t("paidAt", {
+                    date: formatDateTime(paidAt!).datetime,
+                  })}
                 </Badge>
               ) : (
-                <Badge variant="destructive">Not Paid</Badge>
+                <Badge variant="destructive">
+                  {t("notPaid")}
+                </Badge>
               )}
             </CardContent>
           </Card>
 
           {/* Shipping */}
           <Card className="rounded-xl border shadow-sm">
-            <CardContent className="p-4 space-y-3">
-              <h2 className="text-xl font-medium">Shipping Address</h2>
-              <div className="text-sm text-muted-foreground space-y-0.5">
-                <p className="text-foreground font-medium">
+            <CardContent className="space-y-3 p-4">
+              <h2 className="text-xl font-medium">
+                {t("shippingAddress")}
+              </h2>
+
+              <div className="space-y-0.5 text-sm text-muted-foreground">
+                <p className="font-medium text-foreground">
                   {shippingAddress.fullName}
                 </p>
+
                 <p>
-                  {shippingAddress.streetAddress}, {shippingAddress.city}
+                  {shippingAddress.streetAddress},{" "}
+                  {shippingAddress.city}
                 </p>
+
                 <p>
-                  {shippingAddress.postalCode}, {shippingAddress.country}
+                  {shippingAddress.postalCode},{" "}
+                  {shippingAddress.country}
                 </p>
               </div>
+
               {isDelivered ? (
                 <Badge variant="secondary">
-                  Delivered at {formatDateTime(deliveredAt!).datetime}
+                  {t("deliveredAt", {
+                    date: formatDateTime(deliveredAt!).datetime,
+                  })}
                 </Badge>
               ) : (
-                <Badge variant="destructive">Not Delivered</Badge>
+                <Badge variant="destructive">
+                  {t("notDelivered")}
+                </Badge>
               )}
             </CardContent>
           </Card>
@@ -135,20 +171,30 @@ const OrderDetailsTable = ({
           {/* Order Items */}
           <Card className="rounded-xl border shadow-sm">
             <CardContent className="p-4">
-              <h2 className="pb-4 text-xl font-medium">Order Items</h2>
+              <h2 className="pb-4 text-xl font-medium">
+                {t("orderItems")}
+              </h2>
+
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Item</TableHead>
-                    <TableHead className="text-center">Quantity</TableHead>
-                    <TableHead className="text-right">Price</TableHead>
+                    <TableHead>{t("item")}</TableHead>
+
+                    <TableHead className="text-center">
+                      {t("quantity")}
+                    </TableHead>
+
+                    <TableHead className="text-right">
+                      {t("price")}
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
+
                 <TableBody>
                   {orderItems.map((item) => (
                     <TableRow
                       key={item.slug}
-                      className="hover:bg-muted/50 transition-colors"
+                      className="transition-colors hover:bg-muted/50"
                     >
                       <TableCell>
                         <Link
@@ -162,10 +208,17 @@ const OrderDetailsTable = ({
                             height={50}
                             className="rounded-md border object-cover"
                           />
-                          <span className="line-clamp-2">{item.name}</span>
+
+                          <span className="line-clamp-2">
+                            {item.name}
+                          </span>
                         </Link>
                       </TableCell>
-                      <TableCell className="text-center">{item.qty}</TableCell>
+
+                      <TableCell className="text-center">
+                        {item.qty}
+                      </TableCell>
+
                       <TableCell className="text-right">
                         {formatCurrency(item.price)}
                       </TableCell>
@@ -178,50 +231,81 @@ const OrderDetailsTable = ({
         </div>
 
         {/* Order Summary */}
-        <div className="space-y-4 mb-4 md:sticky md:top-4 md:self-start">
+        <div className="mb-4 space-y-4 md:sticky md:top-4 md:self-start">
+
           <Card className="rounded-xl border shadow-sm">
-            <CardContent className="p-4 space-y-2">
+            <CardContent className="space-y-2 p-4">
+
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Items</span>
-                <span>{formatCurrency(itemsPrice)}</span>
+                <span className="text-muted-foreground">
+                  {t("items")}
+                </span>
+
+                <span>
+                  {formatCurrency(itemsPrice)}
+                </span>
               </div>
+
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Tax</span>
-                <span>{formatCurrency(taxPrice)}</span>
+                <span className="text-muted-foreground">
+                  {t("tax")}
+                </span>
+
+                <span>
+                  {formatCurrency(taxPrice)}
+                </span>
               </div>
+
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Shipping</span>
-                <span>{formatCurrency(shippingPrice)}</span>
+                <span className="text-muted-foreground">
+                  {t("shipping")}
+                </span>
+
+                <span>
+                  {formatCurrency(shippingPrice)}
+                </span>
               </div>
+
               <div className="my-1 h-px bg-border" />
-              <div className="flex justify-between font-semibold text-lg">
-                <span>Total</span>
-                <span>{formatCurrency(totalPrice)}</span>
+
+              <div className="flex justify-between text-lg font-semibold">
+                <span>{t("total")}</span>
+
+                <span>
+                  {formatCurrency(totalPrice)}
+                </span>
               </div>
+
             </CardContent>
           </Card>
 
-          {/* Payment action (Stripe or COD) */}
-          {!isPaid && paymentMethod === "Stripe" && stripeClientSecret && (
-            <Card className="rounded-xl border shadow-sm">
-              <CardContent className="p-4">
-                <StripePayment
-                  priceInCents={Number(order.totalPrice) * 100}
-                  orderId={order.id}
-                  clientSecret={stripeClientSecret}
-                />
-              </CardContent>
-            </Card>
-          )}
+          {/* Payment action - Stripe */}
+          {!isPaid &&
+            paymentMethod === "Stripe" &&
+            stripeClientSecret && (
+              <Card className="rounded-xl border shadow-sm">
+                <CardContent className="p-4">
+                  <StripePayment
+                    priceInCents={Number(order.totalPrice) * 100}
+                    orderId={order.id}
+                    clientSecret={stripeClientSecret}
+                  />
+                </CardContent>
+              </Card>
+            )}
 
-          {isAdmin && !isPaid && paymentMethod === "CashOnDelivery" && (
-            <Card className="rounded-xl border shadow-sm">
-              <CardContent className="p-4">
-                <MarkAsPaidButton />
-              </CardContent>
-            </Card>
-          )}
+          {/* Payment action - COD */}
+          {isAdmin &&
+            !isPaid &&
+            paymentMethod === "CashOnDelivery" && (
+              <Card className="rounded-xl border shadow-sm">
+                <CardContent className="p-4">
+                  <MarkAsPaidButton />
+                </CardContent>
+              </Card>
+            )}
 
+          {/* Delivery action */}
           {isAdmin && !isDelivered && (
             <Card className="rounded-xl border shadow-sm">
               <CardContent className="p-4">

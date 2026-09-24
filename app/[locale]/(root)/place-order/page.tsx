@@ -1,14 +1,16 @@
-
 import { auth } from "@/auth";
 import { getMyCart } from "@/lib/actions/cart.actions";
 import { getUserById } from "@/lib/actions/user.actions";
 import { CartItem, ShippingAddress } from "@/types";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
+
 import CheckoutSteps from "@/app/[locale]/components/shared/checkout-steps";
 import { Card, CardContent } from "@/app/[locale]/components/ui/card";
 import { Link } from "@/navigation";
 import { Button } from "@/app/[locale]/components/ui/button";
+
 import {
   Table,
   TableBody,
@@ -17,6 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/app/[locale]/components/ui/table";
+
 import Image from "next/image";
 import { formatCurrency } from "@/lib/utils";
 import PlaceOrderForm from "./place-order-form";
@@ -26,6 +29,8 @@ export const metadata: Metadata = {
 };
 
 const PlaceOrderPage = async () => {
+  const t = await getTranslations("PlaceOrder");
+
   const cart = await getMyCart();
   const session = await auth();
   const userId = session?.user?.id;
@@ -49,8 +54,9 @@ const PlaceOrderPage = async () => {
   const userAddress = user.address as ShippingAddress;
 
   return (
-    <main className=" w-full px-3 sm:px-6 lg:px-8 text-accent">
+    <main className="w-full px-3 text-accent sm:px-6 lg:px-8">
       <div className="mx-auto flex w-full max-w-7xl flex-col items-center">
+
         {/* Checkout steps */}
         <div className="w-full overflow-x-auto py-4 sm:py-6">
           <CheckoutSteps current={3} />
@@ -58,29 +64,31 @@ const PlaceOrderPage = async () => {
 
         {/* Page title */}
         <h1 className="mb-6 text-xl font-semibold sm:mb-8 sm:text-2xl">
-          Place Order
+          {t("title")}
         </h1>
 
         {/* Main checkout cards */}
         <div className="grid w-full grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-6">
-          
+
           {/* Shipping Address */}
           <Card className="w-full">
             <CardContent className="p-4 sm:p-6">
               <div className="mb-4 flex items-center justify-between gap-2">
                 <h2 className="text-lg font-semibold sm:text-xl">
-                  Shipping Address
+                  {t("shippingAddress")}
                 </h2>
 
                 <Link href="/shipping-address">
                   <Button variant="outline" size="sm">
-                    Edit
+                    {t("edit")}
                   </Button>
                 </Link>
               </div>
 
               <div className="space-y-1 text-sm sm:text-base">
-                <p className="font-medium">{userAddress.fullName}</p>
+                <p className="font-medium">
+                  {userAddress.fullName}
+                </p>
 
                 <p className="break-words text-muted-foreground">
                   {userAddress.streetAddress},{" "}
@@ -97,12 +105,12 @@ const PlaceOrderPage = async () => {
             <CardContent className="p-4 sm:p-6">
               <div className="mb-4 flex items-center justify-between gap-2">
                 <h2 className="text-lg font-semibold sm:text-xl">
-                  Payment Method
+                  {t("paymentMethod")}
                 </h2>
 
                 <Link href="/payment-method">
                   <Button variant="outline" size="sm">
-                    Edit
+                    {t("edit")}
                   </Button>
                 </Link>
               </div>
@@ -118,12 +126,12 @@ const PlaceOrderPage = async () => {
             <CardContent className="p-4 sm:p-6">
               <div className="mb-4 flex items-center justify-between">
                 <h2 className="text-lg font-semibold sm:text-xl">
-                  Order Items
+                  {t("orderItems")}
                 </h2>
 
                 <Link href="/cart">
                   <Button variant="outline" size="sm">
-                    Edit
+                    {t("edit")}
                   </Button>
                 </Link>
               </div>
@@ -133,10 +141,10 @@ const PlaceOrderPage = async () => {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Item</TableHead>
-                      <TableHead>Qty</TableHead>
+                      <TableHead>{t("item")}</TableHead>
+                      <TableHead>{t("qty")}</TableHead>
                       <TableHead className="text-right">
-                        Price
+                        {t("price")}
                       </TableHead>
                     </TableRow>
                   </TableHeader>
@@ -163,7 +171,9 @@ const PlaceOrderPage = async () => {
                           </Link>
                         </TableCell>
 
-                        <TableCell>{item.qty}</TableCell>
+                        <TableCell>
+                          {item.qty}
+                        </TableCell>
 
                         <TableCell className="text-right">
                           {formatCurrency(item.price)}
@@ -196,7 +206,9 @@ const PlaceOrderPage = async () => {
                       </p>
 
                       <div className="mt-1 flex items-center justify-between gap-2 text-sm text-muted-foreground">
-                        <span>Qty: {item.qty}</span>
+                        <span>
+                          {t("qty")}: {item.qty}
+                        </span>
 
                         <span className="font-medium text-foreground">
                           {formatCurrency(item.price)}
@@ -212,36 +224,37 @@ const PlaceOrderPage = async () => {
 
         {/* Bottom section */}
         <div className="mt-6 grid w-full grid-cols-1 gap-6 pb-10 lg:grid-cols-3 lg:gap-8">
-          
+
           {/* Empty space on desktop */}
-          <div className="hidden lg:block lg:col-span-2" />
+          <div className="hidden lg:col-span-2 lg:block" />
 
           {/* Order Summary + Place Order */}
           <div className="w-full">
             <Card className="w-full">
               <CardContent className="space-y-3 p-4 sm:p-6">
-                
+
                 <div className="flex items-center justify-between gap-4 text-sm sm:text-base">
-                  <span>Items</span>
+                  <span>{t("items")}</span>
                   <span>{formatCurrency(cart.itemsPrice)}</span>
                 </div>
 
                 <div className="flex items-center justify-between gap-4 text-sm sm:text-base">
-                  <span>Tax</span>
+                  <span>{t("tax")}</span>
                   <span>{formatCurrency(cart.taxPrice)}</span>
                 </div>
 
                 <div className="flex items-center justify-between gap-4 text-sm sm:text-base">
-                  <span>Shipping</span>
+                  <span>{t("shipping")}</span>
                   <span>{formatCurrency(cart.shippingPrice)}</span>
                 </div>
 
                 <div className="my-2 border-t" />
 
                 <div className="flex items-center justify-between gap-4 text-base font-bold sm:text-lg">
-                  <span>Total</span>
+                  <span>{t("total")}</span>
                   <span>{formatCurrency(cart.totalPrice)}</span>
                 </div>
+
               </CardContent>
             </Card>
 
@@ -256,4 +269,3 @@ const PlaceOrderPage = async () => {
 };
 
 export default PlaceOrderPage;
-

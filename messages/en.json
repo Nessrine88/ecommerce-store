@@ -138,7 +138,15 @@
     "cart": "Cart",
     "menuTitle": "Menu"
   },
-
+"Cart": {
+    "empty": "Le panier est vide.",
+    "goShopping": "Continuer mes achats",
+    "name": "Nom",
+    "quantity": "Quantité",
+    "price": "Prix",
+    "subtotal": "Sous-total",
+    "proceedToCheckout": "PASSER À LA CAISSE"
+  },
   "UserButton": {
     "signIn": "Sign In",
     "orderHistory": "Order History",
@@ -163,5 +171,186 @@
     "badge": "Featured Collection",
     "defaultDescription": "Bring nature closer with fresh, hand-picked indoor flora tailored to your living space.",
     "cta": "Shop Now"
+  },
+ "PlaceOrder": {
+  "title": "Passer la commande",
+  "shippingAddress": "Adresse de livraison",
+  "paymentMethod": "Mode de paiement",
+  "orderItems": "Articles de la commande",
+  "item": "Article",
+  "qty": "Qté",
+  "price": "Prix",
+  "edit": "Modifier",
+  "items": "Articles",
+  "tax": "Taxe",
+  "shipping": "Livraison",
+  "total": "Total",
+  "placeOrder": "Passer la commande"
+},
+"OrderDetails": {
+  "order": "Order",
+  "paymentMethod": "Payment Method",
+  "paidAt": "Paid at {date}",
+  "notPaid": "Not Paid",
+  "shippingAddress": "Shipping Address",
+  "deliveredAt": "Delivered at {date}",
+  "notDelivered": "Not Delivered",
+  "orderItems": "Order Items",
+  "item": "Item",
+  "quantity": "Quantity",
+  "price": "Price",
+  "items": "Items",
+  "tax": "Tax",
+  "shipping": "Shipping",
+  "total": "Total",
+  "processing": "Processing...",
+  "markAsPaid": "Mark As Paid",
+  "markAsDelivered": "Mark As Delivered"
+},
+"ShippingAddress": {
+  "title": "Shipping Address",
+  "description": "Please enter an address to ship to",
+  "fullName": "Full Name",
+  "fullNamePlaceholder": "Enter full name",
+  "address": "Address",
+  "addressPlaceholder": "Enter address",
+  "city": "City",
+  "cityPlaceholder": "Enter city",
+  "country": "Country",
+  "countryPlaceholder": "Enter country",
+  "postalCode": "Postal Code",
+  "postalCodePlaceholder": "Enter postal code",
+  "continue": "Continue"
+},
+"PaymentMethod": {
+  "title": "Payment Method",
+  "description": "Please select your preferred payment method",
+  "stripe": "Credit Card",
+  "cashOnDelivery": "Cash on Delivery",
+  "continue": "Continue"
+},
+"CheckoutSteps": {
+  "userLogin": "User Login",
+  "shippingAddress": "Shipping Address",
+  "paymentMethod": "Payment Method",
+  "placeOrder": "Place Order"
+},
+"AdminOverview": {
+  "title": "Admin Dashboard",
+  "totalRevenue": "Total Revenue",
+  "sales": "Sales",
+  "customers": "Customers",
+  "products": "Products",
+  "overview": "Overview",
+  "recentSales": "Recent Sales",
+  "buyer": "BUYER",
+  "date": "DATE",
+  "total": "TOTAL",
+  "actions": "ACTIONS",
+  "deletedUser": "Deleted User",
+  "details": "Details"
+},
+"AdminNav": {
+  "overview": "Overview",
+  "products": "Products",
+  "orders": "Orders",
+  "users": "Users",
+  "toggleNavigation": "Toggle navigation"
+},
+"UserNav": {
+  "profile": "Profile",
+  "orders": "Orders"
+},
+"AdminOrders": {
+  "title": "Orders",
+  "filteredBy": "Filtered by",
+  "removeFilter": "Remove Filter",
+  "id": "ID",
+  "date": "DATE",
+  "buyer": "BUYER",
+  "total": "TOTAL",
+  "paid": "PAID",
+  "delivered": "DELIVERED",
+  "actions": "ACTIONS",
+  "notPaid": "Not Paid",
+  "notDelivered": "Not Delivered",
+  "details": "Details"
+},
+"DeleteDialog": {
+  "delete": "Delete",
+  "deleting": "Deleting...",
+  "confirmTitle": "Are you absolutely sure?",
+  "confirmDescription": "This action cannot be undone",
+  "cancel": "Cancel"
+},
+
+  "AdminProducts": {
+    "title": "Products",
+    "filteredBy": "Filtered by",
+    "removeFilter": "Remove Filter",
+    "createProduct": "Create Product",
+    "id": "ID",
+    "name": "NAME",
+    "price": "PRICE",
+    "category": "CATEGORY",
+    "stock": "STOCK",
+    "rating": "RATING",
+    "actions": "ACTIONS",
+    "edit": "Edit"
+  },
+  
+  "AdminUsers": {
+    "title": "Users",
+    "filteredBy": "Filtered by",
+    "removeFilter": "Remove Filter",
+    "id": "ID",
+    "name": "NAME",
+    "email": "EMAIL",
+    "role": "ROLE",
+    "actions": "ACTIONS",
+    "user": "User",
+    "admin": "Admin",
+    "update": "Update"
+  },
+  
+  "Pagination": {
+    "previous": "Previous",
+    "next": "Next"
+  },
+   "SignIn": {
+    "signingIn": "Signing In...",
+    "signIn": "Sign In",
+    "email": "Email",
+    "password": "Password",
+    "noAccount": "Don't have an account?",
+    "createOne": "Create one"
+  },
+  "SignInPage": {
+    "title": "Sign In",
+    "description": "Sign in to your account",
+    "logoAlt": "Logo"
+  },
+  
+  "SignUpPage": {
+    "title": "Sign Up",
+    "createAccount": "Create an account",
+    "description": "Enter your information below to sign up",
+    "logoAlt": "Logo"
+  },
+  
+  "SignUp": {
+    "submitting": "Submitting...",
+    "signUp": "Sign Up",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "alreadyHaveAccount": "Already have an account?",
+    "signIn": "Sign In"
   }
+
+
+
+
+
 }
