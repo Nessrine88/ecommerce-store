@@ -542,10 +542,8 @@ export async function getProductById(
 }
 
 // Get all categories (with translated names for the given locale)
-export async function getAllCategories(
-  locale: string
-) {
-  const data = await db
+export async function getAllCategories(locale: string) {
+  return db
     .select({
       slug: categories.slug,
       name: categoryTranslations.name,
@@ -577,14 +575,7 @@ export async function getAllCategories(
       categories.slug,
       categoryTranslations.name
     );
-
-  return data.map((row) => ({
-    category: row.slug,
-    name: row.name ?? row.slug,
-    count: row.count,
-  }));
 }
-
 // Get featured products
 export async function getFeaturedProducts(
   locale: string

@@ -213,19 +213,19 @@ const SearchPage = async (props: {
               </FilterLink>
             </li>
 
-            {categories.map((x) => (
-              <li key={x.category}>
-                <FilterLink
-                  href={getFilterUrl({
-                    c: x.category,
-                    pg: "1",
-                  })}
-                  active={category === x.category}
-                >
-                  {x.category}
-                </FilterLink>
-              </li>
-            ))}
+ {categories.map((x) => (
+  <li key={x.slug}>
+    <FilterLink
+      href={getFilterUrl({
+        c: x.slug,
+        pg: "1",
+      })}
+      active={category === x.slug}
+    >
+      {x.name ?? x.slug}
+    </FilterLink>
+  </li>
+))}
           </ul>
         </div>
 
