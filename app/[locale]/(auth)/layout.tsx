@@ -16,7 +16,7 @@ export default function AuthLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="dark:bg-inherit min-h-screen bg-bg flex w-full">
+    <div className="dark:bg-inherit min-h-screen bg-bg flex w-full" suppressHydrationWarning>
       {children}
     </div>
   );

@@ -32,7 +32,7 @@ const ProductList = async ({
             />
           ))
         ) : (
-          <div className="col-span-full text-center py-10 text-muted-foreground">
+          <div className="col-span-full text-center py-10 text-accent ">
             {t("noProducts")}
           </div>
         )}

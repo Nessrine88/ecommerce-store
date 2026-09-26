@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader } from "@/app/[locale]/components/ui/card";
 import Image from "next/image";
 import { Link } from "@/navigation";
@@ -12,10 +11,10 @@ const ProductCard = ({ product }: { product: Product }) => {
 
 
   return (
-    <Card className="border border-accent w-full ">
+    <Card className=" border-accent border  bg-gradient-to-b from-[#062514] via-[#128b46]  to-[#012611] shadow-2xl shadow-bg">
       <CardHeader>
         <Link href={`/product/${product.slug}`}>
-          <div className="h-64 overflow-hidden rounded-sm border border-accent">
+          <div className="h-53 overflow-hidden rounded-sm shadow-bg shadow-2xl">
             <Image
               src={product.images[0]}
               width={500}
@@ -27,8 +26,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         </Link>
       </CardHeader>
 
-      <CardContent className="grid gap-4 p-4">
-        <div>{product.brand}</div>
+      <CardContent className="grid gap-4 p-4 bg-gradient px-4 drop-shadow-xl/50  rounded-xl ">
 
         <Link href={`/product/${product.slug}`}>
           <h2 className="text-sm font-medium">
