@@ -347,7 +347,10 @@
     "confirmPassword": "Confirm Password",
     "alreadyHaveAccount": "Already have an account?",
     "signIn": "Sign In"
-  }
+  },
+  "ProductCard": {
+  "stars":"stars"
+}
 
 
 

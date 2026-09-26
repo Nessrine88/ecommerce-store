@@ -345,6 +345,9 @@
     "confirmPassword": "Confirmer le mot de passe",
     "alreadyHaveAccount": "Vous avez déjà un compte ?",
     "signIn": "Se connecter"
-  }
+  },
+  "ProductCard": {
+  "stars":"étoiles"
+}
 
 }

@@ -5,9 +5,10 @@ import Image from "next/image";
 import { Link } from "@/navigation";
 import ProductPrice from "./product-price";
 import { Product } from "@/types";
+import { useTranslations } from "next-intl";
 
 const ProductCard = ({ product }: { product: Product }) => {
-
+const t = useTranslations("ProductCard")
 
 
   return (
@@ -35,7 +36,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         </Link>
 
         <div className="flex-between gap-4">
-          <p>{product.rating} Stars</p>
+          <p>{product.rating} {t("stars")} </p>
 
           {product.stock > 0 ? (
             <ProductPrice value={Number(product.price)} />
