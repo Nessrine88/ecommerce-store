@@ -13,7 +13,7 @@ export default async function AdminLayout({
 }>) {
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-bg text-accent dark:bg-black">
+    <div className="flex min-h-screen w-full flex-col bg-bg text-accent dark:bg-black" suppressHydrationWarning>
 
       {/* Header */}
       <header className="relative w-full border-b">

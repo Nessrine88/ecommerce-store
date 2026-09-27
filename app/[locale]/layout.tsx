@@ -6,6 +6,7 @@ import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
 import { NextIntlClientProvider } from "next-intl"
 import { getMessages, getLocale } from 'next-intl/server';
+import { CurrencyProvider } from "./context/currency-context";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,10 +43,12 @@ export default async function RootLayout({
         suppressHydrationWarning
       >
         <body className="min-h-full flex flex-col">
+           <CurrencyProvider>
           <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
             {children}
             <Toaster richColors />
           </ThemeProvider>
+          </CurrencyProvider>
         </body>
       </html>
     </NextIntlClientProvider>

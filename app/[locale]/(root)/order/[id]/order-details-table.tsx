@@ -23,6 +23,7 @@ import { formatCurrency, formatDateTime, formatId } from "@/lib/utils";
 import { Order } from "@/types";
 import { toast } from "sonner";
 import StripePayment from "./stripe-payment";
+import { useCurrency } from "@/app/[locale]/context/currency-context";
 
 const OrderDetailsTable = ({
   order,
@@ -34,6 +35,7 @@ const OrderDetailsTable = ({
   stripeClientSecret: string | null;
 }) => {
   const t = useTranslations("OrderDetails");
+  const { currency } = useCurrency();
 
   const {
     id,
@@ -52,7 +54,6 @@ const OrderDetailsTable = ({
 
   const MarkAsPaidButton = () => {
     const [isPending, startTransition] = useTransition();
-
     return (
       <Button
         type="button"
@@ -220,7 +221,7 @@ const OrderDetailsTable = ({
                       </TableCell>
 
                       <TableCell className="text-right">
-                        {formatCurrency(item.price)}
+                        {formatCurrency(item.price, currency)}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -242,7 +243,7 @@ const OrderDetailsTable = ({
                 </span>
 
                 <span>
-                  {formatCurrency(itemsPrice)}
+                  {formatCurrency(itemsPrice, currency)}
                 </span>
               </div>
 
@@ -252,7 +253,7 @@ const OrderDetailsTable = ({
                 </span>
 
                 <span>
-                  {formatCurrency(taxPrice)}
+                  {formatCurrency(taxPrice, currency)}
                 </span>
               </div>
 
@@ -262,7 +263,7 @@ const OrderDetailsTable = ({
                 </span>
 
                 <span>
-                  {formatCurrency(shippingPrice)}
+                  {formatCurrency(shippingPrice, currency)}
                 </span>
               </div>
 
@@ -272,7 +273,7 @@ const OrderDetailsTable = ({
                 <span>{t("total")}</span>
 
                 <span>
-                  {formatCurrency(totalPrice)}
+                  {formatCurrency(totalPrice, currency)}
                 </span>
               </div>
 

@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { Link } from "@/navigation";
 import { getTranslations } from "next-intl/server";
 import { XIcon } from "lucide-react";
+import CurrencyPrice from "../../components/currency";
 
 const prices = [
   { value: "1-50", min: 1, max: 50 },
@@ -251,21 +252,22 @@ const SearchPage = async (props: {
             </li>
 
             {prices.map((p) => (
-              <li key={p.value}>
-                <FilterLink
-                  href={getFilterUrl({
-                    p: p.value,
-                    pg: "1",
-                  })}
-                  active={price === p.value}
-                >
-                  {t("priceRange", {
-                    min: p.min,
-                    max: p.max,
-                  })}
-                </FilterLink>
-              </li>
-            ))}
+  <li key={p.value}>
+    <FilterLink
+      href={getFilterUrl({
+        p: p.value,
+        pg: "1",
+      })}
+      active={price === p.value}
+    >
+      <span className="flex items-center gap-1">
+        <CurrencyPrice price={p.min} />
+        <span>-</span>
+        <CurrencyPrice price={p.max} />
+      </span>
+    </FilterLink>
+  </li>
+))}
           </ul>
         </div>
 

@@ -93,22 +93,26 @@ export function formatError(error: unknown): string {
 
   return "Something went wrong";
 }
-
-const CURRENCY_FORMATTER = new Intl.NumberFormat("en-US", {
-  currency: "USD",
-  style: "currency",
-  minimumFractionDigits: 2,
-});
-export function formatCurrency(amount: number | string | null) {
-  if (typeof amount === "number") {
-    return CURRENCY_FORMATTER.format(amount);
-  } else if (typeof amount === "string") {
-    return CURRENCY_FORMATTER.format(Number(amount));
-  } else {
+export function formatCurrency(
+  amount: number | string | null,
+  currency: string = "USD",
+) {
+  if (amount === null) {
     return "NaN";
   }
-}
 
+  const number = typeof amount === "string" ? Number(amount) : amount;
+
+  if (!Number.isFinite(number)) {
+    return "NaN";
+  }
+
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency,
+    minimumFractionDigits: 2,
+  }).format(number);
+}
 // Shorten UUID
 
 export function formatId(id: string) {
