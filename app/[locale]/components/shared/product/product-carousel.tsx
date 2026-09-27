@@ -14,9 +14,11 @@ import Image from "next/image";
 import { Link } from "@/navigation";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useCurrency } from "@/app/[locale]/context/currency-context";
 
 const ProductCarousel = ({ data }: { data: Product[] }) => {
   const t = useTranslations("productCarousel");
+  const { currency } = useCurrency()
   return (
     <Carousel
       className="w-full max-w-7xl mx-auto rounded-2xl shadow-2xl shadow-green-900"
@@ -96,7 +98,7 @@ const ProductCarousel = ({ data }: { data: Product[] }) => {
                       <div className="pt-2 flex flex-wrap items-center gap-4">
                         {product.price && (
                           <div className="text-lg sm:text-xl md:text-2xl font-bold text-white tracking-tight">
-                            ${product.price}
+                            <span className="align-super text-xs">{currency}</span>{product.price}
                           </div>
                         )}
 

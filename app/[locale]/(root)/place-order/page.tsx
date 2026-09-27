@@ -21,8 +21,8 @@ import {
 } from "@/app/[locale]/components/ui/table";
 
 import Image from "next/image";
-import { formatCurrency } from "@/lib/utils";
 import PlaceOrderForm from "./place-order-form";
+import CurrencyPrice from "../../components/currency";
 
 export const metadata: Metadata = {
   title: "Place Order",
@@ -35,7 +35,9 @@ const PlaceOrderPage = async () => {
   const session = await auth();
   const userId = session?.user?.id;
 
-  if (!userId) throw new Error("User Not Found");
+  if (!userId) {
+    throw new Error("User Not Found");
+  }
 
   const user = await getUserById(userId);
 
@@ -176,7 +178,9 @@ const PlaceOrderPage = async () => {
                         </TableCell>
 
                         <TableCell className="text-right">
-                          {formatCurrency(item.price)}
+                          <CurrencyPrice
+                            price={Number(item.price)}
+                          />
                         </TableCell>
                       </TableRow>
                     ))}
@@ -211,7 +215,9 @@ const PlaceOrderPage = async () => {
                         </span>
 
                         <span className="font-medium text-foreground">
-                          {formatCurrency(item.price)}
+                          <CurrencyPrice
+                            price={Number(item.price)}
+                          />
                         </span>
                       </div>
                     </div>
@@ -233,26 +239,50 @@ const PlaceOrderPage = async () => {
             <Card className="w-full">
               <CardContent className="space-y-3 p-4 sm:p-6">
 
+                {/* Items */}
                 <div className="flex items-center justify-between gap-4 text-sm sm:text-base">
                   <span>{t("items")}</span>
-                  <span>{formatCurrency(cart.itemsPrice)}</span>
+
+                  <span>
+                    <CurrencyPrice
+                      price={Number(cart.itemsPrice)}
+                    />
+                  </span>
                 </div>
 
+                {/* Tax */}
                 <div className="flex items-center justify-between gap-4 text-sm sm:text-base">
                   <span>{t("tax")}</span>
-                  <span>{formatCurrency(cart.taxPrice)}</span>
+
+                  <span>
+                    <CurrencyPrice
+                      price={Number(cart.taxPrice)}
+                    />
+                  </span>
                 </div>
 
+                {/* Shipping */}
                 <div className="flex items-center justify-between gap-4 text-sm sm:text-base">
                   <span>{t("shipping")}</span>
-                  <span>{formatCurrency(cart.shippingPrice)}</span>
+
+                  <span>
+                    <CurrencyPrice
+                      price={Number(cart.shippingPrice)}
+                    />
+                  </span>
                 </div>
 
                 <div className="my-2 border-t" />
 
+                {/* Total */}
                 <div className="flex items-center justify-between gap-4 text-base font-bold sm:text-lg">
                   <span>{t("total")}</span>
-                  <span>{formatCurrency(cart.totalPrice)}</span>
+
+                  <span>
+                    <CurrencyPrice
+                      price={Number(cart.totalPrice)}
+                    />
+                  </span>
                 </div>
 
               </CardContent>
