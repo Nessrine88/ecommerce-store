@@ -173,7 +173,7 @@ const ProductDetailsPage = async ({
                     ) : (
                       <button
                         type="button"
-                        className="w-full rounded-md bg-muted px-4 py-2 text-sm font-medium text-muted-foreground"
+                        className="min-w-fit flex flex-wrap rounded-md bg-muted px-4 py-2 text-sm font-medium text-muted-foreground"
                         disabled
                       >
                         {t("notStock")}

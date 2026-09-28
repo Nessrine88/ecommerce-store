@@ -145,7 +145,7 @@
     "quantity": "Quantité",
     "price": "Prix",
     "subtotal": "Sous-total",
-    "proceedToCheckout": "PASSER À LA CAISSE"
+    "proceedToCheckout": "PROCEED TO CHECKOUT"
   },
   "UserButton": {
     "signIn": "Sign In",
