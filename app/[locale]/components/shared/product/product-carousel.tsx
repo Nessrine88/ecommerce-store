@@ -14,12 +14,14 @@ import Image from "next/image";
 import { Link } from "@/navigation";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useCurrency } from "@/app/[locale]/context/currency-context";
 
 const ProductCarousel = ({ data }: { data: Product[] }) => {
   const t = useTranslations("productCarousel");
+  const { currency } = useCurrency()
   return (
     <Carousel
-      className="w-full max-w-7xl mx-auto px-2 sm:px-4"
+      className="w-full max-w-7xl mx-auto rounded-2xl shadow-2xl shadow-green-900"
       opts={{ loop: true }}
       plugins={[
         Autoplay({
@@ -64,16 +66,16 @@ const ProductCarousel = ({ data }: { data: Product[] }) => {
                         (max-width: 1024px) 100vw,
                         1280px
                       "
-                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                      className="object-cover w-full h-full transition-transform duration-700 ease-out group-hover:scale-105"
                       priority
                     />
                   )}
 
                   {/* Cinematic Dark Gradient Layers for Readability */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent sm:bg-gradient-to-r sm:from-black/85 sm:via-black/35 sm:to-transparent" />
+                  <div className="absolute inset-0 z- bg-gradient-to-l from-black/90 to-bg/20 " />
 
                   {/* Overlay Content */}
-                  <div className="absolute inset-0 flex flex-col justify-end sm:justify-center p-6 sm:p-10 md:p-14 text-white">
+                  <div className="absolute inset-0 z-20 flex flex-col justify-end sm:justify-center p-6 sm:p-10 md:p-14 text-accent">
                     <div className="max-w-xl space-y-3 sm:space-y-4">
                       {/* Pill Badge */}
                       <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-400/20 border border-emerald-400/40 backdrop-blur-md text-emerald-300 text-xs font-semibold uppercase tracking-wider">
@@ -87,7 +89,7 @@ const ProductCarousel = ({ data }: { data: Product[] }) => {
                       </h2>
 
                       {/* Subtitle / Description */}
-                      <p className="text-xs sm:text-sm md:text-base text-zinc-300 line-clamp-2 max-w-md font-normal leading-relaxed">
+                      <p className="text-xs sm:text-sm md:text-base text-white line-clamp-2 max-w-md font-normal leading-relaxed">
                         {product.description ||
                           "Bring nature closer with fresh, hand-picked indoor flora tailored to your living space."}
                       </p>
@@ -96,7 +98,7 @@ const ProductCarousel = ({ data }: { data: Product[] }) => {
                       <div className="pt-2 flex flex-wrap items-center gap-4">
                         {product.price && (
                           <div className="text-lg sm:text-xl md:text-2xl font-bold text-white tracking-tight">
-                            ${product.price}
+                            <span className="align-super text-xs">{currency}</span>{product.price}
                           </div>
                         )}
 

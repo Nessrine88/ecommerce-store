@@ -344,6 +344,8 @@
     "alreadyHaveAccount": "لديك حساب بالفعل؟",
     "signIn": "تسجيل الدخول"
   }
-
+,"ProductCard": {
+  "stars":"نجوم"
+}
 
 }

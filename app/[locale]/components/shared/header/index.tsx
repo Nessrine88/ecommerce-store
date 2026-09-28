@@ -28,7 +28,7 @@ const Header = () => {
         </div>
 
         {/* Center Search */}
-        <div className="absolute left-1/2 hidden w-full max-w-xl -translate-x-1/2 px-4 md:block">
+        <div className="mx-4 md:block">
           <Search />
         </div>
 

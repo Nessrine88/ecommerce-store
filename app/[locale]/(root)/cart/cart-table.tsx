@@ -30,13 +30,14 @@ import {
   Card,
   CardContent,
 } from "@/app/[locale]/components/ui/card";
+import { useCurrency } from "../../context/currency-context";
 
 const CartTable = ({ cart }: { cart?: Cart }) => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const t = useTranslations("Cart");
-
+const {currency}  = useCurrency();
   return (
     <div className="flex-1 max-w-7xl mx-auto text-accent px-4 sm:px-0">
       {!cart || cart.items.length === 0 ? (
@@ -145,7 +146,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                       </TableCell>
 
                       <TableCell className="text-right whitespace-nowrap">
-                        {formatCurrency(item.price)}
+                        {formatCurrency(item.price, currency)}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -182,7 +183,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                     </Link>
 
                     <div className="text-sm text-muted-foreground mt-1">
-                      {formatCurrency(item.price)}
+                      {formatCurrency(item.price, currency)}
                     </div>
 
                     <div className="flex items-center gap-2 mt-2">
@@ -254,7 +255,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
               </div>
 
               <div className="text-lg sm:text-xl font-semibold mt-1">
-                {formatCurrency(cart.itemsPrice)}
+                {formatCurrency(cart.itemsPrice, currency)}
               </div>
 
               <Button
