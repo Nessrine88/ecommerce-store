@@ -66,7 +66,6 @@ const Menu = async () => {
 
             <UserButton />
 
-            <SheetDescription></SheetDescription>
           </SheetContent>
         </Sheet>
       </nav>

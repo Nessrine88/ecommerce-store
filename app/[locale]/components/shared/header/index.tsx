@@ -37,11 +37,6 @@ const Header = () => {
           <Menu />
         </div>
       </div>
-
-      {/* Mobile Search */}
-      <div className="border-t border-accent/5 px-4 py-2 md:hidden">
-        <Search />
-      </div>
     </header>
   );
 };
