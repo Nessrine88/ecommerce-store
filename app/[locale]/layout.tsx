@@ -7,7 +7,6 @@ import { Toaster } from "sonner";
 import { NextIntlClientProvider } from "next-intl"
 import { getMessages, getLocale } from 'next-intl/server';
 import { CurrencyProvider } from "./context/currency-context";
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -18,9 +17,17 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
+
+export const metadata: Metadata  = {
   title: `${APP_NAME}`,
-  description: "An Ecommerce platforme that sells plants",
+  description:
+    "A modern e-commerce web application designed to provide users with a seamless online shopping experience.",
+  openGraph: {
+    title: "E-Commerce Store",
+    description:
+      "A modern e-commerce web application for browsing products and managing shopping carts.",
+    type: "website",
+  },
 };
 
 const rtlLocales = ["ar", "he", "fa", "ur"];

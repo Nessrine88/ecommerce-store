@@ -16,30 +16,20 @@ const Page = async ({
 }) => {
   const { locale } = await params;
 
-  // Get localized products
-  const latestProducts =
-    await getLatestProducts(locale);
+  const latestProducts = await getLatestProducts(locale);
+  const featuredProducts = await getFeaturedProducts(locale);
 
-  const featuredProducts =
-    await getFeaturedProducts(locale);
-
-  const t = await getTranslations(
-    "Homepage"
-  );
+  const t = await getTranslations("Homepage");
 
   return (
     <div className="text-text">
       <div className="mx-auto max-w-7xl space-y-8 py-6 sm:py-8 md:space-y-12 md:py-10">
-        {/* Featured products */}
         {featuredProducts.length > 0 && (
           <section>
-            <ProductCarousel
-              data={featuredProducts}
-            />
+            <ProductCarousel data={featuredProducts} />
           </section>
         )}
 
-        {/* Latest products */}
         <section>
           <ProductList
             title={t("newestProducts")}
@@ -48,12 +38,10 @@ const Page = async ({
           />
         </section>
 
-        {/* View all products */}
         <section className="flex justify-center">
           <ViewAllProduct />
         </section>
 
-        {/* Features */}
         <section className="pb-4">
           <IconBoxes />
         </section>
