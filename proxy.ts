@@ -1,10 +1,20 @@
 import createMiddleware from "next-intl/middleware";
-import { routing } from "./i18n/routing";
 import { auth } from "@/auth";
 
-const intlMiddleware = createMiddleware(routing);
+const intlMiddleware = createMiddleware({
+  locales: ["en", "fr", "ar"],
+  defaultLocale: "en",
+});
 
-export default auth((req) => intlMiddleware(req));
+export default auth((req) => {
+  const res = intlMiddleware(req);
+
+  if (!req.cookies.get("sessionCartId")) {
+    res.cookies.set("sessionCartId", crypto.randomUUID(), { path: "/" });
+  }
+
+  return res;
+});
 
 export const config = {
   matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
