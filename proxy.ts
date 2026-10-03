@@ -1,19 +1,11 @@
-import createMiddleware from 'next-intl/middleware';
-import { auth } from '@/auth';
+import createMiddleware from "next-intl/middleware";
+import { routing } from "./i18n/routing";
+import { auth } from "@/auth";
 
-const intlMiddleware = createMiddleware({
-  // A list of all locales that are supported
-  locales: ['en', 'fr', 'ar'],
+const intlMiddleware = createMiddleware(routing);
 
-  // Used when no locale matches
-  defaultLocale: 'en'
-});
-
-export default auth((req) => {
-  return intlMiddleware(req);
-});
+export default auth((req) => intlMiddleware(req));
 
 export const config = {
-  // Match only internationalized pathnames
-  matcher: ['/', '/(fr|ar|en)/:path*']
+  matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
 };

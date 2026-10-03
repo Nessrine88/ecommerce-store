@@ -1,5 +1,6 @@
 {
   "Homepage": {
+    "siteTitle": "Discover Something Better", "heroSubtitle": "Quality products, carefully selected for you.", "expertiseDescription": "Explore a carefully curated collection of products chosen for their quality, style, and value. Find something you'll love and enjoy a shopping experience designed around you.", "exploreProducts": "Explore Products", "trustedSelection": "A carefully selected collection", "expertiseTip1": "Quality You Can Trust", "expertiseTip2": "Carefully Selected", "expertiseTip3": "Made for You",
     "newestProducts": "Newest Products",
     "viewAllProducts": "View All Products",
     "dealCountdown": {
@@ -351,9 +352,5 @@
   "ProductCard": {
   "stars":"stars"
 }
-
-
-
-
 
 }

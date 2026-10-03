@@ -54,7 +54,7 @@ export async function getLatestProducts(
       )
     )
     .orderBy(desc(products.createdAt))
-    .limit(4);
+    .limit(6);
 
   return latestProducts.map(
     ({ product, translation }) => ({
@@ -609,7 +609,7 @@ export async function getFeaturedProducts(
     .orderBy(
       desc(products.createdAt)
     )
-    .limit(4);
+    .limit(6);
 
   return data.map(
     ({

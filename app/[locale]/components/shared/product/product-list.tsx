@@ -5,7 +5,7 @@ import { getTranslations } from "next-intl/server";
 const ProductList = async ({
   data,
   title,
-  limit,
+  limit = 6, // always show 6 by default
 }: {
   data: Product[];
   title?: string;
@@ -13,30 +13,37 @@ const ProductList = async ({
 }) => {
   const t = await getTranslations("ProductList");
 
-  const limitedData = limit ? data.slice(0, limit) : data;
+ 
+
+  // split into 3 columns: items 0,3 -> col 1 | 1,4 -> col 2 | 2,5 -> col 3
+  const columns = [0, 1, 2].map((c) =>
+    data.map((product, i) => ({ product, i })).filter(({ i }) => i % 3 === c)
+  );
+
+  // vertical offset per column (desktop only)
+  const offsets = ["md:mt-16", "md:mt-0", "md:mt-28"];
 
   return (
-    <div className="px-4 sm:px-6 md:px-0 max-w-7xl mx-auto">
+    <div className="mx-auto  rounded-3xl ">
       {title && (
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold my-6 sm:my-8 md:my-10">
+        <h2 className="my-6 text-2xl font-bold text-white sm:my-8 sm:text-3xl md:my-10 md:text-4xl">
           {title}
         </h2>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {data && data.length > 0 ? (
-          limitedData.map((product: Product) => (
-            <ProductCard
-              key={product.slug}
-              product={product}
-            />
-          ))
-        ) : (
-          <div className="col-span-full text-center py-10 text-accent ">
-            {t("noProducts")}
-          </div>
-        )}
-      </div>
+      {data.length > 0 ? (
+        <div className="mx-auto grid max-w-7xl grid-cols-1 items-start gap-5 md:grid-cols-3">
+          {columns.map((col, c) => (
+            <div key={c} className={`flex flex-col gap-5 ${offsets[c]}`}>
+              {col.map(({ product, i }) => (
+                <ProductCard key={product.slug} product={product} index={i} />
+              ))}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="py-10 text-center text-accent">{t("noProducts")}</div>
+      )}
     </div>
   );
 };
