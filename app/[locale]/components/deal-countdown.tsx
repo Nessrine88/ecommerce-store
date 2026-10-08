@@ -8,7 +8,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 
 // Static target date
-const TARGET_DATE = new Date("2026-09-20T00:00:00");
+const TARGET_DATE = new Date("2026-10-20T00:00:00");
 
 // Function to calculate the time remaining
 const calculateTimeRemaining = (targetDate: Date) => {
