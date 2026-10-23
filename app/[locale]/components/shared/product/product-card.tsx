@@ -1,11 +1,14 @@
+
 "use client";
 
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Link } from "@/navigation";
 import ProductPrice from "./product-price";
+import AddToCart from "./add-to-cart";
 import { Product } from "@/types";
 import { useTranslations } from "next-intl";
+import { getMyCart } from "@/lib/actions/cart.actions";
 
 const shapes = [
   "aspect-[4/5]",
@@ -24,9 +27,12 @@ const ProductCard = ({
   index?: number;
 }) => {
   const t = useTranslations("ProductCard");
+  const inStock = product.stock > 0;
 
-  // stagger: left to right, then the second row slightly later
   const delay = (index % 3) * 0.12 + Math.floor(index / 3) * 0.15;
+
+
+const normalizedCart = undefined;
 
   return (
     <motion.div
@@ -40,7 +46,7 @@ const ProductCard = ({
       <Link href={`/product/${product.slug}`} className="block">
         <div className={`relative w-full ${shapes[index % shapes.length]}`}>
           <Image
-            src={product.images[0]}
+            src={product.images?.[0] || "/images/placeholder.png"}
             alt={product.name}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -61,10 +67,36 @@ const ProductCard = ({
             {product.rating} {t("stars")}
           </span>
 
-          {product.stock > 0 ? (
+          {inStock ? (
             <ProductPrice value={Number(product.price)} />
           ) : (
-            <span className="font-bold text-red-300">Out Of Stock</span>
+            <span className="font-bold text-red-300">
+              Out Of Stock
+            </span>
+          )}
+        </div>
+
+        <div className="w-full pt-2">
+          {inStock ? (
+            <AddToCart
+              cart={normalizedCart}
+              item={{
+                productId: product.id,
+                name: product.name,
+                slug: product.slug,
+                price: product.price,
+                qty: 1,
+                image: product.images?.[0] ?? "",
+              }}
+            />
+          ) : (
+            <button
+              type="button"
+              className="min-w-fit flex flex-wrap rounded-md bg-muted px-4 py-2 text-sm font-medium text-muted-foreground"
+              disabled
+            >
+              {t("notStock")}
+            </button>
           )}
         </div>
       </div>
