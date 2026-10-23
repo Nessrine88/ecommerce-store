@@ -1,10 +1,9 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useRouter } from "@/navigation";
+import { useRouter, usePathname } from "@/navigation";
 import { useSearchParams } from "next/navigation";
 import { Button } from "../ui/button";
-import { formUrlQuery } from "@/lib/utils";
 
 type PaginationProps = {
   page: number | string;
@@ -12,32 +11,23 @@ type PaginationProps = {
   urlParamName?: string;
 };
 
-const Pagination = ({
-  page,
-  totalPages,
-  urlParamName,
-}: PaginationProps) => {
+const Pagination = ({ page, totalPages, urlParamName }: PaginationProps) => {
   const t = useTranslations("Pagination");
 
   const router = useRouter();
+  const pathname = usePathname(); // "/admin/products", no locale
   const searchParams = useSearchParams();
 
   const currentPage = Number(page) || 1;
   const total = Number(totalPages) || 1;
 
-  const handleClick = (btnType: string) => {
-    const pageValue =
-      btnType === "next"
-        ? currentPage + 1
-        : currentPage - 1;
+  const handleClick = (btnType: "next" | "prev") => {
+    const pageValue = btnType === "next" ? currentPage + 1 : currentPage - 1;
 
-    const newUrl = formUrlQuery({
-      params: searchParams.toString(),
-      key: urlParamName || "page",
-      value: pageValue.toString(),
-    });
+    const params = new URLSearchParams(searchParams.toString());
+    params.set(urlParamName || "page", String(pageValue));
 
-    router.push(newUrl);
+    router.push(`${pathname}?${params.toString()}`); // becomes /en/admin/products?page=2
   };
 
   return (

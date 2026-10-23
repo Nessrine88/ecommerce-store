@@ -26,15 +26,24 @@ import { Button } from "@/app/[locale]/components/ui/button";
 import { createProduct, updateProduct } from "@/lib/actions/product.actions";
 import { Card, CardContent } from "../ui/card";
 import Image from "next/image";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/app/[locale]/components/ui/select";
 
 const ProductForm = ({
   type,
   product,
   productId,
+  categories,
 }: {
   type: "Create" | "Update";
   product?: Product;
   productId?: string;
+  categories: { id: string; name: string }[];
 }) => {
   const router = useRouter();
 
@@ -152,26 +161,31 @@ const ProductForm = ({
         </div>
         <div className="flex flex-col gap-5 md:flex-row">
           {/* Category */}
-          <FormField
-            control={form.control}
-            name="categoryId"
-            render={({
-              field,
-            }: {
-              field: ControllerRenderProps<
-                z.infer<typeof insertProductSchema>,
-                "categoryId"
-              >;
-            }) => (
-              <FormItem className="w-full">
-                <FormLabel>Category</FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter category" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+         
+<FormField
+  control={form.control}
+  name="categoryId"
+  render={({ field }) => (
+    <FormItem className="w-full">
+      <FormLabel>Category</FormLabel>
+      <Select onValueChange={field.onChange} value={field.value}>
+        <FormControl>
+          <SelectTrigger>
+            <SelectValue placeholder="Select a category" />
+          </SelectTrigger>
+        </FormControl>
+        <SelectContent>
+          {categories.map((cat) => (
+            <SelectItem key={cat.id} value={cat.id}>
+              {cat.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
 
           {/* Brand */}
           <FormField

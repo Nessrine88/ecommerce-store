@@ -1,4 +1,5 @@
 import ProductForm from "@/app/[locale]/components/admin/product-form";
+import { getAllCategories } from "@/lib/actions/product.actions";
 import { getProductById } from "@/lib/actions/product.actions";
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
@@ -6,9 +7,12 @@ import { notFound } from "next/navigation";
 export const metadata: Metadata = {
   title: "Update Product",
 };
-const AdminProductPage = async (props: { params: Promise<{ id: string }> }) => {
-  const { id } = await props.params;
+const AdminProductPage = async (props: {
+  params: Promise<{ locale: string; id: string }>;
+}) => {
+  const { locale, id } = await props.params;
   const product = await getProductById(id);
+    const categories = await getAllCategories(locale);
   if (!product) {
     return notFound();
   }
@@ -25,6 +29,10 @@ const AdminProductPage = async (props: { params: Promise<{ id: string }> }) => {
           rating: Number(product.rating ?? 0),
         }}
         productId={product.id}
+        categories={categories.map((category) => ({
+          id: category.slug,
+          name: category.name ?? category.slug,
+        }))}
       />
     </div>
   );
