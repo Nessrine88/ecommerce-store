@@ -20,21 +20,13 @@ import {
   countDistinct,
 } from "drizzle-orm";
 import { PAGE_SIZE } from "../constants";
-import {
-  convertToPlainObject,
-  formatError,
-} from "../utils";
-import {
-  insertProductSchema,
-  updateProductsSchema,
-} from "../validators";
+import { convertToPlainObject, formatError } from "../utils";
+import { insertProductSchema, updateProductsSchema } from "../validators";
 import { revalidatePath } from "next/cache";
 import z from "zod";
 
 // Get latest products
-export async function getLatestProducts(
-  locale: string
-) {
+export async function getLatestProducts(locale: string) {
   const latestProducts = await db
     .select({
       product: products,
@@ -44,49 +36,32 @@ export async function getLatestProducts(
     .leftJoin(
       productTranslations,
       and(
-        eq(
-          productTranslations.productId,
-          products.id
-        ),
-        eq(
-          productTranslations.locale,
-          locale
-        )
-      )
+        eq(productTranslations.productId, products.id),
+        eq(productTranslations.locale, locale),
+      ),
     )
     .orderBy(desc(products.createdAt))
     .limit(6);
 
-  return latestProducts.map(
-    ({ product, translation }) => ({
-      ...product,
+  return latestProducts.map(({ product, translation }) => ({
+    ...product,
 
-      name:
-        translation?.name ??
-        product.name,
+    name: translation?.name ?? product.name,
 
-      description:
-        translation?.description ??
-        product.description,
+    description: translation?.description ?? product.description,
 
-      images: product.images ?? [],
+    images: product.images ?? [],
 
-      brand: product.brand ?? "",
+    brand: product.brand ?? "",
 
-      price: product.price.toString(),
+    price: product.price.toString(),
 
-      rating: Number(
-        product.rating ?? 0
-      ),
-    })
-  );
+    rating: Number(product.rating ?? 0),
+  }));
 }
 
 // Get single product by slug
-export async function getProductBySlug(
-  slug: string,
-  locale: string
-) {
+export async function getProductBySlug(slug: string, locale: string) {
   const [result] = await db
     .select({
       product: products,
@@ -96,19 +71,11 @@ export async function getProductBySlug(
     .leftJoin(
       productTranslations,
       and(
-        eq(
-          productTranslations.productId,
-          products.id
-        ),
-        eq(
-          productTranslations.locale,
-          locale
-        )
-      )
+        eq(productTranslations.productId, products.id),
+        eq(productTranslations.locale, locale),
+      ),
     )
-    .where(
-      eq(products.slug, slug)
-    )
+    .where(eq(products.slug, slug))
     .limit(1);
 
   if (!result) {
@@ -118,29 +85,19 @@ export async function getProductBySlug(
   return {
     ...result.product,
 
-    name:
-      result.translation?.name ??
-      result.product.name,
+    name: result.translation?.name ?? result.product.name,
 
-    description:
-      result.translation?.description ??
-      result.product.description,
+    description: result.translation?.description ?? result.product.description,
 
-    images:
-      result.product.images ?? [],
+    images: result.product.images ?? [],
 
-    brand:
-      result.product.brand ?? "",
+    brand: result.product.brand ?? "",
 
-    price:
-      result.product.price.toString(),
+    price: result.product.price.toString(),
 
-    rating: Number(
-      result.product.rating ?? 0
-    ),
+    rating: Number(result.product.rating ?? 0),
   };
 }
-
 
 export async function getAllProducts({
   query,
@@ -221,8 +178,8 @@ export async function getAllProducts({
         productTranslations,
         and(
           eq(productTranslations.productId, products.id),
-          eq(productTranslations.locale, locale)
-        )
+          eq(productTranslations.locale, locale),
+        ),
       )
       .leftJoin(categories, eq(products.categoryId, categories.id))
       .where(filters)
@@ -239,8 +196,8 @@ export async function getAllProducts({
         productTranslations,
         and(
           eq(productTranslations.productId, products.id),
-          eq(productTranslations.locale, locale)
-        )
+          eq(productTranslations.locale, locale),
+        ),
       )
       .leftJoin(categories, eq(products.categoryId, categories.id))
       .where(filters),
@@ -269,60 +226,39 @@ export async function getAllProducts({
 }
 
 // Delete product
-export async function deleteProduct(
-  id: string
-) {
+export async function deleteProduct(id: string) {
   try {
-    const product =
-      await db.query.products.findFirst({
-        where: eq(
-          products.id,
-          id
-        ),
-      });
+    const product = await db.query.products.findFirst({
+      where: eq(products.id, id),
+    });
 
     if (!product) {
-      throw new Error(
-        "Product not found"
-      );
+      throw new Error("Product not found");
     }
 
-    await db
-      .delete(products)
-      .where(
-        eq(products.id, id)
-      );
+    await db.delete(products).where(eq(products.id, id));
 
     return {
       success: true,
-      message:
-        "Product deleted successfully",
+      message: "Product deleted successfully",
     };
   } catch (error) {
     return {
       success: false,
-      message:
-        formatError(error),
+      message: formatError(error),
     };
   }
 }
 
 // Create product
-export async function createProduct(
-  data: z.infer<typeof insertProductSchema>
-) {
+export async function createProduct(data: z.infer<typeof insertProductSchema>) {
   try {
     // 1. Validate the submitted form data
     const product = insertProductSchema.parse(data);
 
     // 2. Separate translations from the base product fields
-    const {
-      nameAr,
-      descriptionAr,
-      nameFr,
-      descriptionFr,
-      ...productData
-    } = product;
+    const { nameAr, descriptionAr, nameFr, descriptionFr, ...productData } =
+      product;
 
     // 3. Insert the product and translations atomically
     await db.transaction(async (tx) => {
@@ -372,9 +308,7 @@ export async function createProduct(
           : []),
       ];
 
-      await tx
-        .insert(productTranslations)
-        .values(translations);
+      await tx.insert(productTranslations).values(translations);
     });
 
     // 4. Refresh the admin products page
@@ -390,28 +324,20 @@ export async function createProduct(
     return {
       success: false,
       message:
-        error instanceof Error
-          ? error.message
-          : "Failed to create product",
+        error instanceof Error ? error.message : "Failed to create product",
     };
   }
 }
 
 // Update product
 export async function updateProduct(
-  data: z.infer<typeof updateProductsSchema>
+  data: z.infer<typeof updateProductsSchema>,
 ) {
   try {
     const product = updateProductsSchema.parse(data);
 
-    const {
-      id,
-      nameAr,
-      descriptionAr,
-      nameFr,
-      descriptionFr,
-      ...updateData
-    } = product;
+    const { id, nameAr, descriptionAr, nameFr, descriptionFr, ...updateData } =
+      product;
 
     const updatedProduct = await db.transaction(async (tx) => {
       // 1. Update the base product
@@ -461,10 +387,7 @@ export async function updateProduct(
           .insert(productTranslations)
           .values(translation)
           .onConflictDoUpdate({
-            target: [
-              productTranslations.productId,
-              productTranslations.locale,
-            ],
+            target: [productTranslations.productId, productTranslations.locale],
             set: {
               name: translation.name,
               description: translation.description,
@@ -498,20 +421,12 @@ export async function updateProduct(
   }
 }
 // Get single product by ID
-export async function getProductById(
-  productId: string
-) {
-  const data =
-    await db.query.products.findFirst({
-      where: eq(
-        products.id,
-        productId
-      ),
-    });
+export async function getProductById(productId: string) {
+  const data = await db.query.products.findFirst({
+    where: eq(products.id, productId),
+  });
 
-  return convertToPlainObject(
-    data
-  );
+  return convertToPlainObject(data);
 }
 
 // Get all categories (with translated names for the given locale)
@@ -526,91 +441,45 @@ export async function getAllCategories(locale: string) {
     .leftJoin(
       categoryTranslations,
       and(
-        eq(
-          categoryTranslations.categoryId,
-          categories.id
-        ),
-        eq(
-          categoryTranslations.locale,
-          locale
-        )
-      )
+        eq(categoryTranslations.categoryId, categories.id),
+        eq(categoryTranslations.locale, locale),
+      ),
     )
-    .leftJoin(
-      products,
-      eq(
-        products.categoryId,
-        categories.id
-      )
-    )
-    .groupBy(
-      categories.id,
-      categories.slug,
-      categoryTranslations.name
-    );
+    .leftJoin(products, eq(products.categoryId, categories.id))
+    .groupBy(categories.id, categories.slug, categoryTranslations.name);
 }
 // Get featured products
-export async function getFeaturedProducts(
-  locale: string
-) {
+export async function getFeaturedProducts(locale: string) {
   const data = await db
     .select({
       product: products,
-      translation:
-        productTranslations,
+      translation: productTranslations,
     })
     .from(products)
     .leftJoin(
       productTranslations,
       and(
-        eq(
-          productTranslations.productId,
-          products.id
-        ),
-        eq(
-          productTranslations.locale,
-          locale
-        )
-      )
+        eq(productTranslations.productId, products.id),
+        eq(productTranslations.locale, locale),
+      ),
     )
-    .where(
-      eq(
-        products.isFeatured,
-        true
-      )
-    )
-    .orderBy(
-      desc(products.createdAt)
-    )
+    .where(eq(products.isFeatured, true))
+    .orderBy(desc(products.createdAt))
     .limit(6);
 
-  return data.map(
-    ({
-      product,
-      translation,
-    }) => ({
-      ...product,
+  return data.map(({ product, translation }) => ({
+    ...product,
 
-      name:
-        translation?.name ??
-        product.name,
+    name: translation?.name ?? product.name,
 
-      description:
-        translation?.description ??
-        product.description,
+    description: translation?.description ?? product.description,
 
-      images:
-        product.images ?? [],
+    images: product.images ?? [],
 
-      brand:
-        product.brand ?? "",
+    brand: product.brand ?? "",
 
-      price:
-        product.price.toString(),
+    price: product.price.toString(),
 
-      rating: Number(
-        product.rating ?? 0
-      ),
-    })
-  );
+    rating: Number(product.rating ?? 0),
+  }));
 }

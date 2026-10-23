@@ -184,7 +184,7 @@ const Page = async ({ params }: { params: Promise<{ locale: string }> }) => {
         {/* View all */}
         <section className="flex justify-center px-4">
           <Reveal direction="up">
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-2 shadow-xl backdrop-blur-sm">
+            <div>
               <ViewAllProduct />
             </div>
           </Reveal>

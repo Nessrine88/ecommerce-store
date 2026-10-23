@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -31,8 +30,7 @@ const ProductCard = ({
 
   const delay = (index % 3) * 0.12 + Math.floor(index / 3) * 0.15;
 
-
-const normalizedCart = undefined;
+  const normalizedCart = undefined;
 
   return (
     <motion.div
@@ -70,9 +68,7 @@ const normalizedCart = undefined;
           {inStock ? (
             <ProductPrice value={Number(product.price)} />
           ) : (
-            <span className="font-bold text-red-300">
-              Out Of Stock
-            </span>
+            <span className="font-bold text-red-300">Out Of Stock</span>
           )}
         </div>
 
