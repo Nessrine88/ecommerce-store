@@ -14,17 +14,8 @@ import {
   TableRow,
 } from "@/app/[locale]/components/ui/table";
 import { getOrderSummary } from "@/lib/actions/order.actions";
-import {
-  formatCurrency,
-  formatDateTime,
-  formatNumber,
-} from "@/lib/utils";
-import {
-  BadgeDollarSign,
-  Barcode,
-  CreditCard,
-  Users,
-} from "lucide-react";
+import { formatCurrency, formatDateTime, formatNumber } from "@/lib/utils";
+import { BadgeDollarSign, Barcode, CreditCard, Users } from "lucide-react";
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/navigation";
@@ -64,9 +55,7 @@ const AdminOverviewPage = async () => {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              {t("sales")}
-            </CardTitle>
+            <CardTitle className="text-sm font-medium">{t("sales")}</CardTitle>
             <CreditCard className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
 
@@ -139,18 +128,14 @@ const AdminOverviewPage = async () => {
                 {summary.latestSales.map((order) => (
                   <TableRow key={order.id}>
                     <TableCell>
-                      {order?.user?.name
-                        ? order.user.name
-                        : t("deletedUser")}
+                      {order?.user?.name ? order.user.name : t("deletedUser")}
                     </TableCell>
 
                     <TableCell>
                       {formatDateTime(order.createdAt).date}
                     </TableCell>
 
-                    <TableCell>
-                      {formatCurrency(order.totalPrice)}
-                    </TableCell>
+                    <TableCell>{formatCurrency(order.totalPrice)}</TableCell>
 
                     <TableCell>
                       <Link href={`/order/${order.id}`}>

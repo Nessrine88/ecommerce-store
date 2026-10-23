@@ -1,6 +1,16 @@
 {
   "Homepage": {
-    "siteTitle": "اكتشف ما هو أفضل", "heroSubtitle": "منتجات عالية الجودة، مختارة بعناية من أجلك.", "expertiseDescription": "اكتشف مجموعة مختارة بعناية من المنتجات التي تم اختيارها لجودتها وأناقتها وقيمتها. اعثر على ما يناسبك واستمتع بتجربة تسوق مصممة خصيصًا لتلبية احتياجاتك.", "exploreProducts": "استكشف المنتجات", "trustedSelection": "مجموعة مختارة بعناية", "expertiseTip1": "جودة يمكنك الوثوق بها", "expertiseTip2": "مختارة بعناية", "expertiseTip3": "مصممة من أجلك", "latestLabel": "وصل حديثًا", "newestProducts": "أحدث المنتجات", "latestProductsDescription": "اكتشف أحدث منتجاتنا، المختارة بعناية لجودتها وأناقتها وقيمتها المميزة.",
+    "siteTitle": "اكتشف ما هو أفضل",
+    "heroSubtitle": "منتجات عالية الجودة، مختارة بعناية من أجلك.",
+    "expertiseDescription": "اكتشف مجموعة مختارة بعناية من المنتجات التي تم اختيارها لجودتها وأناقتها وقيمتها. اعثر على ما يناسبك واستمتع بتجربة تسوق مصممة خصيصًا لتلبية احتياجاتك.",
+    "exploreProducts": "استكشف المنتجات",
+    "trustedSelection": "مجموعة مختارة بعناية",
+    "expertiseTip1": "جودة يمكنك الوثوق بها",
+    "expertiseTip2": "مختارة بعناية",
+    "expertiseTip3": "مصممة من أجلك",
+    "latestLabel": "وصل حديثًا",
+    "newestProducts": "أحدث المنتجات",
+    "latestProductsDescription": "اكتشف أحدث منتجاتنا، المختارة بعناية لجودتها وأناقتها وقيمتها المميزة.",
     "newestProducts": "أحدث المنتجات",
     "viewAllProducts": "عرض جميع المنتجات",
     "dealCountdown": {
@@ -83,15 +93,15 @@
     },
 
     "sideCard": {
-  "price": "السعر",
-  "status": "الحالة",
-  "stock": "متوفر",
-  "notStock": "غير متوفر",
-  "add": "أضف إلى السلة",
-  "addedToCart": "تمت إضافة {name} إلى السلة!",
-  "removedFromCart": "تمت إزالة {name} من السلة!",
-  "goToCart": "الذهاب إلى السلة"
-}
+      "price": "السعر",
+      "status": "الحالة",
+      "stock": "متوفر",
+      "notStock": "غير متوفر",
+      "add": "أضف إلى السلة",
+      "addedToCart": "تمت إضافة {name} إلى السلة!",
+      "removedFromCart": "تمت إزالة {name} من السلة!",
+      "goToCart": "الذهاب إلى السلة"
+    }
   },
 
   "SearchPage": {
@@ -139,15 +149,15 @@
     "cart": "السلة",
     "menuTitle": "القائمة"
   },
-"Cart": {
-  "empty": "السلة فارغة.",
-  "goShopping": "متابعة التسوق",
-  "name": "الاسم",
-  "quantity": "الكمية",
-  "price": "السعر",
-  "subtotal": "المجموع الفرعي",
-  "proceedToCheckout": "المتابعة إلى الدفع"
-},
+  "Cart": {
+    "empty": "السلة فارغة.",
+    "goShopping": "متابعة التسوق",
+    "name": "الاسم",
+    "quantity": "الكمية",
+    "price": "السعر",
+    "subtotal": "المجموع الفرعي",
+    "proceedToCheckout": "المتابعة إلى الدفع"
+  },
   "UserButton": {
     "signIn": "تسجيل الدخول",
     "orderHistory": "سجل الطلبات",
@@ -174,116 +184,116 @@
     "cta": "تسوق الآن"
   },
   "PlaceOrder": {
-  "title": "تأكيد الطلب",
-  "shippingAddress": "عنوان الشحن",
-  "paymentMethod": "طريقة الدفع",
-  "orderItems": "منتجات الطلب",
-  "item": "المنتج",
-  "qty": "الكمية",
-  "price": "السعر",
-  "edit": "تعديل",
-  "items": "المنتجات",
-  "tax": "الضريبة",
-  "shipping": "الشحن",
-  "total": "الإجمالي",
-  "placeOrder": "تأكيد الطلب"
-},
-"OrderDetails": {
-  "order": "الطلب",
-  "paymentMethod": "طريقة الدفع",
-  "paidAt": "تم الدفع في {date}",
-  "notPaid": "لم يتم الدفع",
-  "shippingAddress": "عنوان الشحن",
-  "deliveredAt": "تم التوصيل في {date}",
-  "notDelivered": "لم يتم التوصيل",
-  "orderItems": "منتجات الطلب",
-  "item": "المنتج",
-  "quantity": "الكمية",
-  "price": "السعر",
-  "items": "المنتجات",
-  "tax": "الضريبة",
-  "shipping": "الشحن",
-  "total": "الإجمالي",
-  "processing": "جارٍ المعالجة...",
-  "markAsPaid": "تحديد كمدفوع",
-  "markAsDelivered": "تحديد كمُسلّم"
-},
-"ShippingAddress": {
-  "title": "عنوان الشحن",
-  "description": "يرجى إدخال عنوان الشحن",
-  "fullName": "الاسم الكامل",
-  "fullNamePlaceholder": "أدخل الاسم الكامل",
-  "address": "العنوان",
-  "addressPlaceholder": "أدخل العنوان",
-  "city": "المدينة",
-  "cityPlaceholder": "أدخل المدينة",
-  "country": "الدولة",
-  "countryPlaceholder": "أدخل الدولة",
-  "postalCode": "الرمز البريدي",
-  "postalCodePlaceholder": "أدخل الرمز البريدي",
-  "continue": "متابعة"
-},
-"PaymentMethod": {
-  "title": "طريقة الدفع",
-  "description": "يرجى اختيار طريقة الدفع المفضلة لديك",
-  "stripe": "بطاقة ائتمانية",
-  "cashOnDelivery": "الدفع عند الاستلام",
-  "continue": "متابعة"
-},
-"CheckoutSteps": {
-  "userLogin": "تسجيل الدخول",
-  "shippingAddress": "عنوان الشحن",
-  "paymentMethod": "طريقة الدفع",
-  "placeOrder": "تأكيد الطلب"
-},
-"AdminOverview": {
-  "title": "لوحة تحكم الإدارة",
-  "totalRevenue": "إجمالي الإيرادات",
-  "sales": "المبيعات",
-  "customers": "العملاء",
-  "products": "المنتجات",
-  "overview": "نظرة عامة",
-  "recentSales": "المبيعات الأخيرة",
-  "buyer": "المشتري",
-  "date": "التاريخ",
-  "total": "الإجمالي",
-  "actions": "الإجراءات",
-  "deletedUser": "مستخدم محذوف",
-  "details": "التفاصيل"
-},
-"AdminNav": {
-  "overview": "نظرة عامة",
-  "products": "المنتجات",
-  "orders": "الطلبات",
-  "users": "المستخدمون",
-  "toggleNavigation": "تبديل قائمة التنقل"
-},
-"UserNav": {
-  "profile": "الملف الشخصي",
-  "orders": "الطلبات"
-},
-"AdminOrders": {
-  "title": "الطلبات",
-  "filteredBy": "تمت التصفية حسب",
-  "removeFilter": "إزالة التصفية",
-  "id": "المعرّف",
-  "date": "التاريخ",
-  "buyer": "المشتري",
-  "total": "الإجمالي",
-  "paid": "الدفع",
-  "delivered": "التوصيل",
-  "actions": "الإجراءات",
-  "notPaid": "لم يتم الدفع",
-  "notDelivered": "لم يتم التوصيل",
-  "details": "التفاصيل"
-},
-"DeleteDialog": {
-  "delete": "حذف",
-  "deleting": "جارٍ الحذف...",
-  "confirmTitle": "هل أنت متأكد تمامًا؟",
-  "confirmDescription": "لا يمكن التراجع عن هذا الإجراء",
-  "cancel": "إلغاء"
-},
+    "title": "تأكيد الطلب",
+    "shippingAddress": "عنوان الشحن",
+    "paymentMethod": "طريقة الدفع",
+    "orderItems": "منتجات الطلب",
+    "item": "المنتج",
+    "qty": "الكمية",
+    "price": "السعر",
+    "edit": "تعديل",
+    "items": "المنتجات",
+    "tax": "الضريبة",
+    "shipping": "الشحن",
+    "total": "الإجمالي",
+    "placeOrder": "تأكيد الطلب"
+  },
+  "OrderDetails": {
+    "order": "الطلب",
+    "paymentMethod": "طريقة الدفع",
+    "paidAt": "تم الدفع في {date}",
+    "notPaid": "لم يتم الدفع",
+    "shippingAddress": "عنوان الشحن",
+    "deliveredAt": "تم التوصيل في {date}",
+    "notDelivered": "لم يتم التوصيل",
+    "orderItems": "منتجات الطلب",
+    "item": "المنتج",
+    "quantity": "الكمية",
+    "price": "السعر",
+    "items": "المنتجات",
+    "tax": "الضريبة",
+    "shipping": "الشحن",
+    "total": "الإجمالي",
+    "processing": "جارٍ المعالجة...",
+    "markAsPaid": "تحديد كمدفوع",
+    "markAsDelivered": "تحديد كمُسلّم"
+  },
+  "ShippingAddress": {
+    "title": "عنوان الشحن",
+    "description": "يرجى إدخال عنوان الشحن",
+    "fullName": "الاسم الكامل",
+    "fullNamePlaceholder": "أدخل الاسم الكامل",
+    "address": "العنوان",
+    "addressPlaceholder": "أدخل العنوان",
+    "city": "المدينة",
+    "cityPlaceholder": "أدخل المدينة",
+    "country": "الدولة",
+    "countryPlaceholder": "أدخل الدولة",
+    "postalCode": "الرمز البريدي",
+    "postalCodePlaceholder": "أدخل الرمز البريدي",
+    "continue": "متابعة"
+  },
+  "PaymentMethod": {
+    "title": "طريقة الدفع",
+    "description": "يرجى اختيار طريقة الدفع المفضلة لديك",
+    "stripe": "بطاقة ائتمانية",
+    "cashOnDelivery": "الدفع عند الاستلام",
+    "continue": "متابعة"
+  },
+  "CheckoutSteps": {
+    "userLogin": "تسجيل الدخول",
+    "shippingAddress": "عنوان الشحن",
+    "paymentMethod": "طريقة الدفع",
+    "placeOrder": "تأكيد الطلب"
+  },
+  "AdminOverview": {
+    "title": "لوحة تحكم الإدارة",
+    "totalRevenue": "إجمالي الإيرادات",
+    "sales": "المبيعات",
+    "customers": "العملاء",
+    "products": "المنتجات",
+    "overview": "نظرة عامة",
+    "recentSales": "المبيعات الأخيرة",
+    "buyer": "المشتري",
+    "date": "التاريخ",
+    "total": "الإجمالي",
+    "actions": "الإجراءات",
+    "deletedUser": "مستخدم محذوف",
+    "details": "التفاصيل"
+  },
+  "AdminNav": {
+    "overview": "نظرة عامة",
+    "products": "المنتجات",
+    "orders": "الطلبات",
+    "users": "المستخدمون",
+    "toggleNavigation": "تبديل قائمة التنقل"
+  },
+  "UserNav": {
+    "profile": "الملف الشخصي",
+    "orders": "الطلبات"
+  },
+  "AdminOrders": {
+    "title": "الطلبات",
+    "filteredBy": "تمت التصفية حسب",
+    "removeFilter": "إزالة التصفية",
+    "id": "المعرّف",
+    "date": "التاريخ",
+    "buyer": "المشتري",
+    "total": "الإجمالي",
+    "paid": "الدفع",
+    "delivered": "التوصيل",
+    "actions": "الإجراءات",
+    "notPaid": "لم يتم الدفع",
+    "notDelivered": "لم يتم التوصيل",
+    "details": "التفاصيل"
+  },
+  "DeleteDialog": {
+    "delete": "حذف",
+    "deleting": "جارٍ الحذف...",
+    "confirmTitle": "هل أنت متأكد تمامًا؟",
+    "confirmDescription": "لا يمكن التراجع عن هذا الإجراء",
+    "cancel": "إلغاء"
+  },
   "AdminProducts": {
     "title": "المنتجات",
     "filteredBy": "تمت التصفية حسب",
@@ -298,7 +308,7 @@
     "actions": "الإجراءات",
     "edit": "تعديل"
   },
-  
+
   "AdminUsers": {
     "title": "المستخدمون",
     "filteredBy": "تمت التصفية حسب",
@@ -312,7 +322,7 @@
     "admin": "مدير",
     "update": "تحديث"
   },
-   "Pagination": {
+  "Pagination": {
     "previous": "السابق",
     "next": "التالي"
   },
@@ -324,12 +334,12 @@
     "noAccount": "ليس لديك حساب؟",
     "createOne": "أنشئ حسابًا"
   },
-   "SignInPage": {
+  "SignInPage": {
     "title": "تسجيل الدخول",
     "description": "سجّل الدخول إلى حسابك",
     "logoAlt": "الشعار"
   },
-   "SignUpPage": {
+  "SignUpPage": {
     "title": "إنشاء حساب",
     "createAccount": "إنشاء حساب",
     "description": "أدخل معلوماتك أدناه لإنشاء حساب",
@@ -344,9 +354,8 @@
     "confirmPassword": "تأكيد كلمة المرور",
     "alreadyHaveAccount": "لديك حساب بالفعل؟",
     "signIn": "تسجيل الدخول"
+  },
+  "ProductCard": {
+    "stars": "نجوم"
   }
-,"ProductCard": {
-  "stars":"نجوم"
-}
-
 }

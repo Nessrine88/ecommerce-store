@@ -1,4 +1,3 @@
-
 import ProductCard from "@/app/[locale]/components/shared/product/product-card";
 import {
   getAllCategories,
@@ -52,12 +51,7 @@ export async function generateMetadata(props: {
   const isPriceSet = price !== "all" && price.trim() !== "";
   const isRatingSet = rating !== "all" && rating.trim() !== "";
 
-  if (
-    isQuerySet ||
-    isCategorySet ||
-    isPriceSet ||
-    isRatingSet
-  ) {
+  if (isQuerySet || isCategorySet || isPriceSet || isRatingSet) {
     const parts = [
       isQuerySet ? `${t("query")}: ${q}` : "",
       isCategorySet ? `${t("category")}: ${category}` : "",
@@ -184,7 +178,7 @@ const SearchPage = async (props: {
         "block rounded-md px-2 py-1 text-sm transition-colors",
         active
           ? "font-semibold text-accent"
-          : "text-muted hover:bg-card-hover hover:text-text"
+          : "text-muted hover:bg-card-hover hover:text-text",
       )}
     >
       {children}
@@ -214,19 +208,19 @@ const SearchPage = async (props: {
               </FilterLink>
             </li>
 
- {categories.map((x) => (
-  <li key={x.slug}>
-    <FilterLink
-      href={getFilterUrl({
-        c: x.slug,
-        pg: "1",
-      })}
-      active={category === x.slug}
-    >
-      {x.name ?? x.slug}
-    </FilterLink>
-  </li>
-))}
+            {categories.map((x) => (
+              <li key={x.slug}>
+                <FilterLink
+                  href={getFilterUrl({
+                    c: x.slug,
+                    pg: "1",
+                  })}
+                  active={category === x.slug}
+                >
+                  {x.name ?? x.slug}
+                </FilterLink>
+              </li>
+            ))}
           </ul>
         </div>
 
@@ -252,22 +246,22 @@ const SearchPage = async (props: {
             </li>
 
             {prices.map((p) => (
-  <li key={p.value}>
-    <FilterLink
-      href={getFilterUrl({
-        p: p.value,
-        pg: "1",
-      })}
-      active={price === p.value}
-    >
-      <span className="flex items-center gap-1">
-        <CurrencyPrice price={p.min} />
-        <span>-</span>
-        <CurrencyPrice price={p.max} />
-      </span>
-    </FilterLink>
-  </li>
-))}
+              <li key={p.value}>
+                <FilterLink
+                  href={getFilterUrl({
+                    p: p.value,
+                    pg: "1",
+                  })}
+                  active={price === p.value}
+                >
+                  <span className="flex items-center gap-1">
+                    <CurrencyPrice price={p.min} />
+                    <span>-</span>
+                    <CurrencyPrice price={p.max} />
+                  </span>
+                </FilterLink>
+              </li>
+            ))}
           </ul>
         </div>
 
@@ -337,8 +331,7 @@ const SearchPage = async (props: {
 
             {rating !== "all" && rating !== "" && (
               <span className="rounded-full bg-card px-3 py-1 text-text">
-                {t("activeFilters.rating")}: {rating}{" "}
-                {t("starsAndUp")}
+                {t("activeFilters.rating")}: {rating} {t("starsAndUp")}
               </span>
             )}
 
@@ -355,9 +348,7 @@ const SearchPage = async (props: {
 
           {/* Sort */}
           <div className="flex flex-wrap items-center gap-1 text-sm">
-            <span className="text-muted">
-              {t("sortBy")}:
-            </span>
+            <span className="text-muted">{t("sortBy")}:</span>
 
             {sortOrders.map((s) => (
               <Link
@@ -370,7 +361,7 @@ const SearchPage = async (props: {
                   "rounded-md px-2 py-1 capitalize transition-colors hover:bg-card-hover",
                   sort === s
                     ? "font-semibold text-accent"
-                    : "text-muted hover:text-text"
+                    : "text-muted hover:text-text",
                 )}
               >
                 {t(`sort.${s}`)}
@@ -395,6 +386,10 @@ const SearchPage = async (props: {
                 images: product.images ?? [],
                 brand: product.brand ?? "",
                 price: product.price ?? "0",
+                nameAr: product.name,
+                descriptionAr: product.description,
+                nameFr: product.name,
+                descriptionFr: product.description,
               }}
             />
           ))}

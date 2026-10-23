@@ -42,7 +42,7 @@ const ProductImages = ({ images }: { images: string[] }) => {
               "relative h-20 w-20 shrink-0 overflow-hidden rounded-md border transition",
               current === index
                 ? "border-foreground ring-2 ring-foreground ring-offset-2"
-                : "border-transparent opacity-70 hover:opacity-100"
+                : "border-transparent opacity-70 hover:opacity-100",
             )}
           >
             <Image

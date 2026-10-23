@@ -63,9 +63,7 @@ const SignInPage = async (props: {
           </Link>
         </CardHeader>
 
-        <CardTitle className="text-center">
-          {t("title")}
-        </CardTitle>
+        <CardTitle className="text-center">{t("title")}</CardTitle>
 
         <CardDescription className="text-center">
           {t("description")}

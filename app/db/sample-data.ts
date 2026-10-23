@@ -76,7 +76,8 @@ const sampleData = {
       numReviews: 32,
       stock: 15,
       isFeatured: true,
-      banner: "https://images.unsplash.com/photo-1654701381111-387c2b090a2e?w=1600&q=80",
+      banner:
+        "https://images.unsplash.com/photo-1654701381111-387c2b090a2e?w=1600&q=80",
 
       translations: {
         en: {
@@ -113,7 +114,8 @@ const sampleData = {
       numReviews: 45,
       stock: 20,
       isFeatured: true,
-      banner: "https://images.unsplash.com/photo-1616961108833-b8e10d5dc2be?w=1600&q=80",
+      banner:
+        "https://images.unsplash.com/photo-1616961108833-b8e10d5dc2be?w=1600&q=80",
 
       translations: {
         en: {
@@ -150,7 +152,8 @@ const sampleData = {
       numReviews: 28,
       stock: 18,
       isFeatured: false,
-      banner: "https://images.unsplash.com/photo-1584543840487-f7c5d8a278c1?w=1600&q=80",
+      banner:
+        "https://images.unsplash.com/photo-1584543840487-f7c5d8a278c1?w=1600&q=80",
 
       translations: {
         en: {
@@ -187,7 +190,8 @@ const sampleData = {
       numReviews: 56,
       stock: 30,
       isFeatured: true,
-      banner: "https://images.unsplash.com/photo-1636687987347-06b9b7f60d68?w=1600&q=80",
+      banner:
+        "https://images.unsplash.com/photo-1636687987347-06b9b7f60d68?w=1600&q=80",
 
       translations: {
         en: {
@@ -224,7 +228,8 @@ const sampleData = {
       numReviews: 21,
       stock: 12,
       isFeatured: false,
-      banner: "https://images.unsplash.com/photo-1617374056496-2fc0d20894e7?w=1600&q=80",
+      banner:
+        "https://images.unsplash.com/photo-1617374056496-2fc0d20894e7?w=1600&q=80",
 
       translations: {
         en: {
@@ -261,7 +266,8 @@ const sampleData = {
       numReviews: 39,
       stock: 25,
       isFeatured: true,
-      banner: "https://images.unsplash.com/photo-1632207691143-643e2b6a4d8b?w=1600&q=80",
+      banner:
+        "https://images.unsplash.com/photo-1632207691143-643e2b6a4d8b?w=1600&q=80",
 
       translations: {
         en: {
@@ -298,7 +304,8 @@ const sampleData = {
       numReviews: 19,
       stock: 10,
       isFeatured: false,
-      banner: "https://images.unsplash.com/photo-1604762524889-3e2fcc145683?w=1600&q=80",
+      banner:
+        "https://images.unsplash.com/photo-1604762524889-3e2fcc145683?w=1600&q=80",
 
       translations: {
         en: {
@@ -335,7 +342,8 @@ const sampleData = {
       numReviews: 24,
       stock: 16,
       isFeatured: false,
-      banner: "https://images.unsplash.com/photo-1600411832986-5a4477b64a1c?w=1600&q=80",
+      banner:
+        "https://images.unsplash.com/photo-1600411832986-5a4477b64a1c?w=1600&q=80",
 
       translations: {
         en: {
@@ -372,7 +380,8 @@ const sampleData = {
       numReviews: 31,
       stock: 14,
       isFeatured: true,
-      banner: "https://images.unsplash.com/photo-1603436326446-9e5f1e3c1d9c?w=1600&q=80",
+      banner:
+        "https://images.unsplash.com/photo-1603436326446-9e5f1e3c1d9c?w=1600&q=80",
 
       translations: {
         en: {
@@ -409,7 +418,8 @@ const sampleData = {
       numReviews: 63,
       stock: 22,
       isFeatured: true,
-      banner: "https://images.unsplash.com/photo-1639107725072-8dca6a760c08?w=1600&q=80",
+      banner:
+        "https://images.unsplash.com/photo-1639107725072-8dca6a760c08?w=1600&q=80",
 
       translations: {
         en: {
@@ -446,7 +456,8 @@ const sampleData = {
       numReviews: 48,
       stock: 28,
       isFeatured: true,
-      banner: "https://images.unsplash.com/photo-1620127807580-2c0a2e2f6e3e?w=1600&q=80",
+      banner:
+        "https://images.unsplash.com/photo-1620127807580-2c0a2e2f6e3e?w=1600&q=80",
 
       translations: {
         en: {
@@ -483,7 +494,8 @@ const sampleData = {
       numReviews: 17,
       stock: 8,
       isFeatured: true,
-      banner: "https://images.unsplash.com/photo-1597055181300-2aebf3b4b7d5?w=1600&q=80",
+      banner:
+        "https://images.unsplash.com/photo-1597055181300-2aebf3b4b7d5?w=1600&q=80",
 
       translations: {
         en: {

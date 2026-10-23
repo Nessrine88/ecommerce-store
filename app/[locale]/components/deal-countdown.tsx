@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -13,19 +12,14 @@ const TARGET_DATE = new Date("2026-10-20T00:00:00");
 // Function to calculate the time remaining
 const calculateTimeRemaining = (targetDate: Date) => {
   const currentTime = new Date();
-  const timeDifference = Math.max(
-    Number(targetDate) - Number(currentTime),
-    0,
-  );
+  const timeDifference = Math.max(Number(targetDate) - Number(currentTime), 0);
 
   return {
     days: Math.floor(timeDifference / (1000 * 60 * 60 * 24)),
     hours: Math.floor(
       (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
     ),
-    minutes: Math.floor(
-      (timeDifference % (1000 * 60 * 60)) / (1000 * 60),
-    ),
+    minutes: Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60)),
     seconds: Math.floor((timeDifference % (1000 * 60)) / 1000),
   };
 };
@@ -33,9 +27,7 @@ const calculateTimeRemaining = (targetDate: Date) => {
 const DealCountdown = () => {
   const t = useTranslations("Homepage.dealCountdown");
 
-  const [time, setTime] = useState<
-    ReturnType<typeof calculateTimeRemaining>
-  >();
+  const [time, setTime] = useState<ReturnType<typeof calculateTimeRemaining>>();
 
   useEffect(() => {
     setTime(calculateTimeRemaining(TARGET_DATE));
@@ -74,7 +66,7 @@ const DealCountdown = () => {
     time.hours === 0 &&
     time.minutes === 0 &&
     time.seconds === 0;
- 
+
   if (hasEnded) {
     return (
       <section className="mx-auto my-20 grid max-w-6xl grid-cols-1 items-center gap-10 overflow-hidden rounded-3xl py-12 md:grid-cols-2 md:gap-16 md:py-16">
@@ -128,14 +120,8 @@ const DealCountdown = () => {
         <ul className="grid grid-cols-4 gap-3 sm:gap-4">
           <StatBox label={t("active.timer.days")} value={time.days} />
           <StatBox label={t("active.timer.hours")} value={time.hours} />
-          <StatBox
-            label={t("active.timer.minutes")}
-            value={time.minutes}
-          />
-          <StatBox
-            label={t("active.timer.seconds")}
-            value={time.seconds}
-          />
+          <StatBox label={t("active.timer.minutes")} value={time.minutes} />
+          <StatBox label={t("active.timer.seconds")} value={time.seconds} />
         </ul>
 
         <div>
@@ -157,13 +143,7 @@ const DealCountdown = () => {
   );
 };
 
-const StatBox = ({
-  label,
-  value,
-}: {
-  label: string;
-  value: number;
-}) => (
+const StatBox = ({ label, value }: { label: string; value: number }) => (
   <li className="flex flex-col items-center gap-1 rounded-xl border border-stone-800 bg-stone-900/60 py-4">
     <p className="font-serif text-2xl text-stone-50 tabular-nums sm:text-3xl">
       {String(value).padStart(2, "0")}
@@ -174,4 +154,3 @@ const StatBox = ({
 );
 
 export default DealCountdown;
-

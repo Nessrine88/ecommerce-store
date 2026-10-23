@@ -11,10 +11,11 @@ export default async function AdminLayout({
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 }>) {
-
   return (
-    <div className="flex min-h-screen w-full flex-col bg-bg text-accent dark:bg-black" suppressHydrationWarning>
-
+    <div
+      className="flex min-h-screen w-full flex-col bg-bg text-accent dark:bg-black"
+      suppressHydrationWarning
+    >
       {/* Header */}
       <header className="relative w-full border-b">
         <div className="w-full">
@@ -34,7 +35,6 @@ export default async function AdminLayout({
 
             {/* Right side */}
             <div className="ml-auto flex min-w-0 items-center gap-2 sm:gap-4">
-
               {/* Search */}
               <div className="min-w-0">
                 <AdminSearch />
@@ -44,7 +44,6 @@ export default async function AdminLayout({
               <div className="shrink-0">
                 <Menu />
               </div>
-
             </div>
           </div>
         </div>
@@ -52,11 +51,8 @@ export default async function AdminLayout({
 
       {/* Main content */}
       <main className="w-full flex-1">
-        <div className="w-full px-3 sm:px-6 lg:px-8">
-          {children}
-        </div>
+        <div className="w-full px-3 sm:px-6 lg:px-8">{children}</div>
       </main>
-
     </div>
   );
 }

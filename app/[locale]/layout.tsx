@@ -4,8 +4,8 @@ import "./globals.css";
 import { APP_NAME } from "@/lib/constants";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
-import { NextIntlClientProvider } from "next-intl"
-import { getMessages, getLocale } from 'next-intl/server';
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages, getLocale } from "next-intl/server";
 import { CurrencyProvider } from "./context/currency-context";
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,8 +17,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-
-export const metadata: Metadata  = {
+export const metadata: Metadata = {
   title: `${APP_NAME}`,
   description:
     "A modern e-commerce web application designed to provide users with a seamless online shopping experience.",
@@ -50,11 +49,15 @@ export default async function RootLayout({
         suppressHydrationWarning
       >
         <body className="min-h-full flex flex-col text-accent">
-           <CurrencyProvider>
-          <ThemeProvider attribute="class" enableSystem disableTransitionOnChange>
-            {children}
-            <Toaster richColors />
-          </ThemeProvider>
+          <CurrencyProvider>
+            <ThemeProvider
+              attribute="class"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+              <Toaster richColors />
+            </ThemeProvider>
           </CurrencyProvider>
         </body>
       </html>

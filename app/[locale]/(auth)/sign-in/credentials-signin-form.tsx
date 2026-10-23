@@ -29,31 +29,21 @@ function SignInButton() {
 export default function CredentialsSignInForm() {
   const t = useTranslations("SignIn");
 
-  const [data, action] = useActionState(
-    signInWithCredentials,
-    {
-      success: false,
-      message: "",
-    }
-  );
+  const [data, action] = useActionState(signInWithCredentials, {
+    success: false,
+    message: "",
+  });
 
   const searchParams = useSearchParams();
 
-  const callbackUrl =
-    searchParams.get("callbackUrl") || "/";
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
 
   return (
     <form action={action} className="space-y-6">
-      <input
-        type="hidden"
-        name="callbackUrl"
-        value={callbackUrl}
-      />
+      <input type="hidden" name="callbackUrl" value={callbackUrl} />
 
       <div className="space-y-2">
-        <Label htmlFor="email">
-          {t("email")}
-        </Label>
+        <Label htmlFor="email">{t("email")}</Label>
 
         <Input
           id="email"
@@ -68,9 +58,7 @@ export default function CredentialsSignInForm() {
 
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <Label htmlFor="password">
-            {t("password")}
-          </Label>
+          <Label htmlFor="password">{t("password")}</Label>
         </div>
 
         <Input

@@ -18,15 +18,11 @@ const ProductPrice = ({
   return (
     <div>
       <p className={cn("text-2xl", className)}>
-        <span className="text-xs align-super">
-          {currency}
-        </span>
+        <span className="text-xs align-super">{currency}</span>
 
         {intValue}
 
-        <span className="text-xs align-super">
-          .{floatValue}
-        </span>
+        <span className="text-xs align-super">.{floatValue}</span>
       </p>
     </div>
   );

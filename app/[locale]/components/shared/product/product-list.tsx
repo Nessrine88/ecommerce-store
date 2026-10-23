@@ -13,11 +13,9 @@ const ProductList = async ({
 }) => {
   const t = await getTranslations("ProductList");
 
- 
-
   // split into 3 columns: items 0,3 -> col 1 | 1,4 -> col 2 | 2,5 -> col 3
   const columns = [0, 1, 2].map((c) =>
-    data.map((product, i) => ({ product, i })).filter(({ i }) => i % 3 === c)
+    data.map((product, i) => ({ product, i })).filter(({ i }) => i % 3 === c),
   );
 
   // vertical offset per column (desktop only)

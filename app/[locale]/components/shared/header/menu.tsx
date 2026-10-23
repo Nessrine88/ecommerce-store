@@ -31,7 +31,7 @@ const Menu = async () => {
         <SelectedLanguage />
         <Devises />
 
-        <Button variant="ghost" className="relative px-2.5 lg:px-4" >
+        <Button variant="ghost" className="relative px-2.5 lg:px-4">
           <Link
             href={`/cart`}
             className="flex items-center gap-1.5 lg:gap-2 hover:text-primary"
@@ -68,7 +68,7 @@ const Menu = async () => {
                 <Devises />
               </div>
 
-              <Button variant="ghost" className="relative justify-start w-full" >
+              <Button variant="ghost" className="relative justify-start w-full">
                 <Link
                   href={`/cart`}
                   className="flex items-center gap-2 hover:text-primary w-full"
@@ -85,7 +85,6 @@ const Menu = async () => {
 
               <UserButton />
             </div>
-
           </SheetContent>
         </Sheet>
       </nav>

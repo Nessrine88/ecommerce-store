@@ -12,7 +12,7 @@ const AdminProductPage = async (props: {
 }) => {
   const { locale, id } = await props.params;
   const product = await getProductById(id);
-    const categories = await getAllCategories(locale);
+  const categories = await getAllCategories(locale);
   if (!product) {
     return notFound();
   }
@@ -27,6 +27,10 @@ const AdminProductPage = async (props: {
           images: product.images ?? [],
           brand: product.brand ?? "",
           rating: Number(product.rating ?? 0),
+          nameAr: "",
+          descriptionAr: "",
+          nameFr: "",
+          descriptionFr: "",
         }}
         productId={product.id}
         categories={categories.map((category) => ({

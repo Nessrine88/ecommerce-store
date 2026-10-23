@@ -24,9 +24,7 @@ export const categories = pgTable(
 
     slug: text("slug").notNull(), // stable key, e.g. "indoor-plants"
 
-    createdAt: timestamp("createdAt", { precision: 6 })
-      .defaultNow()
-      .notNull(),
+    createdAt: timestamp("createdAt", { precision: 6 }).defaultNow().notNull(),
   },
   (table) => ({
     slugIndex: uniqueIndex("category_slug_idx").on(table.slug),
@@ -132,7 +130,7 @@ export const productTranslations = pgTable(
   },
   (table) => ({
     productLocaleIndex: uniqueIndex(
-      "product_translation_product_locale_idx"
+      "product_translation_product_locale_idx",
     ).on(table.productId, table.locale),
   }),
 );

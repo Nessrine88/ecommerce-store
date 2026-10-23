@@ -7,19 +7,11 @@ import {
 } from "@/lib/actions/product.actions";
 import IconBoxes from "@/app/[locale]/components/icon-boxes";
 import { getTranslations } from "next-intl/server";
-import {
-  Reveal,
-  Float,
-  Glow,
-} from "@/app/[locale]/components/motion-wrappers";
+import { Reveal, Float, Glow } from "@/app/[locale]/components/motion-wrappers";
 
 const tipKeys = ["expertiseTip1", "expertiseTip2", "expertiseTip3"] as const;
 
-const Page = async ({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) => {
+const Page = async ({ params }: { params: Promise<{ locale: string }> }) => {
   const { locale } = await params;
 
   const latestProducts = await getLatestProducts(locale);
@@ -89,11 +81,7 @@ const Page = async ({
                 }`}
               >
                 {tipKeys.map((key, i) => (
-                  <Reveal
-                    key={key}
-                    direction="up"
-                    delay={0.3 + i * 0.1}
-                  >
+                  <Reveal key={key} direction="up" delay={0.3 + i * 0.1}>
                     <li className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2.5 text-xs font-medium text-white/85 shadow-lg shadow-black/20 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-[#70bd91]/40 hover:bg-[#3a7a58]/20 hover:text-white sm:text-sm">
                       {t(key)}
                     </li>
@@ -151,7 +139,15 @@ const Page = async ({
                     isRTL ? "rotate-[-1.5deg]" : "rotate-[1.5deg]"
                   }`}
                 >
-                  <ProductCarousel data={featuredProducts} />
+                  <ProductCarousel
+                    data={featuredProducts.map((product) => ({
+                      ...product,
+                      nameAr: product.name,
+                      descriptionAr: product.description,
+                      nameFr: product.name,
+                      descriptionFr: product.description,
+                    }))}
+                  />
                 </div>
               </Reveal>
             )}
@@ -174,7 +170,13 @@ const Page = async ({
 
           <ProductList
             title=""
-            data={latestProducts}
+            data={latestProducts.map((product) => ({
+              ...product,
+              nameAr: product.name,
+              descriptionAr: product.description,
+              nameFr: product.name,
+              descriptionFr: product.description,
+            }))}
             limit={6}
           />
         </section>
@@ -200,4 +202,3 @@ const Page = async ({
 };
 
 export default Page;
-

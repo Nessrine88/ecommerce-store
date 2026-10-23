@@ -1,14 +1,8 @@
-
 "use client";
 
 import React from "react";
 import { Card, CardContent } from "./ui/card";
-import {
-  DollarSign,
-  Headset,
-  ShoppingBag,
-  WalletCards,
-} from "lucide-react";
+import { DollarSign, Headset, ShoppingBag, WalletCards } from "lucide-react";
 import { useTranslations } from "next-intl";
 import DealCountdown from "./deal-countdown";
 
@@ -23,9 +17,7 @@ const IconBoxes = () => {
         <CardContent className="grid gap-4 p-4 md:grid-cols-4">
           <div className="space-y-2">
             <ShoppingBag />
-            <div className="text-sm font-bold">
-              {t("freeShipping.title")}
-            </div>
+            <div className="text-sm font-bold">{t("freeShipping.title")}</div>
             <div className="text-sm text-accent">
               {t("freeShipping.description")}
             </div>
@@ -33,9 +25,7 @@ const IconBoxes = () => {
 
           <div className="space-y-2">
             <DollarSign />
-            <div className="text-sm font-bold">
-              {t("moneyBack.title")}
-            </div>
+            <div className="text-sm font-bold">{t("moneyBack.title")}</div>
             <div className="text-sm text-accent">
               {t("moneyBack.description")}
             </div>
@@ -53,9 +43,7 @@ const IconBoxes = () => {
 
           <div className="space-y-2">
             <Headset />
-            <div className="text-sm font-bold">
-              {t("support.title")}
-            </div>
+            <div className="text-sm font-bold">{t("support.title")}</div>
             <div className="text-sm text-accent">
               {t("support.description")}
             </div>
@@ -66,4 +54,4 @@ const IconBoxes = () => {
   );
 };
 
-export default IconBoxes
+export default IconBoxes;

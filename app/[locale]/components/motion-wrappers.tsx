@@ -76,7 +76,9 @@ export const Glow = ({ className }: { className?: string }) => {
   return (
     <motion.div
       aria-hidden
-      animate={reduce ? undefined : { scale: [1, 1.2, 1], opacity: [0.6, 1, 0.6] }}
+      animate={
+        reduce ? undefined : { scale: [1, 1.2, 1], opacity: [0.6, 1, 0.6] }
+      }
       transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       className={className}
     />

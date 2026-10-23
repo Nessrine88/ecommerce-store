@@ -28,8 +28,7 @@ const AdminUserPage = async (props: {
 }) => {
   const t = await getTranslations("AdminUsers");
 
-  const { page = "1", query: searchText } =
-    await props.searchParams;
+  const { page = "1", query: searchText } = await props.searchParams;
 
   const currentPage = Number(page) || 1;
 
@@ -41,14 +40,11 @@ const AdminUserPage = async (props: {
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-3">
-        <h1 className="font-bold">
-          {t("title")}
-        </h1>
+        <h1 className="font-bold">{t("title")}</h1>
 
         {searchText && (
           <div>
-            {t("filteredBy")}{" "}
-            <i>&quot;{searchText}&quot;</i>{" "}
+            {t("filteredBy")} <i>&quot;{searchText}&quot;</i>{" "}
             <Link href="/admin/users">
               <Button variant="outline" size="sm">
                 {t("removeFilter")}
@@ -73,27 +69,17 @@ const AdminUserPage = async (props: {
           <TableBody>
             {users.data.map((user) => (
               <TableRow key={user.id}>
-                <TableCell>
-                  {formatId(user.id)}
-                </TableCell>
+                <TableCell>{formatId(user.id)}</TableCell>
 
-                <TableCell>
-                  {user.name}
-                </TableCell>
+                <TableCell>{user.name}</TableCell>
 
-                <TableCell>
-                  {user.email}
-                </TableCell>
+                <TableCell>{user.email}</TableCell>
 
                 <TableCell>
                   {user.role === "user" ? (
-                    <Badge variant="secondary">
-                      {t("user")}
-                    </Badge>
+                    <Badge variant="secondary">{t("user")}</Badge>
                   ) : (
-                    <Badge variant="default">
-                      {t("admin")}
-                    </Badge>
+                    <Badge variant="default">{t("admin")}</Badge>
                   )}
                 </TableCell>
 
@@ -105,10 +91,7 @@ const AdminUserPage = async (props: {
                   </Link>
 
                   <div className="rounded-sm bg-red-700">
-                    <DeleteDialog
-                      id={user.id}
-                      action={deleteUser}
-                    />
+                    <DeleteDialog id={user.id} action={deleteUser} />
                   </div>
                 </TableCell>
               </TableRow>
@@ -117,10 +100,7 @@ const AdminUserPage = async (props: {
         </Table>
 
         {users.totalPages >= 1 && (
-          <Pagination
-            page={currentPage}
-            totalPages={users.totalPages}
-          />
+          <Pagination page={currentPage} totalPages={users.totalPages} />
         )}
       </div>
     </div>

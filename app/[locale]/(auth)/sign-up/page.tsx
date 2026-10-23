@@ -63,9 +63,7 @@ const SignUpPage = async (props: {
           </Link>
         </CardHeader>
 
-        <CardTitle className="text-center">
-          {t("createAccount")}
-        </CardTitle>
+        <CardTitle className="text-center">{t("createAccount")}</CardTitle>
 
         <CardDescription className="text-center">
           {t("description")}

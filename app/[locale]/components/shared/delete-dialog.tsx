@@ -20,9 +20,7 @@ const DeleteDialog = ({
   action,
 }: {
   id: string;
-  action: (
-    id: string,
-  ) => Promise<{ success: boolean; message: string }>;
+  action: (id: string) => Promise<{ success: boolean; message: string }>;
 }) => {
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -45,20 +43,14 @@ const DeleteDialog = ({
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger>
-        <Button
-          size="sm"
-          variant="destructive"
-          className="ml-2"
-        >
+        <Button size="sm" variant="destructive" className="ml-2">
           {t("delete")}
         </Button>
       </AlertDialogTrigger>
 
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>
-            {t("confirmTitle")}
-          </AlertDialogTitle>
+          <AlertDialogTitle>{t("confirmTitle")}</AlertDialogTitle>
 
           <AlertDialogDescription>
             {t("confirmDescription")}
@@ -66,9 +58,7 @@ const DeleteDialog = ({
         </AlertDialogHeader>
 
         <AlertDialogFooter>
-          <AlertDialogCancel>
-            {t("cancel")}
-          </AlertDialogCancel>
+          <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
 
           <Button
             variant="destructive"

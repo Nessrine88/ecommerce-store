@@ -1,8 +1,5 @@
 import { auth } from "@/auth";
-import {
-  deleteOrder,
-  getAllOrders,
-} from "@/lib/actions/order.actions";
+import { deleteOrder, getAllOrders } from "@/lib/actions/order.actions";
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import {
@@ -13,11 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/app/[locale]/components/ui/table";
-import {
-  formatCurrency,
-  formatDateTime,
-  formatId,
-} from "@/lib/utils";
+import { formatCurrency, formatDateTime, formatId } from "@/lib/utils";
 import { Link } from "@/navigation";
 import Pagination from "@/app/[locale]/components/shared/pagination";
 import { Button } from "@/app/[locale]/components/ui/button";
@@ -30,8 +23,7 @@ export const metadata: Metadata = {
 const AdminOrdersPage = async (props: {
   searchParams: Promise<{ page: string; query: string }>;
 }) => {
-  const { page = "1", query: searchText } =
-    await props.searchParams;
+  const { page = "1", query: searchText } = await props.searchParams;
 
   const session = await auth();
 
@@ -53,8 +45,7 @@ const AdminOrdersPage = async (props: {
 
         {searchText && (
           <div>
-            {t("filteredBy")}{" "}
-            <i>&quot;{searchText}&quot;</i>{" "}
+            {t("filteredBy")} <i>&quot;{searchText}&quot;</i>{" "}
             <Link href="/admin/orders">
               <Button variant="outline" size="sm">
                 {t("removeFilter")}
@@ -87,13 +78,9 @@ const AdminOrdersPage = async (props: {
                   {formatDateTime(order.createdAt).datetime}
                 </TableCell>
 
-                <TableCell>
-                  {order.user?.name}
-                </TableCell>
+                <TableCell>{order.user?.name}</TableCell>
 
-                <TableCell>
-                  {formatCurrency(order.totalPrice)}
-                </TableCell>
+                <TableCell>{formatCurrency(order.totalPrice)}</TableCell>
 
                 {/* Paid */}
                 <TableCell>
@@ -117,10 +104,7 @@ const AdminOrdersPage = async (props: {
                   </Link>
 
                   <div className="bg-red-700 rounded-sm">
-                    <DeleteDialog
-                      id={order.id}
-                      action={deleteOrder}
-                    />
+                    <DeleteDialog id={order.id} action={deleteOrder} />
                   </div>
                 </TableCell>
               </TableRow>
@@ -129,10 +113,7 @@ const AdminOrdersPage = async (props: {
         </Table>
 
         {orders.totalPages >= 1 && (
-          <Pagination
-            page={Number(page) || 1}
-            totalPages={orders.totalPages}
-          />
+          <Pagination page={Number(page) || 1} totalPages={orders.totalPages} />
         )}
       </div>
     </div>

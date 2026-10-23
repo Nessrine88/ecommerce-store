@@ -58,7 +58,6 @@ const PlaceOrderPage = async () => {
   return (
     <main className="w-full px-3 text-accent sm:px-6 lg:px-8">
       <div className="mx-auto flex w-full max-w-7xl flex-col items-center">
-
         {/* Checkout steps */}
         <div className="w-full overflow-x-auto py-4 sm:py-6">
           <CheckoutSteps current={3} />
@@ -71,7 +70,6 @@ const PlaceOrderPage = async () => {
 
         {/* Main checkout cards */}
         <div className="grid w-full grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-6">
-
           {/* Shipping Address */}
           <Card className="w-full">
             <CardContent className="p-4 sm:p-6">
@@ -88,15 +86,11 @@ const PlaceOrderPage = async () => {
               </div>
 
               <div className="space-y-1 text-sm sm:text-base">
-                <p className="font-medium">
-                  {userAddress.fullName}
-                </p>
+                <p className="font-medium">{userAddress.fullName}</p>
 
                 <p className="break-words text-muted-foreground">
-                  {userAddress.streetAddress},{" "}
-                  {userAddress.city}{" "}
-                  {userAddress.postalCode},{" "}
-                  {userAddress.country}
+                  {userAddress.streetAddress}, {userAddress.city}{" "}
+                  {userAddress.postalCode}, {userAddress.country}
                 </p>
               </div>
             </CardContent>
@@ -117,9 +111,7 @@ const PlaceOrderPage = async () => {
                 </Link>
               </div>
 
-              <p className="text-sm sm:text-base">
-                {user.paymentMethod}
-              </p>
+              <p className="text-sm sm:text-base">{user.paymentMethod}</p>
             </CardContent>
           </Card>
 
@@ -145,9 +137,7 @@ const PlaceOrderPage = async () => {
                     <TableRow>
                       <TableHead>{t("item")}</TableHead>
                       <TableHead>{t("qty")}</TableHead>
-                      <TableHead className="text-right">
-                        {t("price")}
-                      </TableHead>
+                      <TableHead className="text-right">{t("price")}</TableHead>
                     </TableRow>
                   </TableHeader>
 
@@ -173,14 +163,10 @@ const PlaceOrderPage = async () => {
                           </Link>
                         </TableCell>
 
-                        <TableCell>
-                          {item.qty}
-                        </TableCell>
+                        <TableCell>{item.qty}</TableCell>
 
                         <TableCell className="text-right">
-                          <CurrencyPrice
-                            price={Number(item.price)}
-                          />
+                          <CurrencyPrice price={Number(item.price)} />
                         </TableCell>
                       </TableRow>
                     ))}
@@ -215,9 +201,7 @@ const PlaceOrderPage = async () => {
                         </span>
 
                         <span className="font-medium text-foreground">
-                          <CurrencyPrice
-                            price={Number(item.price)}
-                          />
+                          <CurrencyPrice price={Number(item.price)} />
                         </span>
                       </div>
                     </div>
@@ -230,7 +214,6 @@ const PlaceOrderPage = async () => {
 
         {/* Bottom section */}
         <div className="mt-6 grid w-full grid-cols-1 gap-6 pb-10 lg:grid-cols-3 lg:gap-8">
-
           {/* Empty space on desktop */}
           <div className="hidden lg:col-span-2 lg:block" />
 
@@ -238,15 +221,12 @@ const PlaceOrderPage = async () => {
           <div className="w-full">
             <Card className="w-full">
               <CardContent className="space-y-3 p-4 sm:p-6">
-
                 {/* Items */}
                 <div className="flex items-center justify-between gap-4 text-sm sm:text-base">
                   <span>{t("items")}</span>
 
                   <span>
-                    <CurrencyPrice
-                      price={Number(cart.itemsPrice)}
-                    />
+                    <CurrencyPrice price={Number(cart.itemsPrice)} />
                   </span>
                 </div>
 
@@ -255,9 +235,7 @@ const PlaceOrderPage = async () => {
                   <span>{t("tax")}</span>
 
                   <span>
-                    <CurrencyPrice
-                      price={Number(cart.taxPrice)}
-                    />
+                    <CurrencyPrice price={Number(cart.taxPrice)} />
                   </span>
                 </div>
 
@@ -266,9 +244,7 @@ const PlaceOrderPage = async () => {
                   <span>{t("shipping")}</span>
 
                   <span>
-                    <CurrencyPrice
-                      price={Number(cart.shippingPrice)}
-                    />
+                    <CurrencyPrice price={Number(cart.shippingPrice)} />
                   </span>
                 </div>
 
@@ -279,12 +255,9 @@ const PlaceOrderPage = async () => {
                   <span>{t("total")}</span>
 
                   <span>
-                    <CurrencyPrice
-                      price={Number(cart.totalPrice)}
-                    />
+                    <CurrencyPrice price={Number(cart.totalPrice)} />
                   </span>
                 </div>
-
               </CardContent>
             </Card>
 

@@ -17,6 +17,7 @@ import {
   ilike,
   lte,
   SQL,
+  countDistinct,
 } from "drizzle-orm";
 import { PAGE_SIZE } from "../constants";
 import {
@@ -140,7 +141,7 @@ export async function getProductBySlug(
   };
 }
 
-// Get all products
+
 export async function getAllProducts({
   query,
   limit = PAGE_SIZE,
@@ -160,89 +161,45 @@ export async function getAllProducts({
   sort?: string;
   locale: string;
 }) {
-  const conditions: (SQL | undefined)[] =
-    [];
+  const conditions: (SQL | undefined)[] = [];
 
-  // Search in translated product name
+  // Search by translated product name.
   if (query && query !== "all") {
-    conditions.push(
-      ilike(
-        productTranslations.name,
-        `%${query}%`
-      )
-    );
+    conditions.push(ilike(productTranslations.name, `%${query}%`));
   }
 
-  // Category filter — category is now the category's slug,
-  // so we filter by joining through categories.slug
-  if (
-    category &&
-    category !== "all"
-  ) {
-    conditions.push(
-      eq(
-        categories.slug,
-        category
-      )
-    );
+  // Filter by category.
+  if (category && category !== "all") {
+    conditions.push(eq(categories.slug, category));
   }
 
-  // Price filter
-  if (
-    price &&
-    price !== "all"
-  ) {
-    const [
-      minStr,
-      maxStr,
-    ] = price.split("-");
-
+  // Filter by price range, e.g. "10-100".
+  if (price && price !== "all") {
+    const [minStr, maxStr] = price.split("-");
     const min = Number(minStr);
     const max = Number(maxStr);
 
-    if (!isNaN(min)) {
-      conditions.push(
-        gte(
-          products.price,
-          min.toString()
-        )
-      );
+    if (minStr !== "" && Number.isFinite(min)) {
+      conditions.push(gte(products.price, min.toString()));
     }
 
-    if (!isNaN(max)) {
-      conditions.push(
-        lte(
-          products.price,
-          max.toString()
-        )
-      );
+    if (maxStr !== "" && Number.isFinite(max)) {
+      conditions.push(lte(products.price, max.toString()));
     }
   }
 
-  // Rating filter
-  if (
-    rating &&
-    rating !== "all"
-  ) {
-    const ratingNum =
-      Number(rating);
+  // Filter by minimum rating.
+  if (rating && rating !== "all") {
+    const ratingNum = Number(rating);
 
-    if (!isNaN(ratingNum)) {
-      conditions.push(
-        gte(
-          products.rating,
-          ratingNum.toString()
-        )
-      );
+    if (Number.isFinite(ratingNum)) {
+      conditions.push(gte(products.rating, ratingNum.toString()));
     }
   }
 
-  const filters =
-    conditions.length > 0
-      ? and(...conditions)
-      : undefined;
+  const filters = conditions.length > 0 ? and(...conditions) : undefined;
 
-  // Sort
+  // Sort products.
   const orderBy =
     sort === "lowest"
       ? asc(products.price)
@@ -250,111 +207,64 @@ export async function getAllProducts({
         ? desc(products.price)
         : sort === "rating"
           ? desc(products.rating)
-          : desc(
-              products.createdAt
-            );
+          : desc(products.createdAt);
 
-  const [
-    data,
-    [{ dataCount }],
-  ] = await Promise.all([
-    // Products
+  // Fetch the current page and count matching products in parallel.
+  const [data, countResult] = await Promise.all([
     db
       .select({
         product: products,
-        translation:
-          productTranslations,
+        translation: productTranslations,
       })
       .from(products)
-      .innerJoin(
+      .leftJoin(
         productTranslations,
         and(
-          eq(
-            productTranslations.productId,
-            products.id
-          ),
-          eq(
-            productTranslations.locale,
-            locale
-          )
+          eq(productTranslations.productId, products.id),
+          eq(productTranslations.locale, locale)
         )
       )
-      .leftJoin(
-        categories,
-        eq(
-          products.categoryId,
-          categories.id
-        )
-      )
+      .leftJoin(categories, eq(products.categoryId, categories.id))
       .where(filters)
       .orderBy(orderBy)
       .limit(limit)
-      .offset(
-        (page - 1) * limit
-      ),
+      .offset((page - 1) * limit),
 
-    // Count
     db
       .select({
-        dataCount: count(),
+        dataCount: countDistinct(products.id),
       })
       .from(products)
-      .innerJoin(
+      .leftJoin(
         productTranslations,
         and(
-          eq(
-            productTranslations.productId,
-            products.id
-          ),
-          eq(
-            productTranslations.locale,
-            locale
-          )
+          eq(productTranslations.productId, products.id),
+          eq(productTranslations.locale, locale)
         )
       )
-      .leftJoin(
-        categories,
-        eq(
-          products.categoryId,
-          categories.id
-        )
-      )
+      .leftJoin(categories, eq(products.categoryId, categories.id))
       .where(filters),
   ]);
 
+  const dataCount = countResult[0]?.dataCount ?? 0;
+
   return {
-    data: data.map(
-      ({
-        product,
-        translation,
-      }) => ({
-        ...product,
+    data: data.map(({ product, translation }) => ({
+      ...product,
 
-        // Localized fields
-        name: translation.name,
+      // Use translated values when available.
+      // These empty-string fallbacks avoid returning null.
+      // They do not recover a default name or description.
+      name: translation?.name ?? "",
+      description: translation?.description ?? "",
 
-        description:
-          translation.description,
+      images: product.images ?? [],
+      brand: product.brand ?? "",
+      price: product.price.toString(),
+      rating: Number(product.rating ?? 0),
+    })),
 
-        // Normalize DB values
-        images:
-          product.images ?? [],
-
-        brand:
-          product.brand ?? "",
-
-        price:
-          product.price.toString(),
-
-        rating: Number(
-          product.rating ?? 0
-        ),
-      })
-    ),
-
-    totalPages: Math.ceil(
-      dataCount / limit
-    ),
+    totalPages: Math.ceil(dataCount / limit),
   };
 }
 
@@ -402,60 +312,80 @@ export async function createProduct(
   data: z.infer<typeof insertProductSchema>
 ) {
   try {
-    const product =
-      insertProductSchema.parse(
-        data
-      );
+    // 1. Validate the submitted form data
+    const product = insertProductSchema.parse(data);
 
-    const productToInsert = {
-      ...product,
-      images:
-        product.images ?? [],
-    };
+    // 2. Separate translations from the base product fields
+    const {
+      nameAr,
+      descriptionAr,
+      nameFr,
+      descriptionFr,
+      ...productData
+    } = product;
 
-    await db
-      .insert(products)
-      .values(productToInsert)
-      .returning();
+    // 3. Insert the product and translations atomically
+    await db.transaction(async (tx) => {
+      const [newProduct] = await tx
+        .insert(products)
+        .values({
+          ...productData,
+          images: productData.images ?? [],
+        })
+        .returning();
 
-    revalidatePath(
-      "/admin/products"
-    );
+      if (!newProduct) {
+        throw new Error("Failed to create product");
+      }
+
+      // English translation
+      const translations = [
+        {
+          productId: newProduct.id,
+          locale: "en",
+          name: productData.name,
+          description: productData.description,
+        },
+
+        // Arabic translation, when both fields are provided
+        ...(nameAr?.trim() && descriptionAr?.trim()
+          ? [
+              {
+                productId: newProduct.id,
+                locale: "ar",
+                name: nameAr.trim(),
+                description: descriptionAr.trim(),
+              },
+            ]
+          : []),
+
+        // French translation, when both fields are provided
+        ...(nameFr?.trim() && descriptionFr?.trim()
+          ? [
+              {
+                productId: newProduct.id,
+                locale: "fr",
+                name: nameFr.trim(),
+                description: descriptionFr.trim(),
+              },
+            ]
+          : []),
+      ];
+
+      await tx
+        .insert(productTranslations)
+        .values(translations);
+    });
+
+    // 4. Refresh the admin products page
+    revalidatePath("/admin/products");
 
     return {
       success: true,
-      message:
-        "Product created successfully",
+      message: "Product created successfully",
     };
   } catch (error) {
-    console.error(
-      "FULL ERROR:",
-      error
-    );
-
-    if (error instanceof Error) {
-      console.error(
-        "ERROR NAME:",
-        error.name
-      );
-
-      console.error(
-        "ERROR MESSAGE:",
-        error.message
-      );
-
-      console.error(
-        "ERROR STACK:",
-        error.stack
-      );
-
-      if ("cause" in error) {
-        console.error(
-          "ERROR CAUSE:",
-          error.cause
-        );
-      }
-    }
+    console.error("createProduct error:", error);
 
     return {
       success: false,
@@ -472,58 +402,101 @@ export async function updateProduct(
   data: z.infer<typeof updateProductsSchema>
 ) {
   try {
-    const product =
-      updateProductsSchema.parse(
-        data
-      );
+    const product = updateProductsSchema.parse(data);
 
     const {
       id,
+      nameAr,
+      descriptionAr,
+      nameFr,
+      descriptionFr,
       ...updateData
     } = product;
 
-    const updated = await db
-      .update(products)
-      .set(updateData)
-      .where(
-        eq(products.id, id)
-      )
-      .returning();
+    const updatedProduct = await db.transaction(async (tx) => {
+      // 1. Update the base product
+      const [updated] = await tx
+        .update(products)
+        .set(updateData)
+        .where(eq(products.id, id))
+        .returning();
 
-    if (updated.length === 0) {
-      throw new Error(
-        "Product not found or update failed"
-      );
-    }
+      if (!updated) {
+        throw new Error("Product not found or update failed");
+      }
 
-    revalidatePath(
-      "/admin/products"
-    );
+      // 2. Prepare translations
+      const translations = [
+        {
+          productId: id,
+          locale: "en",
+          name: updateData.name,
+          description: updateData.description,
+        },
+        ...(nameAr?.trim() && descriptionAr?.trim()
+          ? [
+              {
+                productId: id,
+                locale: "ar",
+                name: nameAr.trim(),
+                description: descriptionAr.trim(),
+              },
+            ]
+          : []),
+        ...(nameFr?.trim() && descriptionFr?.trim()
+          ? [
+              {
+                productId: id,
+                locale: "fr",
+                name: nameFr.trim(),
+                description: descriptionFr.trim(),
+              },
+            ]
+          : []),
+      ];
 
-    revalidatePath(
-      `/admin/products/${id}`
-    );
+      // 3. Insert missing translations or update existing ones
+      for (const translation of translations) {
+        await tx
+          .insert(productTranslations)
+          .values(translation)
+          .onConflictDoUpdate({
+            target: [
+              productTranslations.productId,
+              productTranslations.locale,
+            ],
+            set: {
+              name: translation.name,
+              description: translation.description,
+            },
+          });
+      }
+
+      return updated;
+    });
+
+    // 4. Revalidate relevant pages
+    revalidatePath("/admin/products");
+    revalidatePath(`/admin/products/${id}`);
+
+    revalidatePath(`/en/product/${updatedProduct.slug}`);
+    revalidatePath(`/fr/product/${updatedProduct.slug}`);
+    revalidatePath(`/ar/product/${updatedProduct.slug}`);
 
     return {
       success: true,
-      message:
-        "Product updated successfully",
-      data: updated[0],
+      message: "Product updated successfully",
+      data: updatedProduct,
     };
   } catch (error) {
-    console.error(
-      "updateProduct error:",
-      error
-    );
+    console.error("updateProduct error:", error);
 
     return {
       success: false,
-      message:
-        formatError(error),
+      message: formatError(error),
     };
   }
 }
-
 // Get single product by ID
 export async function getProductById(
   productId: string

@@ -25,11 +25,7 @@ import { Button } from "@/app/[locale]/components/ui/button";
 import { ArrowRight, Loader } from "lucide-react";
 import { updateUserAddress } from "@/lib/actions/user.actions";
 
-const ShippingAddressForm = ({
-  address,
-}: {
-  address: ShippingAddress;
-}) => {
+const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
   const t = useTranslations("ShippingAddress");
 
   const router = useRouter();
@@ -41,9 +37,7 @@ const ShippingAddressForm = ({
 
   const [isPending, startTransition] = useTransition();
 
-  const onSubmit = (
-    values: z.infer<typeof shippingAddressSchema>,
-  ) => {
+  const onSubmit = (values: z.infer<typeof shippingAddressSchema>) => {
     startTransition(async () => {
       const res = await updateUserAddress(values);
 
@@ -58,13 +52,9 @@ const ShippingAddressForm = ({
 
   return (
     <div className="my-5 mx-auto max-w-2xl space-y-4 px-4 text-accent sm:px-6">
-      <h1 className="h2-bold mt-4">
-        {t("title")}
-      </h1>
+      <h1 className="h2-bold mt-4">{t("title")}</h1>
 
-      <p className="text-sm text-muted-foreground">
-        {t("description")}
-      </p>
+      <p className="text-sm text-muted-foreground">{t("description")}</p>
 
       <Form {...form}>
         <form
@@ -79,15 +69,10 @@ const ShippingAddressForm = ({
               name="fullName"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>
-                    {t("fullName")}
-                  </FormLabel>
+                  <FormLabel>{t("fullName")}</FormLabel>
 
                   <FormControl>
-                    <Input
-                      placeholder={t("fullNamePlaceholder")}
-                      {...field}
-                    />
+                    <Input placeholder={t("fullNamePlaceholder")} {...field} />
                   </FormControl>
 
                   <FormMessage />
@@ -103,15 +88,10 @@ const ShippingAddressForm = ({
               name="streetAddress"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>
-                    {t("address")}
-                  </FormLabel>
+                  <FormLabel>{t("address")}</FormLabel>
 
                   <FormControl>
-                    <Input
-                      placeholder={t("addressPlaceholder")}
-                      {...field}
-                    />
+                    <Input placeholder={t("addressPlaceholder")} {...field} />
                   </FormControl>
 
                   <FormMessage />
@@ -127,15 +107,10 @@ const ShippingAddressForm = ({
               name="city"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>
-                    {t("city")}
-                  </FormLabel>
+                  <FormLabel>{t("city")}</FormLabel>
 
                   <FormControl>
-                    <Input
-                      placeholder={t("cityPlaceholder")}
-                      {...field}
-                    />
+                    <Input placeholder={t("cityPlaceholder")} {...field} />
                   </FormControl>
 
                   <FormMessage />
@@ -151,15 +126,10 @@ const ShippingAddressForm = ({
               name="country"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>
-                    {t("country")}
-                  </FormLabel>
+                  <FormLabel>{t("country")}</FormLabel>
 
                   <FormControl>
-                    <Input
-                      placeholder={t("countryPlaceholder")}
-                      {...field}
-                    />
+                    <Input placeholder={t("countryPlaceholder")} {...field} />
                   </FormControl>
 
                   <FormMessage />
@@ -172,9 +142,7 @@ const ShippingAddressForm = ({
               name="postalCode"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>
-                    {t("postalCode")}
-                  </FormLabel>
+                  <FormLabel>{t("postalCode")}</FormLabel>
 
                   <FormControl>
                     <Input
@@ -200,10 +168,7 @@ const ShippingAddressForm = ({
                 <Loader className="h-4 w-4 animate-spin" />
               ) : (
                 <ArrowRight className="h-4 w-4" />
-              )}
-
-              {" "}
-
+              )}{" "}
               {t("continue")}
             </Button>
           </div>

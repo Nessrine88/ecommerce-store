@@ -1,4 +1,3 @@
-
 "use client";
 
 import { createContext, useContext, useState, ReactNode } from "react";
@@ -9,7 +8,7 @@ type CurrencyContextType = {
 };
 
 const CurrencyContext = createContext<CurrencyContextType | undefined>(
-  undefined
+  undefined,
 );
 
 export function CurrencyProvider({ children }: { children: ReactNode }) {

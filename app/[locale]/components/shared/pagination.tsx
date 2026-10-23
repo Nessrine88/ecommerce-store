@@ -15,7 +15,7 @@ const Pagination = ({ page, totalPages, urlParamName }: PaginationProps) => {
   const t = useTranslations("Pagination");
 
   const router = useRouter();
-  const pathname = usePathname(); // "/admin/products", no locale
+  const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const currentPage = Number(page) || 1;
@@ -27,7 +27,7 @@ const Pagination = ({ page, totalPages, urlParamName }: PaginationProps) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set(urlParamName || "page", String(pageValue));
 
-    router.push(`${pathname}?${params.toString()}`); // becomes /en/admin/products?page=2
+    router.push(`${pathname}?${params.toString()}`);
   };
 
   return (

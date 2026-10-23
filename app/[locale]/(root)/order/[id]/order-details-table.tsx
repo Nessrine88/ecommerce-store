@@ -63,9 +63,7 @@ const OrderDetailsTable = ({
           startTransition(async () => {
             const res = await updateOrderToPaidCOD(order.id);
 
-            res.success
-              ? toast.success(res.message)
-              : toast.error(res.message);
+            res.success ? toast.success(res.message) : toast.error(res.message);
           })
         }
       >
@@ -86,9 +84,7 @@ const OrderDetailsTable = ({
           startTransition(async () => {
             const res = await deliverOrder(order.id);
 
-            res.success
-              ? toast.success(res.message)
-              : toast.error(res.message);
+            res.success ? toast.success(res.message) : toast.error(res.message);
           })
         }
       >
@@ -106,17 +102,12 @@ const OrderDetailsTable = ({
 
       <div className="grid gap-5 md:grid-cols-3">
         <div className="col-span-2 space-y-4 overflow-x-auto">
-
           {/* Payment */}
           <Card className="rounded-xl border shadow-sm">
             <CardContent className="space-y-3 p-4">
-              <h2 className="text-xl font-medium">
-                {t("paymentMethod")}
-              </h2>
+              <h2 className="text-xl font-medium">{t("paymentMethod")}</h2>
 
-              <p className="text-sm text-muted-foreground">
-                {paymentMethod}
-              </p>
+              <p className="text-sm text-muted-foreground">{paymentMethod}</p>
 
               {isPaid ? (
                 <Badge variant="secondary">
@@ -125,9 +116,7 @@ const OrderDetailsTable = ({
                   })}
                 </Badge>
               ) : (
-                <Badge variant="destructive">
-                  {t("notPaid")}
-                </Badge>
+                <Badge variant="destructive">{t("notPaid")}</Badge>
               )}
             </CardContent>
           </Card>
@@ -135,9 +124,7 @@ const OrderDetailsTable = ({
           {/* Shipping */}
           <Card className="rounded-xl border shadow-sm">
             <CardContent className="space-y-3 p-4">
-              <h2 className="text-xl font-medium">
-                {t("shippingAddress")}
-              </h2>
+              <h2 className="text-xl font-medium">{t("shippingAddress")}</h2>
 
               <div className="space-y-0.5 text-sm text-muted-foreground">
                 <p className="font-medium text-foreground">
@@ -145,13 +132,11 @@ const OrderDetailsTable = ({
                 </p>
 
                 <p>
-                  {shippingAddress.streetAddress},{" "}
-                  {shippingAddress.city}
+                  {shippingAddress.streetAddress}, {shippingAddress.city}
                 </p>
 
                 <p>
-                  {shippingAddress.postalCode},{" "}
-                  {shippingAddress.country}
+                  {shippingAddress.postalCode}, {shippingAddress.country}
                 </p>
               </div>
 
@@ -162,9 +147,7 @@ const OrderDetailsTable = ({
                   })}
                 </Badge>
               ) : (
-                <Badge variant="destructive">
-                  {t("notDelivered")}
-                </Badge>
+                <Badge variant="destructive">{t("notDelivered")}</Badge>
               )}
             </CardContent>
           </Card>
@@ -172,9 +155,7 @@ const OrderDetailsTable = ({
           {/* Order Items */}
           <Card className="rounded-xl border shadow-sm">
             <CardContent className="p-4">
-              <h2 className="pb-4 text-xl font-medium">
-                {t("orderItems")}
-              </h2>
+              <h2 className="pb-4 text-xl font-medium">{t("orderItems")}</h2>
 
               <Table>
                 <TableHeader>
@@ -185,9 +166,7 @@ const OrderDetailsTable = ({
                       {t("quantity")}
                     </TableHead>
 
-                    <TableHead className="text-right">
-                      {t("price")}
-                    </TableHead>
+                    <TableHead className="text-right">{t("price")}</TableHead>
                   </TableRow>
                 </TableHeader>
 
@@ -210,15 +189,11 @@ const OrderDetailsTable = ({
                             className="rounded-md border object-cover"
                           />
 
-                          <span className="line-clamp-2">
-                            {item.name}
-                          </span>
+                          <span className="line-clamp-2">{item.name}</span>
                         </Link>
                       </TableCell>
 
-                      <TableCell className="text-center">
-                        {item.qty}
-                      </TableCell>
+                      <TableCell className="text-center">{item.qty}</TableCell>
 
                       <TableCell className="text-right">
                         {formatCurrency(item.price, currency)}
@@ -233,38 +208,24 @@ const OrderDetailsTable = ({
 
         {/* Order Summary */}
         <div className="mb-4 space-y-4 md:sticky md:top-4 md:self-start">
-
           <Card className="rounded-xl border shadow-sm">
             <CardContent className="space-y-2 p-4">
-
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">
-                  {t("items")}
-                </span>
+                <span className="text-muted-foreground">{t("items")}</span>
 
-                <span>
-                  {formatCurrency(itemsPrice, currency)}
-                </span>
+                <span>{formatCurrency(itemsPrice, currency)}</span>
               </div>
 
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">
-                  {t("tax")}
-                </span>
+                <span className="text-muted-foreground">{t("tax")}</span>
 
-                <span>
-                  {formatCurrency(taxPrice, currency)}
-                </span>
+                <span>{formatCurrency(taxPrice, currency)}</span>
               </div>
 
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">
-                  {t("shipping")}
-                </span>
+                <span className="text-muted-foreground">{t("shipping")}</span>
 
-                <span>
-                  {formatCurrency(shippingPrice, currency)}
-                </span>
+                <span>{formatCurrency(shippingPrice, currency)}</span>
               </div>
 
               <div className="my-1 h-px bg-border" />
@@ -272,39 +233,32 @@ const OrderDetailsTable = ({
               <div className="flex justify-between text-lg font-semibold">
                 <span>{t("total")}</span>
 
-                <span>
-                  {formatCurrency(totalPrice, currency)}
-                </span>
+                <span>{formatCurrency(totalPrice, currency)}</span>
               </div>
-
             </CardContent>
           </Card>
 
           {/* Payment action - Stripe */}
-          {!isPaid &&
-            paymentMethod === "Stripe" &&
-            stripeClientSecret && (
-              <Card className="rounded-xl border shadow-sm">
-                <CardContent className="p-4">
-                  <StripePayment
-                    priceInCents={Number(order.totalPrice) * 100}
-                    orderId={order.id}
-                    clientSecret={stripeClientSecret}
-                  />
-                </CardContent>
-              </Card>
-            )}
+          {!isPaid && paymentMethod === "Stripe" && stripeClientSecret && (
+            <Card className="rounded-xl border shadow-sm">
+              <CardContent className="p-4">
+                <StripePayment
+                  priceInCents={Number(order.totalPrice) * 100}
+                  orderId={order.id}
+                  clientSecret={stripeClientSecret}
+                />
+              </CardContent>
+            </Card>
+          )}
 
           {/* Payment action - COD */}
-          {isAdmin &&
-            !isPaid &&
-            paymentMethod === "CashOnDelivery" && (
-              <Card className="rounded-xl border shadow-sm">
-                <CardContent className="p-4">
-                  <MarkAsPaidButton />
-                </CardContent>
-              </Card>
-            )}
+          {isAdmin && !isPaid && paymentMethod === "CashOnDelivery" && (
+            <Card className="rounded-xl border shadow-sm">
+              <CardContent className="p-4">
+                <MarkAsPaidButton />
+              </CardContent>
+            </Card>
+          )}
 
           {/* Delivery action */}
           {isAdmin && !isDelivered && (

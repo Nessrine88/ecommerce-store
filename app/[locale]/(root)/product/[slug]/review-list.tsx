@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Reviews } from "@/types";
@@ -10,11 +9,7 @@ import { useTranslations } from "next-intl";
 import ReviewForm from "./review-form";
 import { getReviews } from "@/lib/actions/review.action";
 import { formatDateTime } from "@/lib/utils";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-} from "@/app/[locale]/components/ui/card";
+import { Card, CardHeader, CardTitle } from "@/app/[locale]/components/ui/card";
 
 const ReviewList = ({
   userId,
@@ -50,14 +45,10 @@ const ReviewList = ({
   return (
     <div className="space-y-4">
       {/* Loading */}
-      {loading && reviews.length === 0 && (
-        <div>{t("loadingReviews")}</div>
-      )}
+      {loading && reviews.length === 0 && <div>{t("loadingReviews")}</div>}
 
       {/* Empty state */}
-      {!loading && reviews.length === 0 && (
-        <div>{t("noReviews")}</div>
-      )}
+      {!loading && reviews.length === 0 && <div>{t("noReviews")}</div>}
 
       {/* Review form / Sign in */}
       {userId ? (
@@ -82,14 +73,9 @@ const ReviewList = ({
       {/* Reviews */}
       <div className="flex flex-col gap-3">
         {reviews.map((review) => (
-          <Card
-            key={review.id}
-            className="my-5 rounded-lg border p-4"
-          >
+          <Card key={review.id} className="my-5 rounded-lg border p-4">
             <CardHeader className="flex items-center justify-between">
-              <CardTitle className="font-semibold">
-                {review.title}
-              </CardTitle>
+              <CardTitle className="font-semibold">{review.title}</CardTitle>
 
               <div className="flex items-center gap-0.5">
                 {Array.from({ length: 5 }).map((_, i) => (
@@ -105,20 +91,14 @@ const ReviewList = ({
               </div>
             </CardHeader>
 
-            <p className="mt-2 text-sm text-muted">
-              {review.description}
-            </p>
+            <p className="mt-2 text-sm text-muted">{review.description}</p>
 
             <div className="mt-3 flex items-center gap-2 text-xs text-muted">
-              <span>
-                {review.user?.name ?? t("anonymous")}
-              </span>
+              <span>{review.user?.name ?? t("anonymous")}</span>
 
               <span>·</span>
 
-              <span>
-                {formatDateTime(review.createdAt).datetime}
-              </span>
+              <span>{formatDateTime(review.createdAt).datetime}</span>
             </div>
           </Card>
         ))}
@@ -128,4 +108,3 @@ const ReviewList = ({
 };
 
 export default ReviewList;
-

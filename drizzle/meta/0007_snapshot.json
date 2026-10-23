@@ -103,12 +103,8 @@
           "name": "accounts_userId_User_id_fk",
           "tableFrom": "accounts",
           "tableTo": "User",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -186,12 +182,8 @@
           "name": "Cart_userId_User_id_fk",
           "tableFrom": "Cart",
           "tableTo": "User",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -309,12 +301,8 @@
           "name": "CategoryTranslation_categoryId_Category_id_fk",
           "tableFrom": "CategoryTranslation",
           "tableTo": "Category",
-          "columnsFrom": [
-            "categoryId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["categoryId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -377,10 +365,7 @@
       "compositePrimaryKeys": {
         "OrderItem_orderId_productId_pk": {
           "name": "OrderItem_orderId_productId_pk",
-          "columns": [
-            "orderId",
-            "productId"
-          ]
+          "columns": ["orderId", "productId"]
         }
       },
       "uniqueConstraints": {},
@@ -487,12 +472,8 @@
           "name": "Order_userId_User_id_fk",
           "tableFrom": "Order",
           "tableTo": "User",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -567,12 +548,8 @@
           "name": "ProductTranslation_productId_Product_id_fk",
           "tableFrom": "ProductTranslation",
           "tableTo": "Product",
-          "columnsFrom": [
-            "productId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["productId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -700,12 +677,8 @@
           "name": "Product_categoryId_Category_id_fk",
           "tableFrom": "Product",
           "tableTo": "Category",
-          "columnsFrom": [
-            "categoryId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["categoryId"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -778,12 +751,8 @@
           "name": "Review_userId_User_id_fk",
           "tableFrom": "Review",
           "tableTo": "User",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -791,12 +760,8 @@
           "name": "Review_productId_Product_id_fk",
           "tableFrom": "Review",
           "tableTo": "Product",
-          "columnsFrom": [
-            "productId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["productId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -836,12 +801,8 @@
           "name": "sessions_userId_User_id_fk",
           "tableFrom": "sessions",
           "tableTo": "User",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -974,10 +935,7 @@
       "compositePrimaryKeys": {
         "verification_tokens_identifier_token_pk": {
           "name": "verification_tokens_identifier_token_pk",
-          "columns": [
-            "identifier",
-            "token"
-          ]
+          "columns": ["identifier", "token"]
         }
       },
       "uniqueConstraints": {},

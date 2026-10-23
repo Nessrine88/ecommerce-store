@@ -7,10 +7,8 @@ const ViewAllProduct = async () => {
 
   return (
     <div className="flex justify-center items-center my-8">
-      <Button  className="px-8 py-4 text-lg font-semibold">
-        <Link href={`/search`}>
-          {t("viewAllProducts")}
-        </Link>
+      <Button className="px-8 py-4 text-lg font-semibold">
+        <Link href={`/search`}>{t("viewAllProducts")}</Link>
       </Button>
     </div>
   );

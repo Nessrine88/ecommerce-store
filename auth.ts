@@ -125,23 +125,23 @@ export const config: NextAuthConfig = {
       return token;
     },
 
-authorized({ request, auth }: any) {
-  const protectedPaths = [
-    /\/shipping-address/,
-    /\/payment-method/,
-    /\/place-order/,
-    /\/profile/,
-    /\/user/,
-    /\/order/,
-    /\/admin/,
-  ];
+    authorized({ request, auth }: any) {
+      const protectedPaths = [
+        /\/shipping-address/,
+        /\/payment-method/,
+        /\/place-order/,
+        /\/profile/,
+        /\/user/,
+        /\/order/,
+        /\/admin/,
+      ];
 
-  const { pathname } = request.nextUrl;
+      const { pathname } = request.nextUrl;
 
-  if (!auth && protectedPaths.some((p) => p.test(pathname))) return false;
+      if (!auth && protectedPaths.some((p) => p.test(pathname))) return false;
 
-  return true;
-},
+      return true;
+    },
   },
 };
 

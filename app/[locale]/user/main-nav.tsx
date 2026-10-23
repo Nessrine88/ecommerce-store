@@ -35,9 +35,7 @@ const MainNav = ({
           href={item.href}
           className={cn(
             "text-sm font-medium transition-colors hover:text-primary",
-            pathname.includes(item.href)
-              ? "underline underline-offset-8"
-              : "",
+            pathname.includes(item.href) ? "underline underline-offset-8" : "",
           )}
         >
           {t(item.key)}

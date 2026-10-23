@@ -29,31 +29,21 @@ function SignUpButton() {
 export default function SignUpForm() {
   const t = useTranslations("SignUp");
 
-  const [data, action] = useActionState(
-    signUpUser,
-    {
-      success: false,
-      message: "",
-    }
-  );
+  const [data, action] = useActionState(signUpUser, {
+    success: false,
+    message: "",
+  });
 
   const searchParams = useSearchParams();
 
-  const callbackUrl =
-    searchParams.get("callbackUrl") || "/";
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
 
   return (
     <form action={action} className="space-y-6">
-      <input
-        type="hidden"
-        name="callbackUrl"
-        value={callbackUrl}
-      />
+      <input type="hidden" name="callbackUrl" value={callbackUrl} />
 
       <div className="space-y-2">
-        <Label htmlFor="name">
-          {t("name")}
-        </Label>
+        <Label htmlFor="name">{t("name")}</Label>
 
         <Input
           id="name"
@@ -66,9 +56,7 @@ export default function SignUpForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="email">
-          {t("email")}
-        </Label>
+        <Label htmlFor="email">{t("email")}</Label>
 
         <Input
           id="email"
@@ -81,9 +69,7 @@ export default function SignUpForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="password">
-          {t("password")}
-        </Label>
+        <Label htmlFor="password">{t("password")}</Label>
 
         <Input
           id="password"
@@ -97,9 +83,7 @@ export default function SignUpForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="confirmPassword">
-          {t("confirmPassword")}
-        </Label>
+        <Label htmlFor="confirmPassword">{t("confirmPassword")}</Label>
 
         <Input
           id="confirmPassword"

@@ -8,9 +8,7 @@ const SelectedLanguage = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const getSelectedValue = (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
+  const getSelectedValue = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newLocale = e.target.value;
 
     router.replace(pathname, { locale: newLocale });

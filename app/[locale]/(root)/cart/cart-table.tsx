@@ -4,15 +4,8 @@ import { useRouter } from "@/navigation";
 import { toast } from "sonner";
 import { useTransition } from "react";
 import { useTranslations } from "next-intl";
-import {
-  addItemToCart,
-  removeItemFromCart,
-} from "@/lib/actions/cart.actions";
-import {
-  Loader,
-  Minus,
-  Plus,
-} from "lucide-react";
+import { addItemToCart, removeItemFromCart } from "@/lib/actions/cart.actions";
+import { Loader, Minus, Plus } from "lucide-react";
 import { Link } from "@/navigation";
 import Image from "next/image";
 import { Cart } from "@/types";
@@ -26,10 +19,7 @@ import {
 } from "@/app/[locale]/components/ui/table";
 import { Button } from "@base-ui/react";
 import { formatCurrency } from "@/lib/utils";
-import {
-  Card,
-  CardContent,
-} from "@/app/[locale]/components/ui/card";
+import { Card, CardContent } from "@/app/[locale]/components/ui/card";
 import { useCurrency } from "../../context/currency-context";
 
 const CartTable = ({ cart }: { cart?: Cart }) => {
@@ -37,7 +27,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
   const [isPending, startTransition] = useTransition();
 
   const t = useTranslations("Cart");
-const {currency}  = useCurrency();
+  const { currency } = useCurrency();
   return (
     <div className="flex-1 max-w-7xl mx-auto text-accent px-4 sm:px-0">
       {!cart || cart.items.length === 0 ? (
@@ -56,17 +46,13 @@ const {currency}  = useCurrency();
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="text-center">
-                      {t("name")}
-                    </TableHead>
+                    <TableHead className="text-center">{t("name")}</TableHead>
 
                     <TableHead className="text-center">
                       {t("quantity")}
                     </TableHead>
 
-                    <TableHead className="text-right">
-                      {t("price")}
-                    </TableHead>
+                    <TableHead className="text-right">{t("price")}</TableHead>
                   </TableRow>
                 </TableHeader>
 
@@ -86,9 +72,7 @@ const {currency}  = useCurrency();
                             className="shrink-0"
                           />
 
-                          <span className="px-2 line-clamp-2">
-                            {item.name}
-                          </span>
+                          <span className="px-2 line-clamp-2">{item.name}</span>
                         </Link>
                       </TableCell>
 
@@ -116,9 +100,7 @@ const {currency}  = useCurrency();
                             )}
                           </Button>
 
-                          <span className="w-6 text-center">
-                            {item.qty}
-                          </span>
+                          <span className="w-6 text-center">{item.qty}</span>
 
                           <Button
                             disabled={isPending}
@@ -161,10 +143,7 @@ const {currency}  = useCurrency();
                   key={item.slug}
                   className="flex items-center gap-3 border rounded-md p-3"
                 >
-                  <Link
-                    href={`/product/${item.slug}`}
-                    className="shrink-0"
-                  >
+                  <Link href={`/product/${item.slug}`} className="shrink-0">
                     <Image
                       src={item.image}
                       alt={item.name}
@@ -209,9 +188,7 @@ const {currency}  = useCurrency();
                         )}
                       </Button>
 
-                      <span className="w-6 text-center">
-                        {item.qty}
-                      </span>
+                      <span className="w-6 text-center">{item.qty}</span>
 
                       <Button
                         disabled={isPending}
@@ -247,11 +224,7 @@ const {currency}  = useCurrency();
             <CardContent className="p-4">
               <div className="text-sm sm:text-base">
                 {t("subtotal")} (
-                {cart.items.reduce(
-                  (total, item) => total + item.qty,
-                  0,
-                )}
-                )
+                {cart.items.reduce((total, item) => total + item.qty, 0)})
               </div>
 
               <div className="text-lg sm:text-xl font-semibold mt-1">

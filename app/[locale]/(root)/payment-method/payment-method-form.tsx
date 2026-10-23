@@ -10,10 +10,7 @@ import { useTranslations } from "next-intl";
 
 import { paymentMethodSchema } from "@/lib/validators";
 import CheckoutSteps from "@/app/[locale]/components/shared/checkout-steps";
-import {
-  DEFAULT_PAYMENT_METHOD,
-  PAYMENT_METHODS,
-} from "@/lib/constants";
+import { DEFAULT_PAYMENT_METHOD, PAYMENT_METHODS } from "@/lib/constants";
 import { updateUserPaymentMethod } from "@/lib/actions/user.actions";
 
 import { Button } from "@/app/[locale]/components/ui/button";
@@ -50,9 +47,7 @@ const PaymentMethodForm = ({
 
   const [isPending, startTransition] = useTransition();
 
-  const onSubmit = (
-    values: z.infer<typeof paymentMethodSchema>,
-  ) => {
+  const onSubmit = (values: z.infer<typeof paymentMethodSchema>) => {
     startTransition(async () => {
       const res = await updateUserPaymentMethod(values);
 
@@ -83,13 +78,9 @@ const PaymentMethodForm = ({
       <CheckoutSteps current={2} />
 
       <div className="mx-auto w-full max-w-md space-y-4">
-        <h1 className="h2-bold mt-4">
-          {t("title")}
-        </h1>
+        <h1 className="h2-bold mt-4">{t("title")}</h1>
 
-        <p className="text-sm text-muted-foreground">
-          {t("description")}
-        </p>
+        <p className="text-sm text-muted-foreground">{t("description")}</p>
 
         <Form {...form}>
           <form

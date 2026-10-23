@@ -1,4 +1,3 @@
-
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { Star } from "lucide-react";
@@ -71,8 +70,6 @@ const ProductDetailsPage = async ({
           <div className="md:col-span-4">
             <div className="flex flex-col gap-6">
               <div>
-                
-
                 <h1 className="mt-2 text-3xl font-semibold tracking-tight text-foreground">
                   {product.name}
                 </h1>
@@ -95,9 +92,7 @@ const ProductDetailsPage = async ({
 
                 <span>
                   {Number(product.rating)} · {product.numReviews}{" "}
-                  {product.numReviews === 1
-                    ? t("review")
-                    : t("reviews")}
+                  {product.numReviews === 1 ? t("review") : t("reviews")}
                 </span>
               </div>
 
@@ -146,13 +141,9 @@ const ProductDetailsPage = async ({
                     </span>
 
                     {inStock ? (
-                      <Badge variant="outline">
-                        {t("stock")}
-                      </Badge>
+                      <Badge variant="outline">{t("stock")}</Badge>
                     ) : (
-                      <Badge variant="destructive">
-                        {t("notStock")}
-                      </Badge>
+                      <Badge variant="destructive">{t("notStock")}</Badge>
                     )}
                   </div>
 
@@ -189,9 +180,7 @@ const ProductDetailsPage = async ({
 
       {/* Customer Reviews */}
       <section className="h-full w-full py-8 text-accent">
-        <h2 className="font-bold">
-           {t("details.customerReviews")}
-        </h2>
+        <h2 className="font-bold">{t("details.customerReviews")}</h2>
 
         <ReviewList
           userId={userId || ""}
@@ -204,4 +193,3 @@ const ProductDetailsPage = async ({
 };
 
 export default ProductDetailsPage;
-

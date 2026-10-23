@@ -7,7 +7,6 @@ import React, { useEffect, useState } from "react";
 const AdminSearch = () => {
   const pathname = usePathname();
 
-
   const formActionUrl = pathname.includes("/admin/orders")
     ? `/admin/orders`
     : pathname.includes("/admin/users")
@@ -16,9 +15,7 @@ const AdminSearch = () => {
 
   const searchParams = useSearchParams();
 
-  const [queryValue, setQueryValue] = useState(
-    searchParams.get("query") || ""
-  );
+  const [queryValue, setQueryValue] = useState(searchParams.get("query") || "");
 
   useEffect(() => {
     setQueryValue(searchParams.get("query") || "");

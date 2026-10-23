@@ -34,19 +34,17 @@ async function main() {
 
   // Build a slug -> id lookup for products to resolve categoryId
   const categoryIdBySlug = new Map(
-    insertedCategories.map((c) => [c.slug, c.id])
+    insertedCategories.map((c) => [c.slug, c.id]),
   );
 
   // Create category translations
   const categoryTranslationRows = insertedCategories.flatMap((category) => {
     const sourceCategory = sampleData.categories.find(
-      (c) => c.slug === category.slug
+      (c) => c.slug === category.slug,
     );
 
     if (!sourceCategory) {
-      throw new Error(
-        `Could not find category with slug: ${category.slug}`
-      );
+      throw new Error(`Could not find category with slug: ${category.slug}`);
     }
 
     return Object.entries(sourceCategory.translations).map(
@@ -54,7 +52,7 @@ async function main() {
         categoryId: category.id,
         locale,
         name,
-      })
+      }),
     );
   });
 
@@ -67,7 +65,7 @@ async function main() {
 
       if (!categoryId) {
         throw new Error(
-          `Could not resolve categoryId for slug: ${categorySlug}`
+          `Could not resolve categoryId for slug: ${categorySlug}`,
         );
       }
 
@@ -75,7 +73,7 @@ async function main() {
         ...product,
         categoryId,
       };
-    }
+    },
   );
 
   const insertedProducts = await db
@@ -89,13 +87,11 @@ async function main() {
   // Create product translations from the translations object
   const translations = insertedProducts.flatMap((product) => {
     const sourceProduct = sampleData.products.find(
-      (p) => p.slug === product.slug
+      (p) => p.slug === product.slug,
     );
 
     if (!sourceProduct) {
-      throw new Error(
-        `Could not find product with slug: ${product.slug}`
-      );
+      throw new Error(`Could not find product with slug: ${product.slug}`);
     }
 
     return Object.entries(sourceProduct.translations).map(
@@ -104,7 +100,7 @@ async function main() {
         locale,
         name: translation.name,
         description: translation.description,
-      })
+      }),
     );
   });
 

@@ -11,24 +11,25 @@ export const currency = z
   .transform((value) => formatNumberWithDecimal(Number(value)));
 
 export const insertProductSchema = z.object({
+  // English (default product fields)
   name: z.string().min(3, "Name must be at least 3 characters"),
-
   slug: z.string().min(3, "Slug must be at least 3 characters"),
-
   categoryId: z.string().min(1, "Category is required"),
-
   images: z.array(z.string()).default([]),
-
   brand: z.string().min(3, "Brand must be at least 3 characters"),
-
   description: z.string().min(3, "Description must be at least 3 characters"),
-
   stock: z.coerce.number(),
-
   isFeatured: z.boolean(),
   banner: z.string().nullable(),
-
   price: currency,
+
+  // Arabic translations
+  nameAr: z.string().default(""),
+  descriptionAr: z.string().default(""),
+
+  // French translations
+  nameFr: z.string().default(""),
+  descriptionFr: z.string().default(""),
 });
 
 //schema for signin users in

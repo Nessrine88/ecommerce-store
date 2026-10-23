@@ -75,11 +75,7 @@ const MainNav = ({
           aria-label={t("toggleNavigation")}
           aria-expanded={open}
         >
-          {open ? (
-            <X className="h-5 w-5" />
-          ) : (
-            <Menu className="h-5 w-5" />
-          )}
+          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
 
         {/* Mobile menu */}
