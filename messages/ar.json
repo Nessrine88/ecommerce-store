@@ -357,5 +357,36 @@
   },
   "ProductCard": {
     "stars": "نجوم"
+  },
+  "Footer": {
+    "brandDescription": "اكتشف منتجات عالية الجودة تم اختيارها بعناية لأسلوب حياتك اليومي. ارتق بأسلوبك وخبرتك المنظرية مع مجموعاتنا الحصرية.",
+    "quickLinks": {
+      "title": "روابط سريعة",
+      "shopAll": "تسوق الكل",
+      "featuredProducts": "المنتجات المميزة",
+      "newArrivals": "وصل حديثاً",
+      "bestSellers": "الأكثر مبيعاً",
+      "specialOffers": "عروض خاصة"
+    },
+    "customerSupport": {
+      "title": "خدمة العملاء",
+      "myAccount": "حسابي",
+      "trackOrder": "تتبع الطلب",
+      "shippingPolicy": "سياسة الشحن",
+      "returnsExchanges": "الارجاع والاستبدال",
+      "faqsHelp": "الأسئلة الشائعة والمدونة"
+    },
+    "newsletter": {
+      "title": "النشرة الإخبارية",
+      "description": "اشترك للحصول على خصومات خاصة وهدايا مجانية وأحدث التحديثات.",
+      "placeholder": "أدخل بريدك الإلكتروني",
+      "privacyNote": "نحن نحترم خصوصيتك. يمكنك إلغاء الاشتراك في أي وقت."
+    },
+    "legal": {
+      "copyright": "جميع الحقوق محفوظة © {year} متجرنا.",
+      "privacyPolicy": "سياسة الخصوصية",
+      "termsOfService": "شروط الخدمة",
+      "cookieSettings": "إعدادات ملفات تعريف الارتباط"
+    }
   }
 }

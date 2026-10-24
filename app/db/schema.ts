@@ -11,6 +11,7 @@ import {
   primaryKey,
   json,
   unique,
+  varchar,
 } from "drizzle-orm/pg-core";
 
 // =====================
@@ -510,3 +511,27 @@ export const sessionsRelations = relations(sessions, ({ one }) => ({
     references: [users.id],
   }),
 }));
+;
+
+export const newsletterSubscribers = pgTable(
+  "NewsletterSubscriber",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+
+    email: varchar("email", { length: 255 })
+      .notNull(),
+
+    isSubscribed: boolean("isSubscribed")
+      .notNull()
+      .default(true),
+
+    subscribedAt: timestamp("subscribedAt")
+      .defaultNow()
+      .notNull(),
+
+    unsubscribedAt: timestamp("unsubscribedAt"),
+  },
+  (table) => [
+    uniqueIndex("NewsletterSubscriber_email_unique").on(table.email),
+  ]
+);

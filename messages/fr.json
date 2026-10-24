@@ -356,5 +356,38 @@
   },
   "ProductCard": {
     "stars": "étoiles"
+  },
+  
+  "Footer": {
+    "brandDescription": "Découvrez des produits de qualité supérieure sélectionnés pour votre style de vie quotidien. Élevez votre style et votre intérieur avec nos collections exclusives.",
+    "quickLinks": {
+      "title": "Liens Rapides",
+      "shopAll": "Tout Acheter",
+      "featuredProducts": "Produits En Vedette",
+      "newArrivals": "Nouveautés",
+      "bestSellers": "Meilleures Ventes",
+      "specialOffers": "Offres Spéciales"
+    },
+    "customerSupport": {
+      "title": "Service Client",
+      "myAccount": "Mon Compte",
+      "trackOrder": "Suivre ma Commande",
+      "shippingPolicy": "Politique de Livraison",
+      "returnsExchanges": "Retours & Échanges",
+      "faqsHelp": "FAQ & Aide"
+    },
+    "newsletter": {
+      "title": "Bulletin d'information",
+      "description": "Abonnez-vous pour recevoir des réductions spéciales, des cadeaux et des mises à jour.",
+      "placeholder": "Entrez votre e-mail",
+      "privacyNote": "Nous respectons votre vie privée. Désabonnez-vous à tout moment."
+    },
+    "legal": {
+      "copyright": "Tous droits réservés © {year} Store Inc.",
+      "privacyPolicy": "Politique de Confidentialité",
+      "termsOfService": "Conditions d'Utilisation",
+      "cookieSettings": "Paramètres des Cookies"
+    }
   }
+
 }

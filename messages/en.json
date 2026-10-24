@@ -358,5 +358,36 @@
   },
   "ProductCard": {
     "stars": "stars"
+  },
+  "Footer": {
+    "brandDescription": "Discover premium quality products curated for your daily lifestyle. Elevate your everyday style and home experience with our exclusive collections.",
+    "quickLinks": {
+      "title": "Quick Links",
+      "shopAll": "Shop All",
+      "featuredProducts": "Featured Products",
+      "newArrivals": "New Arrivals",
+      "bestSellers": "Best Sellers",
+      "specialOffers": "Special Offers"
+    },
+    "customerSupport": {
+      "title": "Customer Support",
+      "myAccount": "My Account",
+      "trackOrder": "Track Order",
+      "shippingPolicy": "Shipping Policy",
+      "returnsExchanges": "Returns & Exchanges",
+      "faqsHelp": "FAQs & Help"
+    },
+    "newsletter": {
+      "title": "Newsletter",
+      "description": "Subscribe to get special discounts, free giveaways, and updates.",
+      "placeholder": "Enter your email",
+      "privacyNote": "We respect your privacy. Unsubscribe at any time."
+    },
+    "legal": {
+      "copyright": "© {year} Store Inc. All rights reserved.",
+      "privacyPolicy": "Privacy Policy",
+      "termsOfService": "Terms of Service",
+      "cookieSettings": "Cookie Settings"
+    }
   }
 }
