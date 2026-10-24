@@ -26,7 +26,7 @@ const Page = async ({ params }: { params: Promise<{ locale: string }> }) => {
   return (
     <div
       dir={direction}
-      className="min-h-screen overflow-hidden bg-[#07130d] text-text"
+      className="min-h-screen overflow-hidden  text-text"
     >
       <div className="mx-auto max-w-7xl space-y-14 py-8 sm:py-10 md:space-y-20 md:py-14">
         {/* Hero */}

@@ -26,7 +26,7 @@ export default function UserLayout({
           </div>
         </div>
       </div>
-      <div className=" mx-auto  container">{children}</div>
+      <div>{children}</div>
     </div>
   );
 }
