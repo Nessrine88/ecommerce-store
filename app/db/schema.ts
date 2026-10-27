@@ -65,8 +65,11 @@ export const products = pgTable(
   {
     id: uuid("id").defaultRandom().primaryKey(),
 
-    name: text("name").notNull(),
+    userId: uuid("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
 
+    name: text("name").notNull(),
     slug: text("slug").notNull(),
 
     categoryId: uuid("categoryId")
@@ -74,11 +77,8 @@ export const products = pgTable(
       .references(() => categories.id),
 
     images: text("images").array(),
-
     brand: text("brand"),
-
     description: text("description").notNull(),
-
     stock: integer("stock").notNull(),
 
     price: numeric("price", {
@@ -92,9 +92,9 @@ export const products = pgTable(
       precision: 3,
       scale: 2,
     }).default("0"),
+
     numReviews: integer("numReviews").default(0),
     isFeatured: boolean("isFeatured").notNull().default(false),
-
     banner: text("banner"),
 
     createdAt: timestamp("createdAt", {
@@ -107,7 +107,6 @@ export const products = pgTable(
     slugIndex: uniqueIndex("product_slug_idx").on(table.slug),
   }),
 );
-
 // =====================
 // Product Translations
 // =====================

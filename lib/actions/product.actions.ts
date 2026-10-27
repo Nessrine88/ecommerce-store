@@ -1,3 +1,4 @@
+
 "use server";
 
 import { db } from "@/app/db";
@@ -11,21 +12,91 @@ import {
   and,
   asc,
   count,
+  countDistinct,
   desc,
   eq,
   gte,
   ilike,
   lte,
-  SQL,
-  countDistinct,
+  or,
+  type SQL,
 } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 import { PAGE_SIZE } from "../constants";
 import { convertToPlainObject, formatError } from "../utils";
-import { insertProductSchema, updateProductsSchema } from "../validators";
-import { revalidatePath } from "next/cache";
-import z from "zod";
+import {
+  insertProductSchema,
+  updateProductsSchema,
+} from "../validators";
+import { z } from "zod";
+import { auth } from "@/auth";
 
+// --------------------------------------------------
+// Translation helpers
+// --------------------------------------------------
+
+type ProductLocale = "en" | "ar" | "fr";
+
+type ProductTranslationInput = {
+  productId: string;
+  locale: ProductLocale;
+  name: string;
+  description: string;
+};
+
+type ProductTranslationFields = {
+  name: string;
+  description: string;
+  nameAr?: string | null;
+  descriptionAr?: string | null;
+  nameFr?: string | null;
+  descriptionFr?: string | null;
+};
+
+function buildProductTranslations(
+  productId: string,
+  data: ProductTranslationFields,
+): ProductTranslationInput[] {
+  const translations: ProductTranslationInput[] = [
+    {
+      productId,
+      locale: "en",
+      name: data.name.trim(),
+      description: data.description.trim(),
+    },
+  ];
+
+  const nameAr = data.nameAr?.trim();
+  const descriptionAr = data.descriptionAr?.trim();
+
+  if (nameAr && descriptionAr) {
+    translations.push({
+      productId,
+      locale: "ar",
+      name: nameAr,
+      description: descriptionAr,
+    });
+  }
+
+  const nameFr = data.nameFr?.trim();
+  const descriptionFr = data.descriptionFr?.trim();
+
+  if (nameFr && descriptionFr) {
+    translations.push({
+      productId,
+      locale: "fr",
+      name: nameFr,
+      description: descriptionFr,
+    });
+  }
+
+  return translations;
+}
+
+// --------------------------------------------------
 // Get latest products
+// --------------------------------------------------
+
 export async function getLatestProducts(locale: string) {
   const latestProducts = await db
     .select({
@@ -45,23 +116,24 @@ export async function getLatestProducts(locale: string) {
 
   return latestProducts.map(({ product, translation }) => ({
     ...product,
-
     name: translation?.name ?? product.name,
-
-    description: translation?.description ?? product.description,
-
+    description:
+      translation?.description ?? product.description,
     images: product.images ?? [],
-
     brand: product.brand ?? "",
-
     price: product.price.toString(),
-
     rating: Number(product.rating ?? 0),
   }));
 }
 
+// --------------------------------------------------
 // Get single product by slug
-export async function getProductBySlug(slug: string, locale: string) {
+// --------------------------------------------------
+
+export async function getProductBySlug(
+  slug: string,
+  locale: string,
+) {
   const [result] = await db
     .select({
       product: products,
@@ -84,20 +156,20 @@ export async function getProductBySlug(slug: string, locale: string) {
 
   return {
     ...result.product,
-
     name: result.translation?.name ?? result.product.name,
-
-    description: result.translation?.description ?? result.product.description,
-
+    description:
+      result.translation?.description ??
+      result.product.description,
     images: result.product.images ?? [],
-
     brand: result.product.brand ?? "",
-
     price: result.product.price.toString(),
-
     rating: Number(result.product.rating ?? 0),
   };
 }
+
+// --------------------------------------------------
+// Get all products with filters, sorting and pagination
+// --------------------------------------------------
 
 export async function getAllProducts({
   query,
@@ -118,14 +190,19 @@ export async function getAllProducts({
   sort?: string;
   locale: string;
 }) {
-  const conditions: (SQL | undefined)[] = [];
+  const conditions: SQL[] = [];
 
-  // Search by translated product name.
+  // Search translated names and the default English name.
   if (query && query !== "all") {
-    conditions.push(ilike(productTranslations.name, `%${query}%`));
+    conditions.push(
+      or(
+        ilike(productTranslations.name, `%${query}%`),
+        ilike(products.name, `%${query}%`),
+      )!,
+    );
   }
 
-  // Filter by category.
+  // Filter by category slug.
   if (category && category !== "all") {
     conditions.push(eq(categories.slug, category));
   }
@@ -137,11 +214,15 @@ export async function getAllProducts({
     const max = Number(maxStr);
 
     if (minStr !== "" && Number.isFinite(min)) {
-      conditions.push(gte(products.price, min.toString()));
+      conditions.push(
+        gte(products.price, min.toString()),
+      );
     }
 
     if (maxStr !== "" && Number.isFinite(max)) {
-      conditions.push(lte(products.price, max.toString()));
+      conditions.push(
+        lte(products.price, max.toString()),
+      );
     }
   }
 
@@ -150,13 +231,16 @@ export async function getAllProducts({
     const ratingNum = Number(rating);
 
     if (Number.isFinite(ratingNum)) {
-      conditions.push(gte(products.rating, ratingNum.toString()));
+      conditions.push(
+        gte(products.rating, ratingNum.toString()),
+      );
     }
   }
 
-  const filters = conditions.length > 0 ? and(...conditions) : undefined;
+  const filters =
+    conditions.length > 0 ? and(...conditions) : undefined;
 
-  // Sort products.
+  // Sorting.
   const orderBy =
     sort === "lowest"
       ? asc(products.price)
@@ -166,7 +250,7 @@ export async function getAllProducts({
           ? desc(products.rating)
           : desc(products.createdAt);
 
-  // Fetch the current page and count matching products in parallel.
+  // Fetch products and count matching products.
   const [data, countResult] = await Promise.all([
     db
       .select({
@@ -181,7 +265,10 @@ export async function getAllProducts({
           eq(productTranslations.locale, locale),
         ),
       )
-      .leftJoin(categories, eq(products.categoryId, categories.id))
+      .leftJoin(
+        categories,
+        eq(products.categoryId, categories.id),
+      )
       .where(filters)
       .orderBy(orderBy)
       .limit(limit)
@@ -199,33 +286,34 @@ export async function getAllProducts({
           eq(productTranslations.locale, locale),
         ),
       )
-      .leftJoin(categories, eq(products.categoryId, categories.id))
+      .leftJoin(
+        categories,
+        eq(products.categoryId, categories.id),
+      )
       .where(filters),
   ]);
 
-  const dataCount = countResult[0]?.dataCount ?? 0;
+  const dataCount = Number(countResult[0]?.dataCount ?? 0);
 
   return {
     data: data.map(({ product, translation }) => ({
       ...product,
-
-      // Use translated values when available.
-      // These empty-string fallbacks avoid returning null.
-      // They do not recover a default name or description.
-      name: translation?.name ?? "",
-      description: translation?.description ?? "",
-
+      name: translation?.name ?? product.name,
+      description:
+        translation?.description ?? product.description,
       images: product.images ?? [],
       brand: product.brand ?? "",
       price: product.price.toString(),
       rating: Number(product.rating ?? 0),
     })),
-
     totalPages: Math.ceil(dataCount / limit),
   };
 }
 
+// --------------------------------------------------
 // Delete product
+// --------------------------------------------------
+
 export async function deleteProduct(id: string) {
   try {
     const product = await db.query.products.findFirst({
@@ -238,11 +326,21 @@ export async function deleteProduct(id: string) {
 
     await db.delete(products).where(eq(products.id, id));
 
+    revalidatePath("/admin/products");
+
+    for (const locale of ["en", "fr", "ar"]) {
+      revalidatePath(
+        `/${locale}/product/${product.slug}`,
+      );
+    }
+
     return {
       success: true,
       message: "Product deleted successfully",
     };
   } catch (error) {
+    console.error("deleteProduct error:", error);
+
     return {
       success: false,
       message: formatError(error),
@@ -250,97 +348,110 @@ export async function deleteProduct(id: string) {
   }
 }
 
+// --------------------------------------------------
 // Create product
-export async function createProduct(data: z.infer<typeof insertProductSchema>) {
+// --------------------------------------------------
+
+export async function createProduct(
+  data: z.infer<typeof insertProductSchema>,
+) {
   try {
-    // 1. Validate the submitted form data
-    const product = insertProductSchema.parse(data);
+    // 1. Authenticate the user
+    const session = await auth();
+    const userId = session?.user?.id;
 
-    // 2. Separate translations from the base product fields
-    const { nameAr, descriptionAr, nameFr, descriptionFr, ...productData } =
-      product;
+    if (!userId) {
+      throw new Error("You must be signed in to create a product.");
+    }
 
-    // 3. Insert the product and translations atomically
-    await db.transaction(async (tx) => {
-      const [newProduct] = await tx
+    // 2. Validate the submitted data
+    const validatedData = insertProductSchema.parse(data);
+
+    // 3. Separate product fields from translation fields
+    const {
+      nameAr,
+      descriptionAr,
+      nameFr,
+      descriptionFr,
+      ...productData
+    } = validatedData;
+
+    // 4. Create the product and its translations atomically
+    const newProduct = await db.transaction(async (tx) => {
+      const [product] = await tx
         .insert(products)
         .values({
           ...productData,
+          userId,
           images: productData.images ?? [],
         })
         .returning();
 
-      if (!newProduct) {
-        throw new Error("Failed to create product");
+      if (!product) {
+        throw new Error("Failed to create the product.");
       }
 
-      // English translation
-      const translations = [
-        {
-          productId: newProduct.id,
-          locale: "en",
-          name: productData.name,
-          description: productData.description,
-        },
-
-        // Arabic translation, when both fields are provided
-        ...(nameAr?.trim() && descriptionAr?.trim()
-          ? [
-              {
-                productId: newProduct.id,
-                locale: "ar",
-                name: nameAr.trim(),
-                description: descriptionAr.trim(),
-              },
-            ]
-          : []),
-
-        // French translation, when both fields are provided
-        ...(nameFr?.trim() && descriptionFr?.trim()
-          ? [
-              {
-                productId: newProduct.id,
-                locale: "fr",
-                name: nameFr.trim(),
-                description: descriptionFr.trim(),
-              },
-            ]
-          : []),
-      ];
+      const translations = buildProductTranslations(product.id, {
+        name: product.name,
+        description: product.description,
+        nameAr,
+        descriptionAr,
+        nameFr,
+        descriptionFr,
+      });
 
       await tx.insert(productTranslations).values(translations);
+
+      return product;
     });
 
-    // 4. Refresh the admin products page
+    // 5. Refresh the relevant pages
     revalidatePath("/admin/products");
+    revalidatePath("/sell/products");
+
+    for (const locale of ["en", "fr", "ar"]) {
+      revalidatePath(`/${locale}/user/my-products`);
+      revalidatePath(`/${locale}/product/${newProduct.slug}`);
+    }
+
+    // 6. Admins go back to the admin list, regular users to their own page
+    const isAdmin = session?.user?.role === "admin";
 
     return {
       success: true,
-      message: "Product created successfully",
+      message: "Product created successfully.",
+      productId: newProduct.id,
+      redirectTo: isAdmin ? "/admin/products" : "/user/my-products",
     };
   } catch (error) {
     console.error("createProduct error:", error);
 
     return {
       success: false,
-      message:
-        error instanceof Error ? error.message : "Failed to create product",
+      message: formatError(error),
     };
   }
 }
-
+// --------------------------------------------------
 // Update product
+// --------------------------------------------------
+
 export async function updateProduct(
   data: z.infer<typeof updateProductsSchema>,
 ) {
   try {
     const product = updateProductsSchema.parse(data);
 
-    const { id, nameAr, descriptionAr, nameFr, descriptionFr, ...updateData } =
-      product;
+    const {
+      id,
+      nameAr,
+      descriptionAr,
+      nameFr,
+      descriptionFr,
+      ...updateData
+    } = product;
 
     const updatedProduct = await db.transaction(async (tx) => {
-      // 1. Update the base product
       const [updated] = await tx
         .update(products)
         .set(updateData)
@@ -348,46 +459,30 @@ export async function updateProduct(
         .returning();
 
       if (!updated) {
-        throw new Error("Product not found or update failed");
+        throw new Error(
+          "Product not found or update failed",
+        );
       }
 
-      // 2. Prepare translations
-      const translations = [
-        {
-          productId: id,
-          locale: "en",
-          name: updateData.name,
-          description: updateData.description,
-        },
-        ...(nameAr?.trim() && descriptionAr?.trim()
-          ? [
-              {
-                productId: id,
-                locale: "ar",
-                name: nameAr.trim(),
-                description: descriptionAr.trim(),
-              },
-            ]
-          : []),
-        ...(nameFr?.trim() && descriptionFr?.trim()
-          ? [
-              {
-                productId: id,
-                locale: "fr",
-                name: nameFr.trim(),
-                description: descriptionFr.trim(),
-              },
-            ]
-          : []),
-      ];
+      const translations = buildProductTranslations(id, {
+        name: updated.name,
+        description: updated.description,
+        nameAr,
+        descriptionAr,
+        nameFr,
+        descriptionFr,
+      });
 
-      // 3. Insert missing translations or update existing ones
+      // Insert new translations or update existing ones.
       for (const translation of translations) {
         await tx
           .insert(productTranslations)
           .values(translation)
           .onConflictDoUpdate({
-            target: [productTranslations.productId, productTranslations.locale],
+            target: [
+              productTranslations.productId,
+              productTranslations.locale,
+            ],
             set: {
               name: translation.name,
               description: translation.description,
@@ -398,13 +493,14 @@ export async function updateProduct(
       return updated;
     });
 
-    // 4. Revalidate relevant pages
     revalidatePath("/admin/products");
     revalidatePath(`/admin/products/${id}`);
 
-    revalidatePath(`/en/product/${updatedProduct.slug}`);
-    revalidatePath(`/fr/product/${updatedProduct.slug}`);
-    revalidatePath(`/ar/product/${updatedProduct.slug}`);
+    for (const locale of ["en", "fr", "ar"]) {
+      revalidatePath(
+        `/${locale}/product/${updatedProduct.slug}`,
+      );
+    }
 
     return {
       success: true,
@@ -420,7 +516,11 @@ export async function updateProduct(
     };
   }
 }
+
+// --------------------------------------------------
 // Get single product by ID
+// --------------------------------------------------
+
 export async function getProductById(productId: string) {
   const data = await db.query.products.findFirst({
     where: eq(products.id, productId),
@@ -429,7 +529,10 @@ export async function getProductById(productId: string) {
   return convertToPlainObject(data);
 }
 
-// Get all categories (with translated names for the given locale)
+// --------------------------------------------------
+// Get all categories with translated names
+// --------------------------------------------------
+
 export async function getAllCategories(locale: string) {
   return db
     .select({
@@ -441,14 +544,28 @@ export async function getAllCategories(locale: string) {
     .leftJoin(
       categoryTranslations,
       and(
-        eq(categoryTranslations.categoryId, categories.id),
+        eq(
+          categoryTranslations.categoryId,
+          categories.id,
+        ),
         eq(categoryTranslations.locale, locale),
       ),
     )
-    .leftJoin(products, eq(products.categoryId, categories.id))
-    .groupBy(categories.id, categories.slug, categoryTranslations.name);
+    .leftJoin(
+      products,
+      eq(products.categoryId, categories.id),
+    )
+    .groupBy(
+      categories.id,
+      categories.slug,
+      categoryTranslations.name,
+    );
 }
+
+// --------------------------------------------------
 // Get featured products
+// --------------------------------------------------
+
 export async function getFeaturedProducts(locale: string) {
   const data = await db
     .select({
@@ -469,17 +586,12 @@ export async function getFeaturedProducts(locale: string) {
 
   return data.map(({ product, translation }) => ({
     ...product,
-
     name: translation?.name ?? product.name,
-
-    description: translation?.description ?? product.description,
-
+    description:
+      translation?.description ?? product.description,
     images: product.images ?? [],
-
     brand: product.brand ?? "",
-
     price: product.price.toString(),
-
     rating: Number(product.rating ?? 0),
   }));
 }

@@ -1,14 +1,20 @@
 import { hashSync } from "bcrypt-ts-edge";
 
+// Fixed IDs so other records can reference them via userId
+const ADMIN_ID = "8c1f2a3e-5b7d-4e9a-9f10-2d6b3c4a7e51";
+const USER_ID = "f3a9d6b2-1c84-4b7e-a5d0-9e2f6c8b1a34";
+
 const sampleData = {
   users: [
     {
+      id: ADMIN_ID,
       name: "Nessrine",
       email: "infofigue@gmail.com",
       password: hashSync("nessrine2015", 10),
       role: "admin",
     },
     {
+      id: USER_ID,
       name: "Jane",
       email: "jane@gmail.com",
       password: hashSync("nessrine2015", 10),
@@ -61,6 +67,7 @@ const sampleData = {
 
   products: [
     {
+      userId: ADMIN_ID,
       name: "Monstera Deliciosa",
       slug: "monstera-deliciosa",
       categorySlug: "indoor-plants",
@@ -99,6 +106,7 @@ const sampleData = {
     },
 
     {
+      userId: ADMIN_ID,
       name: "Snake Plant",
       slug: "snake-plant",
       categorySlug: "indoor-plants",
@@ -137,6 +145,7 @@ const sampleData = {
     },
 
     {
+      userId: ADMIN_ID,
       name: "Peace Lily",
       slug: "peace-lily",
       categorySlug: "flowering-plants",
@@ -175,6 +184,7 @@ const sampleData = {
     },
 
     {
+      userId: ADMIN_ID,
       name: "Aloe Vera",
       slug: "aloe-vera",
       categorySlug: "succulents",
@@ -213,6 +223,7 @@ const sampleData = {
     },
 
     {
+      userId: ADMIN_ID,
       name: "Fiddle Leaf Fig",
       slug: "fiddle-leaf-fig",
       categorySlug: "indoor-trees",
@@ -251,6 +262,7 @@ const sampleData = {
     },
 
     {
+      userId: ADMIN_ID,
       name: "ZZ Plant",
       slug: "zz-plant",
       categorySlug: "indoor-plants",
@@ -289,6 +301,7 @@ const sampleData = {
     },
 
     {
+      userId: ADMIN_ID,
       name: "Calathea Orbifolia",
       slug: "calathea-orbifolia",
       categorySlug: "tropical-plants",
@@ -327,6 +340,7 @@ const sampleData = {
     },
 
     {
+      userId: ADMIN_ID,
       name: "String of Pearls",
       slug: "string-of-pearls",
       categorySlug: "succulents",
@@ -365,6 +379,7 @@ const sampleData = {
     },
 
     {
+      userId: ADMIN_ID,
       name: "Rubber Plant",
       slug: "rubber-plant",
       categorySlug: "indoor-trees",
@@ -403,6 +418,7 @@ const sampleData = {
     },
 
     {
+      userId: ADMIN_ID,
       name: "Lavender Plant",
       slug: "lavender-plant",
       categorySlug: "flowering-plants",
@@ -441,6 +457,7 @@ const sampleData = {
     },
 
     {
+      userId: ADMIN_ID,
       name: "Pothos",
       slug: "pothos",
       categorySlug: "indoor-plants",
@@ -479,6 +496,7 @@ const sampleData = {
     },
 
     {
+      userId: ADMIN_ID,
       name: "Bird of Paradise",
       slug: "bird-of-paradise",
       categorySlug: "tropical-plants",

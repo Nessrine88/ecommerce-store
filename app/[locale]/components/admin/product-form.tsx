@@ -6,6 +6,7 @@ import { Product } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "@/navigation";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 import { toast } from "sonner";
 import z from "zod";
 import slugify from "slugify";
@@ -46,6 +47,8 @@ const ProductForm = ({
   categories: { id: string; name: string }[];
 }) => {
   const router = useRouter();
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [aiNotes, setAiNotes] = useState("");
 
   const form = useForm<z.infer<typeof insertProductSchema>>({
     resolver: (type === "Update"
@@ -54,6 +57,117 @@ const ProductForm = ({
     defaultValues:
       product && type === "Update" ? product : productDefaultValues,
   });
+
+  const analyzePlantImage = async () => {
+    const imageUrl = form.getValues("images")?.[0];
+
+    if (!imageUrl) {
+      toast.error("Upload a plant image first.");
+      return;
+    }
+
+    setIsAnalyzing(true);
+    setAiNotes("");
+
+    try {
+      const response = await fetch("/api/plant-ai", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ imageUrl }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Plant analysis failed.");
+      }
+
+      const suggestion = data.suggestion;
+
+      if (!suggestion || typeof suggestion.name !== "string") {
+        throw new Error("The AI returned an invalid suggestion.");
+      }
+
+      // English product details
+      form.setValue("name", suggestion.name, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+
+      form.setValue(
+        "slug",
+        slugify(suggestion.name, { lower: true, strict: true }),
+        { shouldValidate: true, shouldDirty: true },
+      );
+
+      form.setValue("description", suggestion.description ?? "", {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+
+      // Arabic translations
+      form.setValue("nameAr", suggestion.nameAr ?? "", {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+
+      form.setValue("descriptionAr", suggestion.descriptionAr ?? "", {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+
+      // French translations
+      form.setValue("nameFr", suggestion.nameFr ?? "", {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+
+      form.setValue("descriptionFr", suggestion.descriptionFr ?? "", {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+
+      // Only select a category that exists in the form's category list.
+      if (
+        typeof suggestion.categoryId === "string" &&
+        categories.some((category) => category.id === suggestion.categoryId)
+      ) {
+        form.setValue("categoryId", suggestion.categoryId, {
+          shouldValidate: true,
+          shouldDirty: true,
+        });
+      }
+
+      // Only fill a brand when Gemini provides a usable value.
+      if (
+        typeof suggestion.brand === "string" &&
+        suggestion.brand.trim().length >= 3
+      ) {
+        form.setValue("brand", suggestion.brand.trim(), {
+          shouldValidate: true,
+          shouldDirty: true,
+        });
+      }
+
+      setAiNotes(
+        suggestion.identificationNotes ||
+          "Please verify the plant identification and generated descriptions.",
+      );
+
+      toast.success("Plant details generated. Review them before saving.");
+    } catch (error) {
+      console.error("Plant analysis failed:", error);
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Could not analyze the plant image.",
+      );
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
 
   const onSubmit = async (values: z.infer<typeof insertProductSchema>) => {
     try {
@@ -84,7 +198,8 @@ const ProductForm = ({
           toast.error(res.message);
         } else {
           toast.success(res.message);
-          router.push("/admin/products");
+          // Admins -> /admin/products, regular users -> /user/my-products
+          router.push(res.redirectTo ?? "/admin/products");
         }
 
         return;
@@ -123,8 +238,94 @@ const ProductForm = ({
       <form
         method="POST"
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8"
+        className="space-y-8 md:p-20"
       >
+        {/* =========================
+            PRODUCT IMAGES
+        ========================= */}
+
+        <FormField
+          control={form.control}
+          name="images"
+          render={() => (
+            <FormItem className="w-full">
+              <FormLabel>Product Images</FormLabel>
+
+              <Card>
+                <CardContent className="min-h-48 space-y-4 pt-6">
+                  <div className="flex flex-col flex-wrap items-center gap-4">
+                    {images.map((image: string) => (
+                      <div key={image} className="relative">
+                        <Image
+                          src={image}
+                          alt="Product image"
+                          width={100}
+                          height={100}
+                          className="rounded-md object-cover border-accent"
+                        />
+
+                        <button
+                          type="button"
+                          onClick={() =>
+                            form.setValue(
+                              "images",
+                              images.filter((img: string) => img !== image),
+                              { shouldValidate: true },
+                            )
+                          }
+                          className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-xs text-white"
+                          aria-label="Remove image"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+
+                    <UploadButton
+                      endpoint="imageUploader"
+                      onClientUploadComplete={(res: { url: string }[]) => {
+                        if (res?.[0]?.url) {
+                          form.setValue(
+                            "images",
+                            [...(form.getValues("images") ?? []), res[0].url],
+                            { shouldValidate: true },
+                          );
+                          toast.success("Image uploaded successfully.");
+                        }
+                      }}
+                      onUploadError={(error: Error) => {
+                        toast.error(error.message);
+                      }}
+                    />
+
+                    <Button
+                      type="button"
+                      onClick={analyzePlantImage}
+                      disabled={isAnalyzing || images.length === 0}
+                      className="bg-amber-600"
+                    >
+                      {isAnalyzing
+                        ? "Analyzing plant..."
+                        : "Identify plant with AI"}
+                    </Button>
+
+                    {aiNotes && (
+                      <p
+                        className="w-full text-sm text-muted-foreground"
+                        role="status"
+                      >
+                        AI identification notes: {aiNotes}
+                      </p>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         {/* =========================
             ENGLISH PRODUCT DETAILS
         ========================= */}
@@ -397,72 +598,6 @@ const ProductForm = ({
             )}
           />
         </div>
-
-        {/* =========================
-            PRODUCT IMAGES
-        ========================= */}
-
-        <FormField
-          control={form.control}
-          name="images"
-          render={() => (
-            <FormItem className="w-full">
-              <FormLabel>Product Images</FormLabel>
-
-              <Card>
-                <CardContent className="min-h-48 space-y-4 pt-6">
-                  <div className="flex flex-wrap items-start gap-4">
-                    {images.map((image: string) => (
-                      <div key={image} className="relative">
-                        <Image
-                          src={image}
-                          alt="Product image"
-                          width={100}
-                          height={100}
-                          className="rounded-md object-cover"
-                        />
-
-                        <button
-                          type="button"
-                          onClick={() =>
-                            form.setValue(
-                              "images",
-                              images.filter((img: string) => img !== image),
-                              { shouldValidate: true },
-                            )
-                          }
-                          className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-xs text-white"
-                          aria-label="Remove image"
-                        >
-                          ×
-                        </button>
-                      </div>
-                    ))}
-
-                    <UploadButton
-                      endpoint="imageUploader"
-                      onClientUploadComplete={(res: { url: string }[]) => {
-                        if (res?.[0]?.url) {
-                          form.setValue(
-                            "images",
-                            [...(form.getValues("images") ?? []), res[0].url],
-                            { shouldValidate: true },
-                          );
-                          toast.success("Image uploaded successfully.");
-                        }
-                      }}
-                      onUploadError={(error: Error) => {
-                        toast.error(error.message);
-                      }}
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
 
         {/* =========================
             FEATURED PRODUCT

@@ -7,7 +7,6 @@ import ProductPrice from "./product-price";
 import AddToCart from "./add-to-cart";
 import { Product } from "@/types";
 import { useTranslations } from "next-intl";
-import { getMyCart } from "@/lib/actions/cart.actions";
 
 const shapes = [
   "aspect-[4/5]",
@@ -88,10 +87,14 @@ const ProductCard = ({
           ) : (
             <button
               type="button"
-              className="min-w-fit flex flex-wrap rounded-md bg-muted px-4 py-2 text-sm font-medium text-muted-foreground"
+              className="min-w-fit flex flex-wrap mx-auto rounded-md bg-stone-200 dark:bg-stone-800 px-4 py-2 text-sm font-semibold text-stone-400 dark:text-stone-500 cursor-not-allowed opacity-60 relative overflow-hidden line-through decoration-stone-400/50 bg-[linear-gradient(135deg,rgba(0,0,0,0.05)_25%,transparent_25%,transparent_50%,rgba(0,0,0,0.05)_50%,rgba(0,0,0,0.05)_75%,transparent_75%,transparent)] bg-[length:8px_8px]"
               disabled
             >
-              {t("notStock")}
+              <span className="flex items-center gap-1.5 opacity-75">
+                {/* Optional: Subtle dot indicator */}
+                <span className="h-1.5 w-1.5 rounded-full bg-stone-400 dark:bg-stone-500" />
+                {t("notStock")}
+              </span>
             </button>
           )}
         </div>

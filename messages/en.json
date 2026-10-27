@@ -159,7 +159,8 @@
     "signIn": "Sign In",
     "orderHistory": "Order History",
     "admin": "Admin",
-    "signOut": "Sign Out"
+    "signOut": "Sign Out",
+      "myProducts": "My Products"
   },
 
   "Categories": {
@@ -390,4 +391,5 @@
       "cookieSettings": "Cookie Settings"
     }
   }
+
 }

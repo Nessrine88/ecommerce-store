@@ -161,7 +161,8 @@
     "signIn": "Se Connecter",
     "orderHistory": "Historique des Commandes",
     "admin": "Administration",
-    "signOut": "Se Déconnecter"
+    "signOut": "Se Déconnecter",
+    "myProducts": "Mes produits"
   },
 
   "Categories": {
