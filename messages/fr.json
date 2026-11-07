@@ -1,15 +1,16 @@
 {
   "Homepage": {
-    "siteTitle": "Découvrez quelque chose de meilleur",
-    "heroSubtitle": "Des produits de qualité, soigneusement sélectionnés pour vous.",
-    "expertiseDescription": "Découvrez une collection soigneusement sélectionnée de produits choisis pour leur qualité, leur style et leur excellent rapport qualité-prix. Trouvez ce qui vous correspond et profitez d'une expérience d'achat pensée pour vous.",
-    "exploreProducts": "Découvrir les produits",
-    "trustedSelection": "Une collection soigneusement sélectionnée",
-    "expertiseTip1": "Une qualité de confiance",
-    "expertiseTip2": "Soigneusement sélectionnés",
-    "expertiseTip3": "Pensés pour vous",
-    "newestProducts": "Nouveaux Produits",
-    "viewAllProducts": "Voir Tous les Produits",
+      "siteTitle": "Découvrez le Monde des Plantes",
+  "heroSubtitle": "Explorez des plantes uniques proposées par des producteurs et des vendeurs du monde entier.",
+  "expertiseDescription": "Découvrez une collection internationale de plantes proposées par des producteurs et des vendeurs indépendants. Explorez des espèces rares, comparez différentes variétés et échangez avec des passionnés de plantes de différents pays.",
+  "exploreProducts": "Explorer les Plantes",
+  "startSelling": "Devenir Vendeur",
+  "trustedSelection": "Une Communauté Internationale de Vendeurs de Plantes",
+  "expertiseTip1": "Des Plantes du Monde Entier",
+  "expertiseTip2": "Des Vendeurs Indépendants",
+  "expertiseTip3": "Découvrez des Espèces Rares",
+  "newestProducts": "Dernières Plantes Ajoutées",
+  "viewAllProducts": "Voir Toutes les Plantes",
     "dealCountdown": {
       "loading": "Chargement du compte à rebours…",
       "ended": {

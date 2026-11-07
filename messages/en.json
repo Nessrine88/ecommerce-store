@@ -1,15 +1,16 @@
 {
   "Homepage": {
-    "siteTitle": "Discover Something Better",
-    "heroSubtitle": "Quality products, carefully selected for you.",
-    "expertiseDescription": "Explore a carefully curated collection of products chosen for their quality, style, and value. Find something you'll love and enjoy a shopping experience designed around you.",
-    "exploreProducts": "Explore Products",
-    "trustedSelection": "A carefully selected collection",
-    "expertiseTip1": "Quality You Can Trust",
-    "expertiseTip2": "Carefully Selected",
-    "expertiseTip3": "Made for You",
-    "newestProducts": "Newest Products",
-    "viewAllProducts": "View All Products",
+      "siteTitle": "Discover the World of Plants",
+  "heroSubtitle": "Explore unique plants from growers and sellers around the world.",
+  "expertiseDescription": "Discover a global collection of plants offered by independent growers and sellers. Explore rare species, compare varieties, and connect with plant sellers across different countries.",
+  "exploreProducts": "Explore Plants",
+  "startSelling": "Start Selling",
+  "trustedSelection": "A Global Community of Plant Sellers",
+  "expertiseTip1": "Plants from Around the World",
+  "expertiseTip2": "Independent Plant Sellers",
+  "expertiseTip3": "Discover Rare Species",
+  "newestProducts": "Recently Added Plants",
+  "viewAllProducts": "Explore All Plants",
     "dealCountdown": {
       "loading": "Loading countdown…",
       "ended": {
