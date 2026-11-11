@@ -1,6 +1,7 @@
 import ProductCarousel from "@/app/[locale]/components/shared/product/product-carousel";
 import ProductList from "@/app/[locale]/components/shared/product/product-list";
 import ViewAllProduct from "@/app/[locale]/components/view-all-products";
+import { Link } from "@/navigation";
 import {
   getFeaturedProducts,
   getLatestProducts,
@@ -8,6 +9,7 @@ import {
 import IconBoxes from "@/app/[locale]/components/icon-boxes";
 import { getTranslations } from "next-intl/server";
 import { Reveal, Float, Glow } from "@/app/[locale]/components/motion-wrappers";
+import { auth } from "@/auth";
 
 const tipKeys = ["expertiseTip1", "expertiseTip2", "expertiseTip3"] as const;
 
@@ -22,7 +24,8 @@ const Page = async ({ params }: { params: Promise<{ locale: string }> }) => {
   // Arabic is RTL, other supported languages are LTR
   const isRTL = locale === "ar";
   const direction = isRTL ? "rtl" : "ltr";
-
+  const session = await auth();
+  const user = session?.user;
   return (
     <div
       dir={direction}
@@ -95,16 +98,23 @@ const Page = async ({ params }: { params: Promise<{ locale: string }> }) => {
                     isRTL ? "md:justify-start" : "md:justify-start"
                   }`}
                 >
+                      <Link
+                    href= {user ? "sell/add-product" : "sign-in"}
+                    className="rounded-xl bg-gradient-to-r from-[#3a7a58] to-[#286044] px-6 py-3 text-sm font-semibold text-white shadow-xl shadow-[#1f4d38]/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[#3a7a58]/30"
+                  >
+                    {t("createYourProducts")}
+                  </Link>
                   <a
                     href="#latest-products"
-                    className="rounded-xl bg-gradient-to-r from-[#3a7a58] to-[#286044] px-6 py-3 text-sm font-semibold text-white shadow-xl shadow-[#1f4d38]/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[#3a7a58]/30"
+                    className="rounded-xl bg-gradient-to-r from-[#7e8f86] to-[#292b2a] px-6 py-3 text-sm font-semibold text-white shadow-xl shadow-[#1f4d38]/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[#3a7a58]/30"
                   >
                     {t("exploreProducts")}
                   </a>
+              
 
-                  <span className="text-xs text-white/40">
+                  <div className="text-xs text-white/40">
                     {t("trustedSelection")}
-                  </span>
+                  </div>
                 </div>
               </Reveal>
             </div>
