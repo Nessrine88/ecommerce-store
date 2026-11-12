@@ -7,6 +7,7 @@ import { Toaster } from "sonner";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getLocale } from "next-intl/server";
 import { CurrencyProvider } from "./context/currency-context";
+import { Analytics } from '@vercel/analytics/next';
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -56,6 +57,7 @@ export default async function RootLayout({
               disableTransitionOnChange
             >
               {children}
+              <Analytics />
               <Toaster richColors />
             </ThemeProvider>
           </CurrencyProvider>
